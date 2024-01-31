@@ -1,0 +1,207 @@
+Running system commands in Python
+
+import subprocess
+subprocess.run(["date"])
+
+import subprocess
+subprocess.run(["date"])
+subprocess.run(["sleep", "2"])
+
+import subprocess
+subprocess.run(["date"])
+subprocess.run(["sleep", "2"])
+result = subprocess.run(["ls", "this_file_does_not_exist"])
+print(result.returncode)
+
+    #  Thu Jan 18 13:17:12 UTC 2024
+    #  ls: cannot access 'this_file_does_not_exist': No such file or directory
+    #  2
+
+Explanation:
+
+import subprocess: Import the subprocess module, which allows you to spawn new processes, 
+    connect to their input/output/error pipes, and obtain their return codes.
+
+subprocess.run(["date"]): Execute the "date" command in a subprocess. 
+    This command prints the current date and time to the console.
+
+subprocess.run(["sleep", "2"]): Execute the "sleep 2" command in a subprocess. 
+    This command causes the program to pause for 2 seconds, simulating a delay.
+
+result = subprocess.run(["ls", "this_file_does_not_exist"]): 
+    Execute the "ls this_file_does_not_exist" command in a subprocess. 
+    This command attempts to list a file that does not exist. 
+    The result of this subprocess is stored in the result variable.
+
+print(result.returncode): Print the return code of the subprocess. 
+    The returncode attribute of the CompletedProcess object (stored in the result variable) 
+    contains the exit code of the subprocess. In this case, it will print the exit code of 
+    the "ls" command.
+
+If the "ls" command successfully lists the file, the exit code would be 0. 
+    If it encounters an error (like trying to list a non-existent file), the exit code 
+    will be non-zero. In the case of a non-existent file, the exit code will likely be 2. 
+    The print(result.returncode) line will output the exit code to the console.
+
+
+______________
+
+OBTAIN THE OUTPUT OF A SYSTEM COMMAND
+
+b at the beginning tells us it is not a proper string for python and is and array of bytes
+
+
+import subprocess
+
+# Execute the "host 8.8.8.8" command in a subprocess and capture its output
+result = subprocess.run(["host", "8.8.8.8"], capture_output=True)
+
+# Print the exit code of the subprocess
+print(result.returncode)  # Output: 0 (assuming the "host" command executed successfully)
+
+# Print the standard output of the subprocess (byte format)
+print(result.stdout)  # Output: b'8.8.8.8.in-addr.arpa domain name pointer dns.google.\n'
+
+# Print the standard output of the subprocess (decoded to string)
+print(result.stdout.decode().split())
+# Output: ['8.8.8.8.in-addr.arpa', 'domain', 'name', 'pointer', 'dns.google.']
+
+______________
+
+import subprocess
+
+    # Execute the "rm does_not_exist" command in a subprocess and capture its output
+result = subprocess.run(["rm", "does_not_exist"], capture_output=True)
+
+    # Print the exit code of the subprocess
+print(result.returncode)  # Output: 1 (assuming the "rm" command encounters an error)
+
+    # Execute the "rm does_not_exist" command in a subprocess and capture its output
+result = subprocess.run(["rm", "does_not_exist"], capture_output=True)
+
+    # Print the exit code of the subprocess
+print(result.returncode)  # Output: 1 (assuming the "rm" command encounters an error)
+
+    # Print the standard output of the subprocess (empty, as "rm" doesn't produce output on success)
+print(result.stdout)  # Output: b''
+
+    # Print the standard error of the subprocess (error message if "rm" encounters an error)
+print(result.stderr)  # Output: b"rm: cannot remove 'does_not_exist': No such file or directory\n"
+
+Explanation:
+
+print(result.returncode): This will print the exit code of the subprocess. 
+    If the "host" command executed successfully, the exit code is typically 0.
+
+print(result.stdout): This will print the standard output of the subprocess in bytes format. 
+    The output shows the domain name pointer for the IP address 8.8.8.8.
+
+print(result.stdout.decode().split()):
+     This will decode the byte-formatted standard output to a string and then split the string 
+     into a list of words. The output is a list of strings representing different components of
+    the DNS information.
+
+______________
+
+import subprocess
+result = subprocess.run(["rm", "does_not_exist"], capture_output=True)
+
+
+import subprocess
+result = subprocess.run(["rm", "does_not_exist"], capture_output=True)
+print(result.returncode)
+
+import subprocess
+result = subprocess.run(["rm", "does_not_exist"], capture_output=True)
+print(result.returncode)
+print(result.stdout)
+print(result.stderr)
+
+
+import subprocess
+
+# Execute the "rm does_not_exist" command in a subprocess and capture its output
+result = subprocess.run(["rm", "does_not_exist"], capture_output=True)
+
+# Print the exit code of the subprocess
+print(result.returncode)  # Output: 1 (assuming the "rm" command encounters an error)
+
+# Execute the "rm does_not_exist" command in a subprocess and capture its output
+result = subprocess.run(["rm", "does_not_exist"], capture_output=True)
+
+# Print the exit code of the subprocess
+print(result.returncode)  # Output: 1 (assuming the "rm" command encounters an error)
+
+# Print the standard output of the subprocess (empty, as "rm" doesn't produce output on success)
+print(result.stdout)  # Output: b''
+
+# Print the standard error of the subprocess (error message if "rm" encounters an error)
+print(result.stderr)  # Output: b"rm: cannot remove 'does_not_exist': No such file or directory\n"
+
+
+Explanation:
+
+The first set of commands executes the "rm does_not_exist" command in a subprocess. 
+    Since the file "does_not_exist" is not present, it encounters an error.
+
+print(result.returncode): This will print the exit code of the subprocess. 
+    If the "rm" command encounters an error, the exit code is typically 1.
+
+print(result.stdout): This will print the standard output of the subprocess. 
+    In the case of the "rm" command, the output is typically empty when the command is successful.
+
+print(result.stderr): This will print the standard error of the subprocess. 
+    If the "rm" command encounters an error (as it does in this case), 
+    the error message is printed to the console.
+
+______________
+
+UTF-8 is a Unicode standard used to convert an array of bytes into a string
+
+
+ADVANCED SUBPROCESS management
+
+import os
+import subprocess
+
+my_env = os.environ.copy()
+my_env["PATH"] = os.pathsep.join(["/opt/myapp/", my_env["PATH"]])
+
+result = subprocess.run(["myapp"], env=my_env)
+
+EXPLANATION in line with code:
+
+import os
+import subprocess
+
+# Create a copy of the current environment variables
+my_env = os.environ.copy()
+
+# Update the "PATH" variable in the copied environment
+# Add "/opt/myapp/" to the beginning of the existing "PATH" using os.pathsep
+my_env["PATH"] = os.pathsep.join(["/opt/myapp/", my_env["PATH"]])
+
+# Run the "myapp" command in a subprocess using the modified environment
+result = subprocess.run(["myapp"], env=my_env)
+
+EXPLANATION:
+
+import os: Import the os module, which provides a way to interact with the operating system, 
+    including access to environment variables.
+
+import subprocess: Import the subprocess module, which allows you to spawn new processes, 
+    connect to their input/output/error pipes, and obtain their return codes.
+
+my_env = os.environ.copy(): Create a copy of the current environment variables using 
+    os.environ.copy(). This ensures that modifications to my_env won't affect the 
+    original environment.
+
+my_env["PATH"] = os.pathsep.join(["/opt/myapp/", my_env["PATH"]]): 
+    Modify the "PATH" variable in the copied environment (my_env). 
+    This line adds "/opt/myapp/" to the beginning of the existing "PATH" variable. 
+    os.pathsep is used as the separator between the new path and the existing paths.
+
+result = subprocess.run(["myapp"], env=my_env): Run the "myapp" command in a subprocess 
+    using the modified environment (my_env). This means that when the "myapp" command is 
+    executed, it will use the modified "PATH" variable that includes "/opt/myapp/" at the 
+    beginning. The result of the subprocess execution is stored in the result variable.

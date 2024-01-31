@@ -1,0 +1,182 @@
+1. The format of the input variable “address_string” is: numeric house number, 
+    followed by the street name which may contain numbers and could be several 
+    words long (e.g., "123 Main Street", "1001 1st Ave", or "55 North Center Drive"). 
+
+Complete the string methods needed in this function so that input like "123 Main Street" 
+will produce the output "House number 123 on a street named Main Street". 
+This function should:
+    1. accept a string through the parameters of the function;
+    2. separate the address string into new strings: house_number and street_name; 
+    3. return the variables in the string format: "House number X on a street named Y".
+    4. def format_address(address_string):
+
+def format_address(address_string):
+
+    house_number = ""
+    street_name = ""
+
+        # Separate the house number from the street name.
+    address_parts = address_string.split()
+    
+    for address_part in address_parts:
+            # Complete the if-statement with a string method.  
+       if address_part.isdigit():
+         house_number = address_part
+       else:
+         street_name += address_part + " "
+        # Remove the extra space at the end of the last "street_name".
+    street_name = street_name.strip()
+ 
+        # Use a string method to return the required formatted string.
+    return f"House number {house_number} on a street named {street_name}"
+
+print(format_address("123 Main Street"))
+    #PRINTS: "House number 123 on a street named Main Street"
+print(format_address("1001 1st Ave"))
+    #PRINTS: "House number 1001 on a street named 1st Ave"
+print(format_address("55 North Center Drive"))
+    #PRINTS "House number 55 on a street named North Center Drive"
+
+2. Complete the for loop and string method needed in this function so that a function call like "alpha_length("This has 1 number in it")" will return the output "17". This function should:
+
+accept a string through the parameters of the function;
+iterate over the characters in the string;
+determine if each character is a letter (counting only alphabetic characters; numbers, punctuation, and spaces should be ignored);
+increment the counter;
+return the count of letters in the string.
+
+def alpha_length(string):
+    character = ""
+    count_alpha = 0
+    # Complete the for loop sequence to iterate over "string".
+    for character in string: 
+        # Complete the if-statement using a string method. 
+        if character.isalpha():
+            count_alpha += 1  
+    return count_alpha
+ 
+print(alpha_length("This has 1 number in it")) #PRINTS 17
+print(alpha_length("Thisisallletters")) # PRINTS 16
+print(alpha_length("This one has punctuation!")) # PRINTS 21
+
+
+3. Employees at a company shared  the distance they drive to work (in miles) through an online survey. These distances were automatically added by Python to a list called “distances” in the order that each employee submitted their distance. Management wants the list to be sorted in the order of the longest distance to the shortest distance. 
+
+Complete the function to sort the “distances” list. This function should:
+sort the given “distances” list, passed through the function’s parameters; ; 
+reverse the sort order so that it goes from the longest to the shortest distance;
+return the modified “distances” list.
+
+def sort_distance(distances):
+    distances.sort()# Sort the list
+    distances.reverse() # Reverse the order of the list
+    return distances
+
+
+print(sort_distance([2,4,0,15,8,9]))
+    #PRINTS [15, 9, 8, 4, 2, 0]
+
+
+4.  Fill in the blank to complete the “even_numbers” function. 
+ This function should use a list comprehension to create a list of even numbers 
+ using a conditional if statement with the modulo operator to test for numbers 
+ evenly divisible by 2. The function receives two variables and should return 
+ the list of even numbers that occur between the “first” and “last” variables 
+ exclusively (meaning don’t modify the default behavior of the range to exclude 
+ the “end” value in the range). 
+ For example, even_numbers(2, 7) should return [2, 4, 6].  
+
+ def even_numbers(first, last):
+  return [ number for number in range(first,last) if number % 2 ==0 ]
+
+
+print(even_numbers(4, 14)) # PRINTS [4, 6, 8, 10, 12]
+print(even_numbers(0, 9))  # PRINTS [0, 2, 4, 6, 8]
+print(even_numbers(2, 7))  # PRINTS [2, 4, 6]
+
+5.  Fill in the blanks to complete the “car_listing” function. 
+This function accepts a “car_prices” dictionary. It should iterate through the 
+keys (car models) and values (car prices) in that dictionary. For each item pair, 
+the function should format a string so that a dictionary entry like
+ ““Kia Soul“:19000” will print "A Kia Soul costs 19000 dollars". 
+Each new string should appear on its own line.
+
+
+
+6.  Tessa and Rick are hosting a party. Before they send out invitations, 
+they want to add all of the people they are inviting to a dictionary so they 
+can also add how many guests each friend is bringing to the party.  
+
+Complete the function so that it accepts a list of people, 
+then iterates over the list and adds all of the names (elements) to the dictionary 
+as keys with a starting value of 0. Tessa and Rick plan to update these values 
+with the number of guests their friends will bring with them to the party. 
+Then, print the new dictionary.
+
+This function should:
+1. accept a list variable named “guest_list” through the function’s parameter;
+2. add the contents of the list as keys to a new, blank dictionary;
+3. assign each new key with the value 0;
+4. print the new dictionary.
+
+def setup_guests(guest_list):
+    # loop over the guest list and add each guest to the dictionary with
+    # an initial value of 0 which will be modified if the guest brings a +1.
+    
+    result = {} # Initialize a new dictionary 
+    for guest in guest_list: # Iterate over the elements in the list 
+        result[guest] = 0 # Add each list element to the dictionary as a key
+            # with the starting value of 0 holding the place for a companion.
+    return result
+
+guests = ["Adam","Camila","David","Jamal","Charley","Titus","Raj","Noemi",
+            "Sakira","Chidi"]
+
+print(setup_guests(guests))
+        # PRINTS {'Adam': 0, 'Camila': 0, 'David': 0, 'Jamal': 0, 
+        'Charley': 0, 'Titus': 0, 'Raj': 0, 'Noemi': 0, 'Sakira': 0, 'Chidi': 0}
+
+
+
+7. Complete the function so that input like "This is a sentence." will return a dictionary that holds 
+the count of each letter that occurs in the string: {'t': 2, 'h': 1, 'i': 2, 's': 3, 'a': 1, 'e': 3, 'n': 2, 'c': 1}. 
+This function should:
+
+1.  accept a string “text” variable through the function’s parameters;
+2.  iterate over each character the input string to count the frequency of each letter found, 
+(only letters should be counted, do not count blank spaces, numbers, or punctuation; keep 
+in mind that Python is case sensitive);
+3. populate the new dictionary with the letters as keys, ensuring each key is unique, and 
+assign the value for each key with the count of that letter;
+4. return the new dictionar
+
+def count_letters(text):
+  # Initialize a new dictionary.
+  dictionary = {} 
+  # Complete the for loop to iterate through each "text" character and 
+  # use a string method to ensure all letters are lowercase.
+  for character in text:
+    character_lower = character.lower()   
+    # Complete the if-statement using a string method to check if the
+    # character is a letter.
+    if character_lower.isalpha():
+      # Complete the if-statement using a logical operator to check if 
+      # the letter is not already in the dictionary.
+      if character_lower not in dictionary: 
+           # Use a dictionary operation to add the letter as a key
+           # and set the initial count value to zero.
+           dictionary[character_lower] = 0
+      # Use a dictionary operation to increment the letter count value 
+      # for the existing key.
+      dictionary[character_lower] += 1 
+       # Increment the letter counter. 
+  return dictionary
+
+print(count_letters("AaBbCc"))
+# Should be {'a': 2, 'b': 2, 'c': 2}
+
+print(count_letters("Math is fun! 2+2=4"))
+# Should be {'m': 1, 'a': 1, 't': 1, 'h': 1, 'i': 1, 's': 1, 'f': 1, 'u': 1, 'n': 1}
+
+print(count_letters("This is a sentence."))
+# Should be {'t': 2, 'h': 1, 'i': 2, 's': 3, 'a': 1, 'e': 3, 'n': 2, 'c': 1}

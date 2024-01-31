@@ -1,0 +1,117 @@
+#!/bin/bash
+
+echo "Starting at: $(date)"; echo
+
+echo "UPTIME"; uptime; echo
+
+echo "FREE"; free; echo
+
+echo "WHO"; who; echo
+
+echo "Finishing at: $(date)"
+
+./gather-information.sh 
+
+Code output:
+
+Starting at: Mon 13 May 2019 02:52:11 PM CEST
+
+UPTIME
+
+ 14:52:11 up 17 days,  2:35,  1 user,  load average: 0.70, 1.01, 1.16
+
+FREE
+
+              total        used        free      shared  buff/cache   available
+
+Mem:       32912600    19966400     1003304      321672    11942896    12281516
+
+Swap:      20250620      612352    19638268
+
+WHO
+
+user    tty7         2019-04-29 12:19 (:0)
+
+Finishing at: Mon 13 May 2019 02:52:11 PM CEST
+
+______________________________
+
+VARIABLES AND GLOBS
+
+example=hello
+echo $example
+
+COUDE OUTPUT: hello
+
+______________
+
+echo *.py
+When we write star dot py [*.py], the shell turns it into a list containing all 
+filenames that end with py in the current directory. We can also put the star at 
+the end of an expression to get a list of all files that start with a certain prefix.
+    OUTPUT: action_deprecation.py areas.py capitalize.py charfreq.py  check_deprecation.py health_checks.py hello.py mycheck.py seconds.py  stdout_example.py streams.py test.py validations.py
+______________
+
+echo c*
+c* allows us to get all the files in the current directory that start with c.
+    OUTPUT: capitalize.py charfreq.py check_localhost.sh
+______________
+
+echo*
+The star with no prefix or suffix matches all the files in the current directory.
+    OUTPUT:  (... all the files ...)
+______________
+
+echo ?????.py
+The question mark symbol can be used to match exactly one character, instead of any 
+amount of characters.We can repeat it as many times as we need. In this example, 
+we can get the Python files with five characters in their name by using five question 
+marks together.
+    OUTPUT: areas.py hello.py
+______________
+
+CONDITIONAL EXECUTION IN bash
+
+cat check_localhost.sh 
+
+About this code
+Here  we’ll start with the if  keyword, followed by the grep command. 
+This is how we’ll check for success. At the end of the command, we have a semicolon [;],
+    followed by the word then. After that comes the body of the conditional. 
+
+Code output:
+
+#!/bin/bash
+
+if grep "127\.0\.0\.1" /etc/hosts; then
+
+	echo "Everything ok"
+
+else
+
+	echo "ERROR! 127.0.0.1 is not in /etc/hosts"
+
+fi
+
+./check_localhost.sh 
+  Code output:
+127.0.0.1	localhost
+Everything ok
+
+if test -n "$PATH"; then echo "Your path is not empty"; fi
+    Code output:
+Your path is not empty
+
+______________________________________
+
+The glob module must be imported into a Python script to utilize star [*] like in BASH.
+
+In Bash scripting, the condition used in conditional execution is based on the exit status of commands.
+
+The opening square bracket ([), when combined with the closing square bracket (]), 
+    is an alias for, test
+
+
+
+
+

@@ -1,0 +1,213 @@
+
+SLOWNESS
+
+When a system is running slow, the first step is to identofy the bottleneck.
+
+What do you do if you find that your machine is slow because it's spending a lot of time swapping? 
+        There are basically three possible reasons for this. We've already talked about two of them. 
+    FIRST, if there are too many open applications and some can be closed, close the ones that aren't 
+        needed.  
+    SECOND, if the available memory is just too small for the amount that computer is using, add 
+        more RAM to the computer. 
+    THIRD is that one of the running programs may have a memory leak, causing it to take all the 
+        available memory. A memory leak means that memory which is no longer needed is not getting 
+        released.
+    ##if a program is using a lot of memory and this stops when you restart the program, 
+    ##it's probably because of a memory leak.
+
+when trying to figure out what's making a computer slow, the first step is to look into when the 
+computer is slow. If it's slow when starting up, it's probably a sign that there are too many 
+applications configured to start on boot.
+    fixing the problem is just a question of going through the list of programs that start 
+    automatically and disabling any that aren't really needed
+
+
+If instead the computer becomes sluggish after days of running just fine, and the problem goes away 
+with a reboot, it means that there's a program that's keeping some state while running that's 
+causing the computer to slow down. For example, this can happen if a program stores some data in 
+memory and the data keeps growing over time, without deleting old values. ergo the computer runs out 
+of RAM
+    solution for a problem like this is to change the code so that it frees up some of the memory used. 
+    If you don't have access to the code, another option is to schedule a regular restart to mitigate 
+    both the slow program and your computer running out of RAM. A similar problem that can trigger 
+    after a long time using an application, and that isn't solved by a reboot, is that the files that 
+    an application is handling have grown too large. So when the program needs to read those files, 
+    it gets really slow.
+        reduce the size of the files involved. 
+        If the file is a log file, you can use a program like logrotate to do this for you. 
+
+
+It's common for computers in an office network to use a file system that's mounted over the 
+network so they can share files across computers. This normally works just fine, but can make some 
+programs really slow if they're doing a lot of reads and writes on this network-mounted file system. 
+To fix this, we'll need to make sure that the directory used by the program to read and write most of 
+its data is a directory local to the computer. Hardware failures can also cause our computer to 
+become slow. If your hard drive has errors, the computer might still be able to apply error 
+correction to get the data that it needs, but it will affect the overall performance.
+
+ another source of slowness is malicious software. Of course, we always want to keep your computer 
+ clean of any malicious software, but we can feel the effects of malicious software even if they 
+ aren't installed. For example, you might have come across a website that includes scripts, either in
+ the website's content or the ads displayed, that use our processor to mine for cryptocurrency.
+
+ ab (Appache Benchmark)  This tool is super useful for checking if a website is behaving as expected or not. 
+ It will make a bunch of requests and summarize the results once it's done. 
+ 
+ ab -n 500 site.example.com
+
+ Here, we’re asking for it to do 500 requests to our website.
+  Time per requests was a 155 milliseconds. While this is not a super huge number, 
+  it's definitely more than what we'd expect for such a simple website. 
+  It seems that something is going on with the web server and we need to investigate further. 
+  Let's connect to the web server and check out what's going on. We'll start by looking at the 
+  output of top.
+
+ssh webserver
+
+clear
+
+top
+
+  there's a bunch of ffmpeg processes running, which are basically using all the available CPU
+
+This ffmpeg program is used for video transcoding which means converting files from one video 
+format to another. This is a CPU intensive process and seems like the likely culprit for our 
+server being overloaded.
+
+
+The process priorities in Linux are so that the lower the number, the higher the priority. 
+Typical numbers go from 0 to 19. By default, processes start with a priority of zero. But we can 
+change that using the nice and renice commands. We use nice for starting a process with a different 
+priority and renice for changing the priority of a process that's already running.
+
+we'll use the pidof command that receives the process name and returns all the process IDs that 
+have that name. We'll iterate over the output of the pidof command with a for loop and then call 
+renice for each of the process IDs.
+
+Renice takes the new priority as the first argument, and the process ID to change as the second one. 
+In our case, we'll want the lowest possible priority which is 19. So we'll call for pid in 
+$(pidof ffmpeg); do 
+renice 19 
+$pid; done.
+
+
+ we could do is, modify whatever's triggering them to run them one after the other instead of all at the same time. To do that, we'll need to find out how these processes got started. First, we'll look at the output of the ps command to get some more information about the processes. We'll call ps ax which shows us all the running processes on the computer, and we'll connect the output of the command to less, to be able to scroll through it. Now we'll look for the ffmpeg process using slash which is the search key when using less.
+
+ We don't know where these videos are on the hard drive. We can try using the locate command to see if we can find them. We'll first exit the less interface with queue and then call locate static/001.webm. We see that the static directory is located in the server deploy videos directory.
+
+ change into that directory and see what we find.
+
+There's a bunch of files here. We could check them all one-by-one to see if one of them contained a call to ffmpeg. But that sounds like a lot of manual work. Instead, let's use grep to check if any of these files contains a call to ffmpeg. So we see that there's a couple of mentions in the deployed sh file. Let's take a look at that one. Since we're connecting to the server remotely, we can't open the file using a graphical editor. We need to use a command line editor instead. We'll use vim in this case.
+
+We see that this script is starting the ffmpeg processes in parallel using a tool called Daemonize that runs each program separately as if it were a daemon.
+
+ we want to change this to run only one video conversion process at a time. We'll do that by simply deleting the daemonized part and keeping the part that calls ffmpeg, then save and exit.
+
+ We´ll use the command
+
+ killall -STOP ffmpeg  (which sends a stop signal but doesn´t kill the processes completely)
+
+WRITING EFFICIENT CODE
+
+ A profiler is a tool that measures the resources that our code is using, 
+ giving us a better understanding of what's going on. In particular, they help us 
+ see how the memory is allocated and how the time is spent. Because of how profilers 
+ work, they are specific to each programming language. So we would use gprof to 
+ analyze a C program but use the c-Profile module to analyze a Python program.
+    The cProfile module is used to count how many times functions are called, 
+    and how long they run.
+
+ If you do an expensive operation inside a loop, you multiply the time it takes 
+    to do the expensive operation by the amount of times you repeat the loop.
+
+if we have to parse a file, we do it once before we call the loop instead of doing it 
+for each element of the loop.
+
+If the script gets executed fairly regularly, it's common to create a local cache, a one day cache can be read quickly
+
+
+
+pprofile3 is a python profiler
+
+Use the dash f flag to tell it to use the call grind file format and the dash o flag to tell it to store the output in the profile dot out file.
+
+pprofile3 -f callgrind -o profile.out
+
+kcachegrind to look at the contents, which is a graphical interface for looking into these files.
+
+kachegrind profile.out
+
+ If we're looking for some long-term stats, we can generate the cache once per day, and it won't be a problem. This might be the case for data like how much memory was used on computers across the fleet over the last month?
+But if we're trying to look at data where the value as of right now is super important, we either can't use a cache or it has to be very short-lived.
+Monitoring tools
+There are robust tools at your disposal for finding and diagnosing performance bottlenecks in computer systems. This guarantees a seamless and refined operational experience. Windows, Linux, and macOS all offer a wide range of methodologies and tools for monitoring and fine-tuning system performance.
+
+Windows processes
+Windows Process Monitor, also known as Sysinternals, is a powerful monitoring tool that serves as an advanced task manager. It provides real-time insight into various aspects of the system, including file system operations, registry changes, processes, and threads. The tool excels at diagnosing file access issues, analyzing system configurations, and understanding processes.
+
+You can use Process Monitor to track down bugs, detect unauthorized changes to the Registry, and investigate system crashes, making it an indispensable tool for system troubleshooting. With detailed event properties and a wide range of filtering options, you can pinpoint root causes more efficiently by focusing on specific processes.
+
+When combined with logging, reporting, and monitoring tools, Process Monitor can enhance the effectiveness of diagnosing and resolving complex issues. It can also be useful for detecting suspicious applications running in the background unnoticed.
+
+To fully explore Process Monitor's capabilities, read more about it 
+here
+. 
+
+Linux performance
+To enhance your Linux system's performance, you can use specialized tools that offer real-time insights into CPU, memory, disk I/O, and network activity for quick performance bottleneck detection. Some of these tools include Perf-tools, bcc/BPF, and bpftrace.
+
+To further optimize your system, use a static analysis tool to examine your code and configurations for potential improvements. The use of benchmarking tools can also be helpful for assessing your system's performance under different workloads and revealing areas that may need to be improved.
+
+Customizing your Linux system using tuning utilities is a powerful strategy to tailor settings and achieve a faster and more responsive setup. For instance, the SAR (System Activity Reporter) is especially useful for analyzing performance trends and identifying recurring issues over time.
+
+You can effectively troubleshoot problems, fine-tune performance, and ensure the smooth and efficient operation of your Linux system by incorporating these tools along with historical data.
+
+To gain real-time insights into your Linux system's performance, read more 
+here
+. 
+
+The USE method
+The USE Method is essential for optimizing system performance and troubleshooting servers. It helps identify resource bottlenecks and performance issues by analyzing Utilization, Saturation, and Errors. Resources like CPUs, memory, storage, and network interfaces can be measured for busy time, additional workload capacity, and errors.
+
+To pinpoint problems and relationships, the USE Method suggests creating a resource list and a Functional Block Diagram. This helps avoid data overload and provides a clear visualization of the system's components and their interactions.
+
+This method is adaptable to cloud computing environments to assess how software resource controls impact performance. This methodology provides a simple and effective approach to optimizing system performance.
+
+For more detailed information, including specific checklists for different operating systems and guidance, read more 
+here
+. 
+
+macOS Activity Monitor
+Activity Monitor in macOS allows you to monitor and manage system performance easily. You can optimize Mac performance with Activity Monitor's insights into process activity, resource usage, and energy consumption. Activity Monitor identifies unresponsive apps or processes, monitors energy usage, tracks overall energy impact, and displays real-time system status. It enables you to troubleshoot issues and optimize battery life, ensuring smooth and responsive operation.  
+
+For detailed instructions and information on how to use this utility, refer to Apple's Activity Monitor User Guide 
+here
+.
+
+Windows Performance Monitor 
+Performance Monitor is a versatile and customizable tool that analyzes your system's performance. By identifying and resolving hardware problems, poorly designed apps, excessive resource usage, or malware, it ensures smooth and efficient operation. Having real-time data on memory, network, disks, and processors lets you monitor key components and quickly resolve problems. You can configure counters, set data collectors, and analyze reports to optimize your system. 
+
+For more information on maintaining optimal system performance, read more 
+here
+. 
+
+Windows Resource Monitor 
+To get real-time insights into your computer's resource usage in Windows, use the Resource Monitor (resmon.exe) tool. It helps identify causes of slowdowns like hardware issues, poorly designed apps, and malware. Access it by searching for "resmon" or "Resource Monitor." Navigate between Memory, Disk, and Network sections for deeper analysis. Be cautious with CPU processes to avoid system instability. 
+
+Resource Monitor helps you understand your system's resource usage. To learn more about the Resource Monitor, read more 
+here
+.
+
+Windows Process Explorer 
+The Process Explorer v17.05 software is primarily used for file monitoring and analyzing processes on Windows computers. It provides detailed information about active processes, handles, and DLLs. Processes and their accounts are displayed in the top window, while handles and DLLs are displayed in the bottom window. In addition to troubleshooting DLLs, it also helps detect leaks and issues, providing valuable insights into how the system works. 
+
+Process Explorer troubleshoots and handles DLLs effectively. To learn more about Process Explorer v17.05, read more 
+here
+.
+
+Caching
+Although a cache is not a monitoring tool, it's important not to overlook them as computing relies heavily on caches, which enhance data access speed and overall system performance. They store frequently accessed data for quick retrieval, making them essential for CPUs, SSDs, HDDs, web browsers, and web servers. Caches are smaller and faster than memory, acting as intermediate storage to optimize efficiency. 
+
+Linux autogrouping
+In Linux, autogrouping optimizes desktop performance during CPU-intensive workloads by grouping processes and ensuring fair CPU cycle distribution. Autogrouping tells the process scheduler component in Linux to act based on a group’s configured “nice level” instead of individual processes. However, autogrouping can interfere with traditional processes. When enabled, the ”nice” value primarily affects priority within the group, reducing the effectiveness of “nice” and ”renice” commands. Even programs setting their own nice levels may still receive a "fair" share of CPU time
+

@@ -1,0 +1,140 @@
+
+FLITERING LOG FILES WITH REGULAR EXPRESSIONS
+
+#!/bin/env/python3
+
+import sys
+
+logfile = sys.argv[1]
+with open(logfile) as f:
+  for line in f:
+    print(line.strip())
+
+This code reads the contents of a file specified as a command-line argument (sys.argv[1]) 
+and prints each line after removing leading and trailing whitespaces. The with open(logfile) 
+as f statement is used for handling the file's opening and closing automatically.
+
+______________
+#!/bin/env/python3
+
+import sys
+
+logfile = sys.argv[1]
+with open(logfile) as f:
+  for line in f:
+    if "CRON" not in line:
+      continue
+    print(line.strip())
+
+Similar to Block 1, but it only prints lines containing the substring "CRON". 
+The if "CRON" not in line condition filters out lines that do not contain "CRON" before printing.
+
+______________
+import re
+pattern = r"USER \((\w+)\)$"
+line = "Jul 6 14:03:01 computer.name CRON[29440]: USER (naughty_user)"
+result = re.search(pattern, line)
+print(result[1])
+
+This block uses a regular expression (re.search) to extract the username from a log line 
+that matches a specific pattern. The pattern looks for "USER" followed by the username in
+parentheses. It then prints the extracted username.
+______________
+#!/bin/env/python3
+
+import re
+import sys
+
+logfile = sys.argv[1]
+with open(logfile) as f:
+  for line in f:
+    if "CRON" not in line:
+      continue
+    pattern = r"USER \((.+)\)$"
+    result = re.search(pattern, line)
+    print(result[1])
+
+Similar to Block 3, but it reads lines from a file specified as a command-line argument. 
+It filters out lines without "CRON" and extracts and prints the username using the regular 
+expression pattern.
+
+______________
+chmod +x check_cron.py 
+./check_cron.py syslog 
+
+This last part is the execution of the script. 
+Assuming check_cron.py is the filename, and syslog is provided as a command-line argument, 
+the script reads the specified logfile (syslog), filters out lines without "CRON," and extracts 
+and prints the usernames associated with "USER" in the CRON lines. The output will depend on the 
+content of the syslog file.
+
+_______________________________________________
+
+MAKING SENSE OF DATA 
+
+usernames = {}
+name = "good_user"
+usernames[name] = usernames.get(name, 0) + 1
+print(usernames)
+usernames[name] = usernames.get(name, 0) + 1
+print(usernames)
+    #RETURNS:
+{'good_user': 1}
+{'good_user': 2}
+
+______________
+#!/bin/env/python3
+
+import re
+import sys
+
+logfile = sys.argv[1]
+usernames = {}
+with open(logfile) as f:
+  for line in f:
+    if "CRON" not in line:
+      continue
+    pattern = r"USER \((\w+)\)$"
+    result = re.search(pattern, line)
+
+    if result is None:
+      continue
+    name = result[1]
+    usernames[name] = usernames.get(name, 0) + 1
+
+print(usernames)
+
+./check_cron.py syslog
+
+______________
+
+Question 1: You have created a Python script to read a log of users running CRON jobs. 
+The script needs to accept a command line argument for the path to the log file. 
+Which line of code accomplishes this?
+
+Answer: syslog=sys.argv[1]
+
+Question 2: Which of the following is a data structure that can be used to count how many 
+times a specific error appears in a log?
+
+Answer: Dictionary
+
+Question 3: Which keyword will return control back to the top of a loop when iterating through logs?
+
+Answer: Continue
+
+Question 4: When searching log files using regex, which regex statement will search for 
+the alphanumeric word "IP" followed by one or more digits wrapped in parentheses using a 
+capturing group?
+
+Answer: r"IP \((\d+)\)$"
+
+Question 5: Which of the following are true about parsing log files? (Select all that apply.)
+
+Answers:
+You should parse log files line by line.
+It is efficient to ignore lines that don't contain the information we need.
+We have to open() the log files first.
+
+______________
+

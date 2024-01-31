@@ -1,0 +1,413 @@
+
+
+Logging
+Many Python programmers develop programs that require them to observe values to see what is going on by using print() statements. print() is a built-in Python function used for simple, immediate output to the console which can be used for debugging or quick information display. Logging is a more sophisticated and configurable logging framework that allows developers to control the level of detail, destination, and formatting of log messages. Logging makes it suitable for production-grade applications to track and analyze program behavior. print() statements are great for development, but for production, each one of these function calls increases overhead.
+
+One example of print() statements causing negative overhead is if low-priority problems arise in a script. A third-party API endpoint isn’t responding in time, so the application tries again and isn’t able to get a response. In these cases, the system doesn't tell you that the system is broken.
+
+For more severe problems, such as a totally offline server dependency or repeated denials for incorrect passwords, you want to know immediately. For your logs, you want to filter out errors that may go away due to external factors (data about outages and potential breaches). 
+
+When logging problems occur, they generally do not happen in isolation. Having a massive amount of noise inside log files can make it hard to trace problems. This ideology is pointed out in the “Observing Application Behavior” chapter of Michal Jaworski’s book, Expert Python Programming, 4th edition. 
+
+You might want to set up a way to notify someone in case problems arise. Filtering problems by severity level is a fantastic place to start. Logging allows this filtering with the levels: DEBUG, INFO, WARNING, ERROR, and CRITICAL.
+
+Printing vs. logging
+Printing and logging are both methods you can use to display information, but they serve slightly different purposes and have different implications, depending on the context.
+
+Printing
+print() is a function that prints objects (strings, but also most anything else). The syntax for using the print() function to print to a file is: 
+
+print(open(“my_file.txt”,”r”).read(),file=open(“new_file.txt”,”w”))
+
+print() objects sent to the text stream file must be provided as keyword arguments if they are separated by sep. These statements might also be followed by end. sep, end, file, and flush.
+
+The stream file is generally what you interact with, but sometimes you will not use Python with console output, especially in a cloud context where code is deployed that runs on some other computer. In most cases, anything printed out inside the Python code will end up in logs. This is because logs capture all or nothing regarding print().
+
+Logging
+The logging module provides an object-oriented way to print out statements with the additional advantage of using severity levels. More advanced features include the ability to filter which messages you care about, to route to more destinations than just the console/terminal, and to see the difference between normal print() statements and print() statements used for debugging purposes.
+
+Built-in logging levels 
+The logging module provides five built-in log levels. In order of severity, they are debug, info, warning, error, and critical. These are referred to as methods of the logging object. 
+
+The output of a logging statement will resemble:
+
+[LOG_LEVEL]:root:[MESSAGE]
+
+The name “root” in this context means logging was called directly instead of setting up a logger by name.
+
+The following is an example of import logging:
+
+# Set up basic configuration to display all log levels
+
+logging.basicConfig(level=logging.DEBUG)
+
+# Log messages for each severity level
+
+logging.debug("This is a DEBUG message.")
+
+logging.info("This is an INFO message.")
+
+logging.warning("This is a WARNING message.")
+
+logging.error("This is an ERROR message.")
+
+logging.critical("This is a CRITICAL message.")
+
+This prints out:
+
+DEBUG:root:This is a DEBUG message.
+
+INFO:root:This is an INFO message.
+
+WARNING:root:This is a WARNING message.
+
+ERROR:root:This is an ERROR message.
+
+CRITICAL:root:This is a CRITICAL message.
+
+This print out includes all of the pre-defined logging points.
+
+Handlers
+Handlers are advanced ways to manage and route logs. Handlers define the output destinations for log messages, allowing you to control where the log data goes, such as writing to files, sending emails, or printing to the console. 
+
+The most basic handler is StreamHandler. The StreamHandler class allows you to configure logging to display log messages on the screen, making it useful for providing feedback, debugging, and monitoring during the execution of a program. This is the print() equivalent for logging, but StreamHandler also allows routing from arbitrary objects. Handlers can be attached to user-defined loggers using addHandler() or can be directly invoked.
+
+Here is an example of a custom logger with a debug and a StreamHandler attached to it with a different severity level:
+
+import logging
+
+# Setting up the logger and StreamHandler
+
+# Creating a logger
+
+stream_logger = logging.getLogger('stream_logger')
+
+stream_logger.setLevel(logging.DEBUG)  # Set logger to capture all messages from DEBUG level and above
+
+# Ensure no previous handlers are attached
+
+stream_logger.handlers = []
+
+# Creating a StreamHandler
+
+stream_handler = logging.StreamHandler()
+
+stream_handler.setLevel(logging.INFO)  # Set handler to display only messages from INFO level and above
+
+# Adding handler to logger
+
+stream_logger.addHandler(stream_handler)
+
+# Logging messages at different levels
+
+stream_logger.debug("This is a DEBUG message for stream_logger.")
+
+stream_logger.info("This is an INFO message for stream_logger.")
+
+stream_logger.warning("This is a WARNING message for stream_logger.")
+
+stream_logger.error("This is an ERROR message for stream_logger.")
+
+stream_logger.critical("This is a CRITICAL message for stream_logger.")
+
+output:
+
+This is an INFO message for stream_logger.
+
+This is a WARNING message for stream_logger.
+
+This is an ERROR message for stream_logger.
+
+This is a CRITICAL message for stream_logger.
+
+Different types of logging handlers
+Besides StreamHandler, there are also many other handlers: 
+
+FileHandler
+
+NullHandler
+
+WatchedFileHandler
+
+BaseRotatingHandler
+
+RotatingFileHandler
+
+TimedRotatingFileHandler
+
+SocketHandler
+
+DatagramHandler
+
+SysLogHandler
+
+NTEventLogHandler
+
+SMTPHandler
+
+MemoryHandler
+
+HTTPHandler
+
+QueueHandler
+
+QueueListener
+
+For more information about logging handlers, click 
+here
+. 
+
+Logging business data to a database
+An advanced use case, but one very common in most cloud operations, is logging business-relevant data, such as logins and expensive requests, to a database. This logging would also generate alerts for outages and other items that require immediate attention. To do this with Python logging, one may combine the capabilities of the logging library with a database library. This enables the creation of custom handlers or loggers that interact with the database, allowing seamless storage and retrieval of crucial operational data to enable effective monitoring.
+
+Key takeaways
+These takeaways emphasize the significance of logging for effective software development and production monitoring, as well as the distinction between using print() statements and the more structured approach of logging with severity levels and handlers.  
+
+Overhead of print()statements in production: Although using print() statements is convenient for development, it can lead to increased overhead in production environments. 
+
+Distinguishing severity levels for effective monitoring: Differentiating between various issues' severity levels is crucial. By using severity levels in logging, you can effectively filter out transient errors and monitor significant problems.
+
+Using logging handlers for advanced log management: Logging handlers are essential components for directing log messages to various destinations. They provide advanced capabilities, such as filtering messages, routing to multiple destinations, and enabling custom loggers.  
+
+_________________________________
+
+The logging module
+The logging module in Python is a readily available, robust module that can be used by both novice programmers and professional teams. Because the majority of Python third-party libraries use it, you can combine your log messages with messages from both libraries to create a uniform log for your application.
+
+Many applications, especially backend components that don’t directly interact with users, keep a log of their activities to aid in troubleshooting problems or monitoring the application’s performance. The Python logging module provides a standardized way of outputting those log messages to the system console, a file, the system logging daemon (syslogd), or other destinations.
+
+Developers will often insert code that logs any or all of the following:
+
+Actions the program is about to take, is taking, or just completed
+
+The value of parameters and variables that might affect the program’s behavior
+
+Return values or output from other components (such as web services or databases)
+
+Timing and other performance data
+
+You can customize both the formatting of your log and the level of detail that gets logged.
+
+Five levels of the logging module
+A developer decides on a “severity” for each log message. The logger is configured to log anything above a certain severity level; everything else gets ignored.
+
+The severity levels are as follows:
+
+DEBUG: Extra information only needed for debugging. This level often includes values of parameters and variables to help with troubleshooting. Example: logging Parameter x: 42 to aid in diagnosing issues and include parameter values
+
+INFO: Informational message that can be used for tracing the program’s activities. Example: connecting to MySQL database at mydbserver.aws.amazon.com
+
+WARNING: An error that doesn’t require immediate action. Examples: query took longer than 10 seconds, configuration file not found, or reverting to default settings.
+
+ERROR: Serious, but can be a recoverable error. Example: database connection failed, or a file is missing.
+
+CRITICAL: Fatal error. Example: A critical error has occurred! The application will now terminate.
+
+You decide how much detail to put into your log file. Many programs have a “DEBUG” flag that you can turn on to output additional debugging information. When things go wrong, more detail is always better than less, especially at the DEBUG level. Most of the time you can leave your logging at INFO to keep the log readable, but don’t be afraid to throw additional logging into your code. 
+
+If you initialize the logger with INFO as the minimum level, then the log will contain everything from INFO to CRITICAL. DEBUG messages will be discarded.
+
+You can configure your logger to include multiple handlers; each one logs to a different destination. This way, you can log to the console and to a file at the same time, with a different level of detail (minimum severity level) for each destination.
+
+Initializing a logger
+Initializing the logger typically refers to the process of setting up and configuring a logging system using the built-in logging module. Initializing the logger involves creating a logger object, specifying its configuration, and defining how log messages should be handled and formatted. The steps involve the following: Import the logging module, create a logger instance, configure the logger, and then start logging messages.  
+
+A simple way to initialize the logger is the following:
+# Set the minimum logging level to INFO,
+logging.basicConfig(level=logging.INFO)
+
+# Get a logger object
+log = logging.getLogger(__name__)
+
+# Start the log file
+log.info("Hello world")
+
+The __name__ parameter adds your Python module name to the logger’s output, so if your module is called stuff.py, your log would include “[stuff]” in its output. This way, multiple modules can log to the same file, but you can still quickly find messages from a particular module.
+
+Alternatives to the logging module 
+One popular alternative is structlog, which outputs logs in a highly structured JSON format so they can be easily parsed by monitoring systems. With structlog, log messages are not only strings but rich data structures, which can make it easier to search, filter, and analyze logs.
+
+Another is colorlog, which adds helpful color highlights when logging to the console. An example of this is assigning different colors to log levels like DEBUG, INFO, WARNING, ERROR, and CRITICAL. This step can make it quicker to spot the severity of each log message at a glance.  
+
+The good news is that these alternatives are nearly drop-in replacements for the built-in logging module, so you don’t need much in the way of code changes to use them. The flexibility of these alternatives means a smooth transition requiring minimal code modifications to integrate them into your Python applications.
+
+Key takeaways
+Python's built-in logging module is a tool suitable for both beginners and experienced programmers, making it a valuable choice for creating uniform logs in applications with third-party libraries. The logging module simplifies the process of recording and outputting log messages, enabling developers to track program activities, parameter values, errors, and performance data in a standardized manner. Developers can customize the format and level of detail in their log files, with five severity levels ranging from DEBUG for debugging to CRITICAL for fatal errors. Initializing the logger involves setting the minimum logging level, creating a logger instance with a module name, and starting the log, making it straightforward for developers to get started with logging.  
+
+
+_____________________________
+
+Exception Handling:
+
+Exception handling
+Exception handling in Python is a method that allows developers to manage errors or exceptions that can occur during the execution of a program. Exceptions are errors that disrupt the normal flow of a program where the code cannot recover from automatically.
+
+ Some examples of exceptions are the following:
+
+Attempting to divide by zero
+
+Referencing a variable that doesn’t exist
+
+Attempting to open a file that doesn’t exist
+
+Connecting fails to a remote server
+
+Exception handling is special code you can add to your program to ensure that a program doesn't crash when an error occurs. This method also provides the opportunity to respond to errors in a controlled and meaningful way.
+
+The most common types of exceptions
+When an error arises while a program is being executed, one of Python's built-in exceptions may occur. Some of the most common exception types in Python are the following: 
+
+NameError - usually due to a typo in a variable name
+
+AttributeError - also usually a typo, in calling a method on an object
+
+ValueError - parameter value is incorrect
+
+TypeError - sending a string when a function is expecting an int or calling a function with the wrong number or type of arguments
+
+ImportError - when Python can’t find a module you’re trying to import
+
+FileNotFoundError - when you try to perform file-related operations (opening, reading, writing, or deleting) on a file or directory that does not exist
+
+except statements
+In Python, you use the except statement as part of exception handling to catch and handle specific types of exceptions that may occur during the execution of a program. It is used to recover from the error or notify the user. 
+
+An example of an except statement is:
+
+try:
+  # Try to append to a file that is normally not writable
+  # for anyone other than root 
+  f = open("/etc/hosts", "w+")
+except IOError as ex:
+  # The variable "ex" will hold details about the error
+  # that occurred
+  print("Error appending to file: " + str(ex))
+else:
+  # If there was no exception, close the file.
+  f.close()
+
+As the name implies, syntax errors result from incorrect syntax in the code. They cause Python to terminate the program. Syntax errors usually occur due to typographical errors in the code, such as incorrectly indenting a line or misspelling a variable or function name. 
+
+When a program is syntactically accurate, yet the code produces an error, exceptions occur. Although this error does not prevent the application from running, it alters how the program normally runs.
+
+Syntax errors are related to the structure and grammar of the code and are detected before the program runs; whereas, exceptions are runtime errors that occur while the program is executing and are typically related to unexpected conditions or invalid operations. Syntax errors prevent the program from running, while exceptions can be caught and handled to allow the program to continue running despite encountering errors.
+
+Avoiding defensive code
+Defensive code is a type of coding that aims to anticipate and handle exceptional conditions, errors, or unexpected inputs in a way that prevents the program from crashing or behaving unpredictably. Python coders, also known as Pythonistas, generally say “it’s better to ask forgiveness than permission.” This means that rather than adding lots of defensive code, you should just operate as usual and catch exceptions if they occur.
+
+That means, instead of doing this:
+
+if isinstance(user, dict) and "first_name" in user:
+  first_name = user["first_name"]
+
+Do this instead:
+
+try:
+  first_name = user["first_name"]
+except KeyError:
+  print("User does not have a first_name field")
+
+Key takeways
+Exception handling in Python is a mechanism that allows you to handle errors and exceptional situations that may occur during the execution of a program. There are a great deal of exception types, but some of the most common are NameError, AttributeError, ValueError, TypeError, and ImportError. Syntax errors are related to the code's structure and grammar and are detected before the program runs.  In contrast, exceptions are runtime errors that occur during program execution, often due to unexpected conditions or invalid operations.   
+
+_______________________________________
+
+Exception handling examples
+In Python, we can prevent errors or we can catch them by using exceptions. The frequently-used exception commands are try/except, raise, and finally. try/except is like a safety net that catches errors and prevents your program from crashing. raise is like a red flag that alerts you to a problem. finally is like a parachute that helps you land safely,  even if your program crashes. 
+
+Using try/except
+Use try/except when you think your code may raise an error. For example, opening a file may raise an error if the file does not exist or cannot be opened. Connecting to another host on the network raises an error if the host is unavailable. Rather than allowing the program to crash, try/except allows you to catch the error by providing an error message.  
+
+Let’s take a look at an example. This function tries to print the value of x. If x has not been defined yet, print() will raise a NameError.
+
+try:
+  print(x)
+except NameError:
+  print("Variable x is not defined")
+
+Another example shown below tries to append data to a file. If the file is not found, it prints a message. If there is any other error (such as “permission denied”), it prints the actual error. Finally, if there is no exception, it closes the file.
+
+try:
+  f = open("/etc/hosts", "w+")
+  f.write("Success!")
+except FileNotFoundError:
+  print("Data file not found")
+except Exception as ex:
+  print("Error appending to file: " + str(ex))
+else:
+  f.close()
+
+
+#Error appending to file: [Errno 30] Read-only file system: '/etc/hosts'
+
+______________________________________
+
+
+Using raise
+Use raise when your code cannot continue to execute due to an error or incorrect input. 
+
+This example will raise a TypeError if x is not an integer value:  
+
+x = "hello"
+
+
+if not isinstance(x, int):
+  raise TypeError("Only integers are allowed")
+Reset
+Error on line 5:
+    raise TypeError("Only integers are allowed")
+TypeError: Only integers are allowed
+
+
+The example below takes one argument and validates it. It raises either a TypeError or ValueError if it is invalid. This function first checks to make sure that the port number is an integer. If it is not an integer, the function raises a TypeError exception. The function then checks to make sure that the port number is between 1024 and 65535. This is because port numbers below 1024 are typically reserved for system services. If the port number is outside of this range, the function raises a ValueError exception. If the port number is valid, the function then starts the server on that port.
+
+
+def start_server(port):
+  if not isinstance(port, int):
+    raise TypeError("Port number must be an integer")
+  elif port < 1024 or port > 65535:
+    raise ValueError("Port number is invalid")
+
+#No Output
+
+
+Using finally
+You use a finally block to clean up after executing a code, whether that code raises an exception or not. It is often used to clean up resources like network connections or to return a value to the calling function. For example, you can use finally to close a file or a database connection after you’re done. 
+
+Make sure your finally block doesn’t accidentally throw another exception. Let’s see an example:  
+
+123456
+try:
+  f = open("/etc/hosts", "w+")
+except:
+  print("Error appending to file: " + str(ex))
+finally:
+  f.close()  # causes error if the file could not be opened
+
+# Returns: Error on line 2:
+        f = open("/etc/hosts", "w+")
+    OSError: [Errno 30] Read-only file system: '/etc/hosts'
+
+    #During handling of the above exception, another exception occurred:
+
+    Traceback (most recent call last):
+    Error on line 4:
+        print("Error appending to file: " + str(ex))
+    NameError: name 'ex' is not defined
+
+    During handling of the above exception, another exception occurred:
+
+    Traceback (most recent call last):
+    Error on line 6:
+        f.close()  # causes error if the file could not be opened
+    NameError: name 'f' is not define
+
+
+If opening the file causes an exception, then f has no value, and the finally block will cause another exception that will not be detected.
+
+Key takeaways
+The exceptions in Python help you catch the code errors. These commands include try/except, raise, and finally. The try/except exception allows you to catch errors before they happen. The raise exception is used when your code cannot continue to execute due to an error or incorrect input and alerts you. The finally exception helps you clean up after executing a code, whether that code raises an exception or not. 
+
+
+
+

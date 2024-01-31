@@ -1,0 +1,345 @@
+Web Applications and Services
+A web application is an application that you interact with over HTTP. Most of the time when you’re using a website on the Internet, you’re interacting with a web application. So, how does this look behind the scenes?
+
+Your web browser sends an HTTP request to a web server. Then, the web server passes the request along to the web application in charge of deciding what information to show you. The application then generates the website content (in HTML format). The application is also in charge of serving images and any other necessary data so that your web browser can render the website on your computer.
+
+Lots of web applications also have APIs that you can use from your scripts! Web applications that have an API are also known as web services. Instead of browsing to a web page to type and click around, you can use your program to send a message known as an API call to the web service. The part of the program that listens on the network for API calls is called an API endpoint.
+
+When you interact with a web service like this, you don't even care what language the other application is using. You interact with it using a specified protocol, and the only important constraint is that both the service and your program know how to use this protocol.
+
+RESTful APIs were originally conceptualized by Roy Thomas Fielding in his 2000 PhD thesis. Unlike APIs which directly open up ports to the entire internet and directly connect, RESTful APIs rely on the HTTP protocol. The HTTP protocol, in turn, can be further secured using HTTPS, and API endpoints can authenticate users via authorization tokens, API keys, or other security mechanisms. RESTful APIs use HTTP requests to perform CRUD (create, read, update, delete) operations on resources.
+
+RESTful methods
+RESTful APIs work by associating methods (functions) with resources. Some of the most commonly used 
+HTTP request methods
+ are:
+
+GET
+: The GET method requests a representation of the specified resource. Requests using GET should only retrieve data.
+
+HEAD
+: The HEAD method asks for a response identical to a GET request, but without the response body.
+
+POST
+: The POST method submits an entity to the specified resource, often causing a change in state or side effects on the server.
+
+PUT
+: The PUT method replaces all current representations of the target resource with the request payload.
+
+You can use GET to obtain information (called a “request”) from a RESTful API endpoint, which would deliver a replay from the endpoint (called a “response”). Each type of response has a three-digit code associated with it; these are 
+HTTP response codes
+. You might already be familiar with a 404 (not found) response. If a request succeeds, the response status code is 200, and the response will contain a message payload, typically JSON (JavaScript Object Notation). It is important to note that RESTful APIs almost always use JSON, but RESTful APIs can also be used to send and receive files, as well as stream data. 
+
+JSON
+JSON is a data-interchange format used in RESTful APIs to facilitate communication between clients and servers. In RESTful services, JSON serves as the standard payload format for transmitting data. When a client makes a request, the server processes it and sends back a response, often in JSON format. This structured format allows for easy parsing, ensuring both the server and client can interpret the data consistently. With its key-value pairs, JSON is both human readable and machine friendly, making it a popular choice for web-based APIs.
+
+Additional protection
+Another important thing to note is that RESTful APIs provide a layer of protection over existing cloud assets, such as a database. Instead of allowing the entire internet to query your database, you can put an API in front of it and allow the API to serve as an intermediary: an endpoint associated with that resource. You can then force authentication using a JavaScript Web Token (JWT) or a third-party authentication provider. This layer of protection not only provides security, but it also separates control logic from data, so that rate-limiting, usage analytics, and caching can be added on top to improve quality of service.
+
+Compatibility 
+Lastly, RESTful APIs are callable from any programming language that can support HTTP or HTTPS. This includes Python but also C#, JavaScript, Swift, Go, and many others. RESTful APIs, relying on only HTTP, allow any modern computers to talk to each other. 
+
+Key takeaways
+RESTful APIs are a fundamental and versatile part of web development. Knowing how to design, consume, and work with them is essential for building modern web applications, ensuring they can communicate effectively with other services.
+
+REST stands for Representational State Transfer. REST architecture is an architectural style for designing networked applications and web services. It was invented as a standard way for clients and servers to communicate with each other over the internet. 
+
+REST is designed to be stateless, meaning the server does not have to remember any information about the client between requests. Every request carries all the parameters and data needed for the server to satisfy that request.
+
+Constraints with the REST architecture
+The six constraints or principles of REST each serve a specific purpose in guiding the design of RESTful systems, contributing to the overall scalability, simplicity, and interoperability of the architecture. The six constraints are:
+
+Uniform interface - There should be consistent methods for clients to access and change resources on the server using standard HTTP (Hypertext Transfer Protocol) conventions. 
+
+Stateless - Every piece of information the server requires to process the request should be within the request. There shouldn't be any leftover information on the server between requests.
+
+Cacheable - Every server response should indicate whether the data can be cached on the client and the length of time is needed to cache the data.
+
+Client-server - The client and server can evolve independently. The REST interface serves as a “contract” between them.
+
+Layered system - An application should be split into layers. Each layer of the application handles a particular concern (data access, business logic, presentation, etc) and acts independently from the other layers.
+
+Code on demand (optional) - Servers can also provide code to be executed on the client. This enables the client to change its behavior dynamically.
+
+HTTP protocol with REST
+REST is also designed to run on top of HTTP. This design enables clients and servers to communicate over the public internet using standard HTTP conventions. Companies will often publish their REST API (Application Programing Interface) so that developers can make use of it. Nearly any programming language is capable of speaking HTTP, so you can use your favorite language, like Python, to make REST API calls.
+
+All interaction between client and server takes place over HTTP, using standard HTTP features: verbs, headers, and data payloads. Almost everything the server needs to know is included in the request URL itself. 
+
+For example, a photo-sharing app might send a series of HTTP requests to a REST API server that look like the following (command is listed first and then the action the command is performing is listed after the dash):
+
+GET /api/v1/albums - get the list of photo albums
+
+GET /api/v1/albums/1234/pictures - get the list of pictures in album 1234
+
+GET /api/v1/pictures/5678 - get the details for picture 5678
+
+GET /api/v1/pictures/5678/comments - get the comments for picture 5678
+
+HTTP allows clients to GET, PUT, and DELETE resources. Clients can also POST queries with complex data, such as performing a search or transferring money between accounts. The PATCH verb allows clients to update a resource by just sending what has changed.
+
+REST APIs often allow the client to adjust their behavior by sending additional headers with the request. Headers might include authentication, enable optional features, or allow the client to request that the server send data in specific formats (e.g. JavaScript Object Notation, JSON, or eXtensible Markup Language).
+
+The client may send data in the body of its request, and the server replies with data in the response body. The format of the data is controlled by a header (see above).
+
+What is the Richardson Maturity Model?
+The Richardson Maturity Model, also known as RMM, is a framework that categorizes and describes different levels of implementation for RESTful APIs based on their adherence to the six constraints referenced earlier in this reading. RMM is a way of assessing the sophistication of a REST API based on how compliant it is with the REST constraints. 
+
+The Richardson Maturity Model consists of four levels, each representing a progressive level of adherence to the principles of REST:
+
+Level 0 - A single URI (uniform resource identifier) and a single verb (usually GET or POST)
+
+Level 1 - Multiple URIs but still a single verb
+
+Level 2 - Makes use of URIs and multiple methods, but is not HATEOAS (Hypermedia as the Engine of Application State)
+
+Level 3 - Full HATEOAS
+
+HATEOAS indicates that the server’s responses should include hyperlinks for the client to access related resources. For example, in the picture gallery app example above, the GET request for albums  should return a list of albums. Each album should include its name, ID, and links to retrieve album details, comments, and pictures. With a full Level 3 REST implementation, the client would not need to hardcode URIs of the resources it needs. The URIs would be discoverable from the server’s responses.
+
+To check out some further information with how to create REST APIs in Python, check out this link 
+here
+. If you’re interested in further information for REST APIs with GCP, click on this link 
+here
+. 
+
+Key Takeaways
+REST architecture is based on six key constraints, including a uniform interface for consistent interactions, statelessness for efficient communication, cacheability for improved performance, separation of client and server concerns, layered system organization, and the optional ability for servers to provide executable code to clients. REST APIs are often designed to run on top of the HTTP protocol, utilizing standard HTTP features for communication. APIs are difficult to change after they are published and being utilized. Invest the time to create clean, rational, extensible APIs right from the start.
+
+Using REST APIs to access web data
+ Accessing web data using RESTful APIs involves a series of steps that allow clients (such as web applications or mobile apps) to communicate with servers and retrieve information. Think of APIs as a waiter at a restaurant. The waiter takes orders from the customer (front end). Then, the waiter communicates the order to the kitchen workers (back end) and comes back to the customer with their meal (API response). Here are the key steps to access web data using RESTful APIs:
+
+Identify the API endpoint:
+Determine the specific API endpoint or Uniform Resource Identifier (URI) that corresponds to the resource or data you want to access. The endpoint is the URL that you will send your HTTP request to.
+
+Select the appropriate HTTP method:
+Choose the appropriate HTTP method for the action you want to perform on the resource:
+
+GET: Retrieve data from the resource.
+
+POST: Create a new resource.
+
+PUT: Update an existing resource or create it if it doesn't exist (replace the entire resource).  
+
+PATCH: Partially update an existing resource.
+
+DELETE: Remove a resource.
+
+Set up request headers:
+Include any necessary request headers in your HTTP request. Common headers include authentication tokens (e.g., API keys or OAuth tokens), content type, and accept headers (indicating the desired response format, such as JSON or XML).
+
+Prepare the request body:
+For HTTP methods like POST and PUT, you may need to prepare a request body containing data to be sent to the server. The format of the request body depends on the API's documentation.
+
+Send the HTTP request:
+Use a programming language or tool (e.g., Python's requests library, JavaScript's Fetch API, or specialized API client libraries) to send the HTTP request to the API endpoint. Include the chosen HTTP method, headers, and request body as appropriate.
+
+Receive the HTTP response:
+The server will process your request and respond with an HTTP response. This response will include:
+
+Status code: Indicates the outcome of the request (e.g., 200 for success, 404 for not found, 500 for server error)
+
+Response headers: Contain metadata about the response
+
+Response body: Contains the requested data, often in a structured format like JSON or XML
+
+Handle the response:
+
+Parse the response body to extract the data you need. The format will depend on the API's documentation and the content type header (usually JSON or XML).
+
+Check the status code to determine if the request was successful or if an error occurred.
+
+Handle errors gracefully by examining the response body or status code and providing appropriate feedback to the user.
+
+Implement pagination and filtering (optional):
+If the API supports pagination or filtering, you can include query parameters in the URL to request specific subsets of data or control the number of records returned.
+
+Authentication and authorization:
+Ensure that you've implemented the necessary authentication and authorization mechanisms as required by the API. This may involve including authentication tokens or credentials in your request headers.
+
+Error handling:
+Implement error-handling logic to handle potential issues, such as network errors, invalid responses, or HTTP status codes indicating errors (e.g., 4xx and 5xx codes). Provide informative error messages to the user.
+
+Rate limiting (if applicable):
+Respect any rate limits imposed by the API to prevent excessive requests. Implement rate-limiting strategies on your end to ensure you don't exceed the allowed request rate.
+
+Repeat as needed:
+If you need to access more data or perform additional actions, repeat the steps with the appropriate API endpoints, methods, and parameters.
+
+By following these steps, you can effectively access web data using RESTful APIs and integrate that data into your web applications or services. It's essential to refer to the API's documentation for specific details on endpoint URLs, request formats, authentication, and other requirements.
+
+________________________________________---
+
+Python tools for REST APIs
+Any programming language can use REST APIs, and of course that includes Python. Python REST API frameworks are toolkits and software libraries that offer the functions and tools needed to build RESTful APIs using the Python programming language. 
+
+Tools for working with REST APIs in Python break down into two categories: client-side tools for consuming REST APIs and server-side frameworks for serving your own REST APIs.
+
+Client-side
+REST API client libraries are designed to simplify calling an API and parsing the responses. You could do all of this with the low-level built-in urllib library, but these tools are designed to make the process much easier.
+
+Requests
+Requests is a third-party Python module that you can easily download and install to simplify sending HTTP requests. It’s easy to use and has been around for a while, so it’s frequently chosen by developers. There are newer derivatives of Requests that are gaining popularity, like HTTPX and AIOHTTP. For a comparison of these three, see 
+HTTPX vs Requests vs AIOHTTP
+. 
+
+PycURL
+As you advance as a developer, you might want to try a client library like PycURL, which offers concurrent connections and can be much faster than Requests. Note that Pycurl is more complicated to install than Requests, and it is not written in pure Python, which can make it harder to learn. 
+
+Server-side
+On the server side, REST API frameworks are designed to make it easier for you to write, run, and debug REST services by eliminating a lot of the boilerplate code you’d need to receive HTTP requests, parse the URI, and route the request to an appropriate class or method. The most popular REST API server frameworks are Flask, Django, and FastAPI.
+
+Flask
+Flask is a flexible and comfortable web development framework that is easy to set up and simple to use, which makes it good for beginners. Tools like template engines, for caching, and authentication help developers work quickly. But Flask handles requests sequentially, so although you can get commercial projects going fast using Flask, it isn't good for high load needs. Flask also uses third-party modules, which can make it prone to security breaches. 
+
+Uber, Pinterest, and Twilio were all built using the Flask framework.
+
+Django
+Django is one of the most popular frameworks worldwide. It’s a free, open-source Python framework designed for building websites of any size, with any traffic needs. Django is sturdy and efficient, particularly because it makes use of reusable code. Django is also more secure than Flask, but Django software is much more unwieldy to work with. Developers may find Django slow because of the need to employ reusable modules and the need to check compatibility against previous versions. 
+
+YouTube, Instagram, Spotify, and DropBox were built with Django.
+
+FastAPI
+FastAPI is exactly what the name says: fast. It’s an open-source, high-performing web framework for building web APIs in Python, and it includes hints similar to those in Python. The main downside of FastAPI is how new it is. The FastAPI documentation is robust, but there is not as much in the way of external materials or community for Fast API as there is for Flask and Django. 
+
+Netflix uses FastAPI internally. 
+
+For more on comparing these three REST API frameworks, see “
+Choosing between Django, Flask, and FastAPI
+” and “
+Top Python REST API Frameworks in 2023
+.”
+
+Pro tip
+Nothing makes a developer complain faster than when things are messy. Start your own good habits now by making your APIs clean and consistent. Best practices include:
+
+Use the same name for a given parameter across multiple calls, in requests, and in responses. Don’t use room_id, RoomID, and guest_room_ID to all mean the same thing.
+
+Keep things like capitalization consistent.
+
+Pay attention to when you use GET vs. POST, etc. so you know exactly what function you are calling and what response should be expected. 
+
+Keep the RESTful design principles in mind.
+
+Document your APIs and publish them. Encourage developers to experiment with them, which will encourage a robust ecosystem to blossom around your project.
+
+REST APIs can be tricky to consume. Sometimes the responses you get don’t match the published docs. Your client should try its best to validate the responses and deal with the unexpected.
+
+Key takeaways
+There are lots of REST API frameworks available on both the server side and the client side. These include plenty of free, open-source modules so you can get started right away learning to use these in Python. As you learn to work with REST, focus on developing good habits that will make it easier to collaborate with other developers as you progress.
+
+
+____________________________________-
+FLASK - A PYTHON TOOL FOR REST APIs
+
+Flask is a Python library that makes it easier to create web applications and REST (Representational State Transfer) web services. Flask is a microframework that does not use an object relational manager (ORM). It is designed to be simple, providing the essentials for building web applications without imposing too many constraints or requiring a lot of boilerplate code. 
+
+Why use Flask?
+Developers have the freedom to select their favorite design pattern, database, plugins, and other features using Flask.
+
+Flask is great for rapid development, as most features are optional and can be brought in when you need them. Supporting WSGI (Web Server Gateway Interface) templates enable scalability and flexibility.
+
+Flask supports building REST API servers and microservices. Flask allows developers to focus on creating the specific endpoints and functionality required for their APIs without the overhead of a larger framework. Additionally, Flask's extensive options of extensions and libraries, such as Flask-RESTful and Flask-SQLAlchemy, add to the development process for building scalable APIs and microservices.
+
+Flask has built-in support for debugging and unit testing. Integrating unit testing and a debugger enables quick debugging and development. This debugging and testing support creates quick identification and resolution of issues during development.
+
+Flask is trusted by large companies to build their applications. MIT, Reddit, Uber, Lyft, Zillow, Patreon, and Netflix are some examples of large corporations that use Flask. 
+
+An alternative to Flask
+Flask is simple, but powerful. Flask is unopinionated, meaning it doesn't enforce a specific project structure or dictate how you should organize your code. This flexibility allows developers to choose the tools and libraries that best suit their projects’ needs.
+
+It is often compared to Django, which is considered a much more heavyweight framework. Django requires more setup to start building your app, whereas Flask requires very little. Django’s motto is batteries included, meaning everything you could possibly need is included. Flask takes a more selective approach, offering optional plugins to enhance functionality. Because of this, Django has a steeper learning curve. For more information on Django and how it compares to Flask, click 
+here
+.
+
+It's important to note that Flask's simplicity and flexibility may require developers to make more decisions about project structure and components than would more opinionated frameworks. However, for developers who prefer to have more control over their applications’ architecture and components, Flask can be an excellent choice.
+
+Popular Flask plugins 
+Some popular Flask plugins include: 
+
+Flask WTF: Create and process web forms
+
+Flask RESTful: Create REST API services
+
+Flask login:  Handles user authentication and identity
+
+Flask debug toolbar: Provides a handy browser toolbar to help you debug your Flask app
+
+Flask has several useful plugins, so don’t reinvent the wheel. Leveraging Flask's extensive collection of plugins can significantly expedite development and enhance your application's functionality. These plugins cover a wide range of features, from authentication and form handling to database integration and caching, allowing you to tap into a large selection of pre-built solutions.
+
+Key takeaways
+Remember three key takeaways from this reading: 
+
+Flexibility and freedom: Flask's simplistic and minimalist design offers developers the freedom to select their preferred design patterns, databases, and plugins. This flexibility allows them to tailor their web applications according to their projects’ specific requirements.
+
+Rapid development and scalability: Flask’s support for WSGI templates enhances scalability and flexibility, making it suitable for building REST API servers and microservices. On the other hand, Django, with its comprehensive feature set, can be slower to set up initially, but may offer advantages in terms of built-in functionality for larger, more complex projects.
+
+Trust of large corporations: Flask is trusted by several large companies including MIT, Reddit, Uber, Lyft, Zillow, Patreon, and Netflix, to build their applications.  
+
+__________________________________
+
+How to use Flask
+Flask is a lightweight web framework used in Python. Its ease of use for beginners interested in building web apps is the reason for its appeal. Flask can be used to build both straightforward and complex web apps for a range of purposes. Some examples of web apps that you can develop with Flask are blog apps, portfolio websites, feedback forms, and social network web apps. This reading will discuss what Flask is used for and what you can accomplish with Flask.
+
+How to create web applications with Flask
+It's enjoyable and simple to build web applications with Flask. You must be familiar with the fundamentals of Python in order to learn Flask. In addition to Python, you should have a solid understanding of front-end principles. No expertise in front-end development is required. Understanding HTML coding is helpful when using Flask; however, knowing CSS and Javascript will help even more to improve how your app looks and functions.
+
+# This is not an excutable code block
+from flask import Flask
+
+app = Flask("myapp")
+
+@app.route('/')
+def hello_world():
+    return 'Hello, World!'
+
+
+
+Next, we run the app with the flask command:
+
+$ flask --app hello run
+ * Serving Flask app 'hello'
+ * Running on http://127.0.0.1:5000 (Press CTRL+C to quit)
+
+
+Now, we can make our app a bit more interactive. Let’s add a parameter so the app can greet you by name:
+
+from flask import Flask
+
+app = Flask("hello")
+
+@app.route('/hello/<name>')
+def hello_world(name):
+    return f'Hello, {name}!'
+
+
+Importance of following best practices
+Flask is not only versatile and easy to use, but it also offers a robust framework for building web applications. Its versatility means you can use it for a wide range of projects, from small prototypes to large-scale applications. However, it's important to keep in mind that the scalability, maintainability, and security of a Flask application largely depend on how well you adhere to best practices during the development process.
+
+One of the key best practices in Flask development is the use of blueprints to modularize your application. Blueprints allow you to organize your code into separate components, making it easier to manage and maintain as your project grows.
+
+To boost the performance of your Flask application, consider implementing caching. Caching can significantly reduce the response time of your application by storing frequently accessed data or rendered templates in memory. This not only enhances user experience, but also minimizes server load, making your application run more efficiently. If you are interested in learning more about caching, you can find more information 
+here
+.
+
+Another crucial aspect of Flask development is the secure handling of sensitive data such as API keys, database credentials, or secret tokens. Leveraging environmental variables to store such information is a recommended practice. This approach helps protect sensitive data from accidental exposure and allows you to easily switch between development, testing, and production environments without compromising security.
+
+Flask extensions or libraries
+Flask also has a number of beneficial extensions and libraries that can help streamline the development process. The extensions, created by the Flask community and third-party developers, make it effortless to extend Flask's capabilities, allowing developers to tailor their applications to specific needs without reinventing the wheel.
+
+Flask’s has an extensive set of libraries that you can add to extend its functionality. Some of the most popular are Flask WT Forms (WTF), Flask-SQLAlchemy, Flask RESTful, Flask Login, and Flask Debug Toolbar. To read more on popular extensions or libraries with Flask, there is a great resource 
+here
+.  
+
+Additional resources
+ Fortunately, there are extensive  Flask-related resources on the internet. For a collection of additional documents about using Flask, such as a user’s guide, click 
+here
+.  An official tutorial can be found 
+here
+, and if you’re interested in a guide on how to create a web application with Flask, click 
+here
+.   
+
+Key takeaways
+Flask is a lightweight web framework in Python. Its simplicity and ease of use make it an attractive choice for those new to web application development. Flask involves modularizing your code using blueprints. It also can implement caching to enhance performance and secure sensitive data with environmental variables. By following these guidelines, developers can ensure the scalability, maintainability, and security of their Flask applications. 
+

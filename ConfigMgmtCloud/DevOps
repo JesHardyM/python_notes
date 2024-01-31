@@ -1,0 +1,524 @@
+DevOps is a way of working that combines software development, Dev, and IT operations, Ops, to shorten the system's development lifecycle and provide continuous delivery with high software quality. DevOps allows us to collaboratively create software that's robust, deliver it at high velocity, and support it in an integrated way
+
+It describes the steps of the software development lifecycle that go beyond writing the code.
+
+Two important aspects of DevOps are continuous integration when adding updates and improvements to software happens constantly, followed by continuous delivery, which is testing changes to software and deploying them as soon as they're verified. DevOps practices provide faster software delivery, improved collaboration and increased reliability, all of which are key to succeeding in the rapidly evolving world of software applications.
+
+Continuous delivery and continuous deployment are related concepts that are sometimes used interchangeably. While they’re both about automating later stages of a DevOps pipeline, you can use either to show what is happening during automation. For example, continuous delivery means that any changes a developer makes to an application are automatically released to a repository like GitHub and then deployed by the operations team. This ensures that minimal effort is required to deploy new code. It also includes test and code release automation at every stage, beginning with code changes and ending with the delivery of production-ready builds.
+
+Continuous deployment is an extension of continuous delivery and refers to the automatic deployment of an app or any developer changes from the repository to production. This helps to prevent overloading the operations teams and automates the next stage in the pipeline. However, continuous deployment relies heavily on the success of test automation, so it’s important that your testing is written to accommodate the various testing and release stages in the DevOps lifecycle. 
+
+The idea of CI/CD is to bring efficiency to your software release process so engineers can write code, test, and deploy at any time without impacting your customers. Whenever your team wants to roll out new features either due to business needs, improvement, or hotfixes, as quickly as possible, CI/CD can help you do that in an organized and controlled manner.
+
+Pipelines
+Pipelines are automated processes and sets of tools that developers use during the software development lifecycle. In a pipeline, the steps of a process are carried out in sequential order. This way, if any step fails, the pipeline stops without deploying the changes.
+
+Consider the following example: A pipeline for a Python application is triggered when a pull request is ready to be merged. That pipeline can perform the following steps:
+
+Check out the complete branch represented by the pull request.
+
+Attempt to build the project by running python setup.py build.
+
+Run unit tests with pytest.
+
+Run integration tests against other parts of the application with a framework like playwright.
+
+Build the documentation and upload it to an internal wiki.
+
+Upload the build artifacts to a container registry.
+
+Message your team in Slack to let them know the build was successful.
+
+The advantage to automating the CI/CD process is there’s much less manual work and coordination required to deploy software, and this saves a tremendous amount of time and effort for your development and operations teams. 
+
+Pro tip: The more teams you have working independently, the greater the advantage.
+
+Example pipeline
+Now imagine you’re part of an organization with many development teams that are working independently but still contributing to the larger application or project. In order to deploy an application successfully, your organization has to:
+
+Choose a “release day” when all the code will be merged together.
+
+Restrict  new code commits until the release is complete, to avoid conflicts.
+
+Run integration tests (and maybe performance tests). 
+
+Prepare the deployment.
+
+Notify customers of an upcoming maintenance window. 
+
+Manually deploy the application and any other updates.
+
+Without automating any (or all) of these steps, the entire process is painful and subject to human error. As a result, many organizations release updates infrequently, e.g., once every few weeks or even months. Imagine the disruption and chaos of “release day” or even “release week” within those organizations! The developers cannot commit any new code, and the operations teams scramble to package and deploy dozens of microservices and other components to meet a deadline. 
+
+This is when having a pipeline to automate some or all of the processes during CI/CD comes in handy. By creating a CI pipeline, the process looks very different:
+
+Developers commit code to the repository as soon as they’re done.
+
+The CI server observes the commit and automatically triggers a build pipeline.
+
+If the build completes successfully, the CI server runs all the unit tests. If any tests fail, the build stops.
+
+The CI server runs integration tests and/or smoke tests, if any.
+
+Assuming the previous steps all complete successfully, the CI server signals success. Then, the application is ready to be deployed.
+
+If the CD process has also been automated, the code is deployed to production servers. 
+
+You can have multiple pipelines run at once, which enables teams across your organization to commit code whenever they’re ready. If you’ve also automated the deployment process (CD), code can be deployed to production without waiting for every other team to prepare for “release day.” Some CD pipelines even continue to monitor production for errors, rolling back the deployment if it detects an increase.
+
+Organizations that have high-quality CI/CD pipelines often deploy to production every day, sometimes dozens of times a day, as individual teams release code. The automation of these processes is more efficient, saves you time, and reduces human error. It also provides a better end-product for consumers. 
+
+It’s important to note that none of this works with any confidence unless your code has high-quality automated tests. If your project is part of a largely distributed application, it’s also important to have good integration tests. Otherwise, your changes that aren’t caught during the pipeline can cause problems for other components that are then deployed to production unchecked, causing an outage.
+
+Key takeaways
+Pipelines are the sets of tools and automated processes that development and operations teams use to build, test, and (optionally) deploy software. The automation of the CI/CD pipeline can reduce the amount of manual work and coordination required to deploy software, save time and effort for your development and operations teams, and allow you and your organization to release any updates more efficiently. In order for your CI/CD pipelines to be successful, make sure you have included high-quality tests for automation, integration, and deployment. Finally, pipelines allow your organization to have multiple teams working independently, accelerate software development and deployment cycles, enhance the quality and stability of your software releases, and create a faster, more efficient review and resolution process, which also reduces the number of errors.
+
+DEVOPS TOOLS
+
+what are DevOps tools? They’re any software tools that help to make automated processes possible. DevOps tools are designed to address many of the pain points common to software development organizations everywhere.
+
+While you can certainly build your own tools from scratch, using DevOps tools can save you a lot of time and effort. 
+
+There are many different types of DevOps tools including: 
+
+Source code repositories, such as GitHub or Bitbucket
+
+CI/CD tools, such as Github Actions, Jenkins, and Google Cloud Deploy
+
+Infrastructure as Code (IaC) tools, such as Terraform or Ansible
+
+Container management tools, such as Docker or Kubernetes
+
+Security scanning tools, such as Snyk or SonarQube
+
+Production monitoring tools, such as DataDog or AppDynamics
+
+But how do you know which tools to use? Let’s think about the DevOps lifecycle. This will help you determine which tools are the best fit at each stage. 
+
+Discover
+During discovery, look for tools that encourage brainstorming to happen asynchronously. This allows everyone on your team to share and comment on anything and will be important throughout the DevOps lifecycle. Examples of tools you can use include Jira Product Discovery, Miro, and Mural.
+
+Plan 
+When you get to the planning stage, look for tools that provide options for sprint planning and issue tracking, as well as continued collaboration. Examples of tools you can use include Jira Software, Confluence, and Slack.
+
+Build
+During the building stage, look for tools that allow you to create individual development environments, reprovision those development environments, monitor versions with version control, continuously integrate and test, and have source control of your code. Also look for tools that allow for continuous integration, delivery, and feedback. Examples of tools you can use include Kubernetes and Docker.
+
+Test 
+Automation is essential for DevOps, so look for tools that can automate testing and support wallboards, sharing, and commenting on particular builds or deployments. Examples of tools you can use include Veracode and SmartBear Zephyr Squad or Zephyr Scale.
+
+Monitor
+Look for tools that can integrate with your group chat clients and send you notifications or alerts when you’ve automated monitoring your servers and application performance. An example tool you can use is Jira Software. 
+
+Operate
+Deployment and operation will have similar needs. For deployment, look for tools that can integrate your code repository and deployment tools in a single dashboard. Once your software has deployed, look for tools that can track incidents, changes, problems, and software projects on a single platform. It’s easier to find, identify, and resolve issues when they’re all in the same place. An example tool you can use is Jira Software. 
+
+Continuous feedback
+It’s important to continuously receive feedback on your builds and gain insights from that feedback. Look for applications that can integrate your chat clients with a survey platform or social media platform. Examples of tools you can use include Slack and GetFeedback. 
+
+Popular tools for CI/CD
+Jenkins, GitLab, Travis CI, and CircleCI are all tools which can automate the different stages of the software development lifecycle, including building, testing, and deploying. They are often used in DevOps to continuously build and test software, which allows you to continuously integrate your changes into your build. 
+
+Tools like Spinnaker, Argo CD, and Harness can be used to automate continuous delivery and deployment and to simplify your DevOps processes. 
+
+Pro tip #1: Don’t throw out your entire process just because a new tool doesn’t fit into your existing pipeline. Choose tools that will fit your workflow and slot into your pipeline easily.
+
+Pro tip #2: Consider that the most popular tools have the broadest base of support and the largest number of practitioners, making it easier for new team members to get up to speed quickly. This also means that there’s more online support and forums for discussion available to you.
+
+Key takeaways
+There are many different DevOps tools available out there—some will have multiple functions and others will be designed for a single purpose. Some tools will share the same functionalities and can be used in more than one stage of the DevOps lifecycle. It’s important to choose the tools that will best fit your workflow and slot into your pipeline easily. Remember, the tools are there to help make DevOps processes like automation and continuous integration, development, and delivery easier for you.
+
+Containers are applications that are packaged together with their configuration and dependencies. They’re used to share applications, post applications to a server for review, test different instances of the same application, and separate a large application into smaller, independent parts, making them easier to manage during the stages of the software development lifecycle.
+
+Docker is the most common way to package and run applications in containers. It can build container images, run containers, and manage container data through volumes and container networks to make the running software talk to the external world.
+
+Kubernetes is a portable and extensible platform to assist developers with containerized applications. It’s a tool that developers use while working in Docker to run and manage Docker containers, allowing you to deploy, scale, and manage containerized applications across clusters.
+
+Continuous integration and continuous delivery/deployment (CI/CD) is the automation of an entire pipeline of tools that build, test, package, and deploy an application whenever developers commit a code change to the source control repository. Feedback can be provided to developers at any given stage of the process. A pipeline is an automated process and set of tools that developers use during the software development lifecycle. In a pipeline, the steps of a process are carried out in sequential order. The reason behind this is that if any step fails, the pipeline can stop without deploying the changes. 
+
+Using containers in the CI/CD pipeline can bring developers additional flexibility, consistency, and benefits to building, testing, packaging, and deploying an application. Because containers are lightweight, they allow for a faster deployment of the application. Containers help eliminate the common “works on my machine” syndrome. 
+
+Docker images contain the application code, data files, configuration files, libraries, and other dependencies needed to run an application. Typically, these consist of multiple layers in order to keep the images as small as possible. Container images allow developers to run tests, conduct quality performance checks, and ensure each code change is tested and works as expected before being deployed.
+
+Kubernetes is a tool for organizing, sharing, and managing containers. This powerful tool gives programmers and developers the ability to scale, duplicate, push updates, roll back updates and versions, and operate under version control.
+
+Continuous testing
+Continuous testing means running automated test suites every time a change is committed to the source code repository. In practice, this usually means running the tests as part of a CI/CD pipeline, in between the build and deploy stages. Continuous testing is an important part of the CI/CD process. It ensures that all of your code changes are tested early in the development process, preventing them from becoming larger, more difficult, time-intensive, and/or more expensive to fix later on.
+
+There are three types of testing that you’ll typically see in the CI/CD pipeline. These include:
+
+Unit testing
+
+Integration testing
+
+System testing 
+
+You use unit testing to test an individual unit within your code—a unit can be a function, module, or set of processes. Unit testing checks that everything is working as expected. 
+
+Integration testing is part of both continuous delivery and continuous deployment. It allows you to automatically test each change to your code when you commit or merge them to your source code repository. The testing  checks for errors and security issues as they arise, again preventing you from having to deal with larger, more difficult, and/or expensive issues later in the process. 
+
+System testing does exactly what it sounds like: It simulates active users and runs on the entire system to test for performance. When testing the entire system, testing for performance can include testing how your program, software, or application handles high loads or stress, changes in the configuration; and system  security. You can also utilize end-to-end testing, which tests the functionality and performance of your entire application from start to finish by simulating a real user scenario.
+
+Testing frameworks and tools
+There are many testing frameworks and tools you can use for automated testing, such as 
+JUnit
+, 
+Selenium
+, 
+Cypress
+, and 
+Postman
+. 
+
+JUnit is an open-source unit testing framework for the Java programming language and can help you with your unit testing. With JUnit, you can write and execute automated tests and develop reliable, bug-free code. There are similar libraries for other languages such as PyUnit for Python and NUnit for C#.
+
+Selenium is an open-source, automated testing suite of tools for web application developers. Each tool can be used for different testing needs.
+
+Cypress is a JavaScript-based testing tool that can automate end-to-end tests. It simulates how users would interact with your web applications. Often used for front-end development of web-based applications, these kinds of tests will help to ensure that your tests and the users’ experiences are the same. 
+
+Postman can be used to automate unit tests, function tests, integration tests, end-to-end tests, regression tests, and more in your CI/CD pipeline.  
+
+Continuous improvement
+Continuous improvement is a crucial part of the DevOps mindset. It’s the idea that every team should constantly be on the lookout for ways to improve their efficiency and reduce errors and bottlenecks. Think of continuous improvement like compounding interest—it starts out small, but slowly increases over time, resulting in a better product for consumers. 
+
+Continuous improvement requires investing the time and resources necessary to improve the entire process of developing and deploying software. It also requires commitment from your organization’s leadership to allow that investment when they may be considering other priorities.
+
+Key benefits of continuous improvement include:
+
+Increased productivity and efficiency
+
+Improved quality of products and services
+
+Reduced waste
+
+Competitive products and services
+
+Increased innovation
+
+Increased employee engagement 
+
+Reduced employee turnover
+
+The benefits don’t stop there! The benefits of continuous improvement can accumulate and improve your organization’s processes, efficiency, and profitability overall. It’s in your, and your organization's, best interest to invest in continuous improvement.
+
+Key performance indicators (KPIs)
+Key performance indicators, or KPIs, are quantifiable measurements of performance. These metrics are data points that can tell you how your DevOps CI/CD pipeline is performing and help you identify if there are any errors or bottlenecks in the process. Metrics can track and measure workflows and the progress of your projects and goals, which can lead to improved software or application quality and performance. There are many metrics you can use in DevOps, so it’s important to choose the ones that work best for your project and workflows—just like the tools you use for CI/CD. Popular metrics in DevOps that you can use to measure performance include:
+
+Lead time for changes: This is the length of time it takes for a code change to be committed to a branch and be in a deployable state.
+
+Change failure rate: This is the percentage of code changes that lead to failures and require fixing after they reach production or are released to end-users.
+
+Deployment frequency: This measures the frequency of how often new code is deployed into production.
+
+Mean time to recovery: This measures how long it takes to recover from a partial service interruption or total failure of your product or system. 
+
+Key takeaways
+Making high-quality tests part of your CI/CD pipeline is critical to your DevOps success. The more complete your test suite is, the earlier you will be able to catch bugs and squash them. If you’re going to deploy your code as soon as it’s committed, you want to have the utmost confidence that everything will work together in production. The more tests you are able to run before deployment—unit tests, integration and smoke tests, load tests—the more confident you can be. 
+
+Pro tip #1: Take the time to learn how to write good tests. There are tools available that will analyze your code and estimate how complete your test coverage is. You should aim for 100% coverage. 
+
+Pro tip #2: Test engineering is a highly skilled and sought-after discipline. Becoming a passionate advocate for DevOps and continuous improvement can make you highly visible and valuable in many organizations. For more information, visit IT automation job opportunities and SRE job opportunities.  
+
+CI best practices
+Continuous integration (CI) is a software development practice in which code changes occur automatically, frequently, and safely to integrate into a shared repository. With each integration, an automated build is triggered and tested to determine and resolve integration issues early.
+
+Principles and benefits
+Key principles of CI include:
+
+Integration
+
+Builds
+
+Tests
+
+Feedback
+
+Version control
+
+CI allows for frequent integration, as developers commit their changes to a shared repository daily. It also ensures the changes are tested and issues are resolved. CI relies on automation to build the application code and execute tests to manage integrated changes and to ensure consistent results. Because CI is able to detect integration issues early, this allows for CI to provide quick feedback to developers, alerting them of issues and providing time to allow them to correct any problems. Lastly, running the CI tests on every pull request will highlight which changes caused the tests to fail, guaranteeing a reliable history of the codebase for developers.
+
+Let’s look at an example of where you’d see this in the real world: Imagine that a team working on a modern microservice-based application has been suffering and exhausted due to subtle errors showing up in production that should have been caught earlier. The team makes the decision to invest time and resources into building a strong set of integration tests.
+
+After the unit tests run successfully, the team prepares the CI server to deploy all the microservices into a Kubernetes cluster and run the automated integrated test suite. Each microservice developer writes tests to check the interactions between their service and the other services it depends on. If any of those tests fail, the pull request is not merged and the code is not deployed to production.
+
+Core practices
+CI is a way to develop software to make it easier, faster, and more reliable. CI is composed of three core practices, which include:
+
+Automated building
+
+Automated testing
+
+Version control system integration
+
+Automated builds involve utilizing tools and scripts to automatically compile the source code into executable binaries or artifacts. Automated testing involves running different types of tests automatically to verify the stability of code changes made by developers, providing fast feedback to developers on any issues. Version control system integration allows a way to manage and track code changes efficiently and effectively.
+
+Key takeaways
+Continuous integration enables faster feedback, higher quality software, and a lower risk of bugs and conflicts in your code. CI is a way for developers to ensure that their code is always up to date and ready to deploy. CI ensures that reliable software is getting into the hands of users.
+
+CI testing
+You’ve learned that continuous testing means running automated test suites every time a change is committed to the source code repository. In practice, this usually means running the tests as part of a CI/CD pipeline, in between the build and deploy stages. 
+
+In this reading, you’ll learn about continuous integration (CI) testing: why it’s important, what tools you can use, and how to test different types of applications, like the web, a database, or a microservice. 
+
+Integration testing
+Continuous integration is when developers integrate code into a shared repository frequently. Benefits of continuous integration include revision control, build automation, and automated testing which allows you to detect errors quickly and locate them more easily. Integration tests are tests you conduct to make sure different parts of the application work together, like modules or services, as opposed to individual units of code. They’re one type of test that is typically run during the CI pipeline. The purpose of integration testing is to make sure that any recent changes you or your team has made haven’t broken other parts of the system and to verify that everything is working together as expected. A few benefits of CI testing include repeatability of your testing, continuous integration and testing, the ability to run builds or tests in parallel with other team members, and rapid feedback. 
+
+There are different types of CI tests that you can perform in the CI pipeline:
+
+Code quality tests are used to check the quality and complexity of your code(s) and identify if there are any code defects. 
+
+Unit tests which are used to test an individual unit within your code, like a function, module, or set of processes. Unit testing checks that everything is working as expected.
+
+Integration tests are used to verify that the different modules or parts of your application are working together.
+
+Security or license tests are used to make sure that your software or application is free from threats, vulnerabilities, and risks. This allows developers to identify if and where there are security risks so they can be fixed earlier rather than later. 
+
+You’ve learned the different kinds of CI tests you can perform, but what about the tools you can use to run the tests? 
+
+If you want to test the integrations between web services, you can use a programming framework like PyTest or its equivalent (if the app you’re using is Python). 
+
+If you want to test a browser-based app or site, you can use a framework like Selenium or Playwright to load the web pages and test functionality.
+
+Refer to Continuous testing and continuous improvement for more information on the tools you can use to run integration tests. 
+
+After you’ve chosen the CI tool that fits your needs, it can run the designated tests and halt the deployment of your software or application if some or any of the tests fail. There are also “code coverage” tools that will scan your code for you and tell you if it appears you’ve missed anything in your test suite.
+
+End-to-end testing
+Integration testing verifies that the components of your application are working together as intended and usually occurs in the CI pipeline. End-to-end (E2E) testing is similar. Although it occurs in the CD pipeline, it is used to test the functionality and performance of your entire application from start to finish by simulating a real user scenario. The objective of E2E testing is to identify any errors or bugs that appear when all of your components have been integrated, so you know if the entire application operates as it should. You can gain insights into how end users are experiencing your application, giving you a better understanding of the quality of your product before it’s deployed. 
+
+Key takeaways
+Continuous integration testing is used to test different components of your application throughout the CI pipeline. It allows you to verify that any code changes made by developers working independently haven’t created errors or broken other parts of the system. Continuous integration testing can also lead to continuous testing, allowing you to automate different processes along the CI/CD pipeline.
+
+It’s important to note that if you’re going to automate the entire process of deploying your code to production, you’ll want to significantly reduce the risk that the changes you make will break the production system. It will be up to you and your team to weigh the risk/reward ratio of whether you want to perform less testing and quickly make changes to the production system or perform more testing and delay changes to the production system. There is no “one-size-fits-all” solution for all systems, so choose the tests and the tools that make the most sense for your project.
+
+With continuous deployment, there is no manual approval step. Once a change has passed all of the tests it's automatically deployed to production.
+
+Continuous deployment takes continuous delivery one step further by automating the deployment of code to production. This means that teams can release new features and bug fixes to their customers as soon as they're ready.
+Play video starting at :3:9 and follow transcript3:09
+Continuous deployment is a good choice for teams that are experienced with CI/CD and that need to release software very frequently. It can help teams to automate the entire release process and to get new features and bug fixes to their users or customers as quickly as possible. Now, that was a lot to cover. Let's go through it quickly, just one more time. Continuous delivery is defined as the practice of automating the delivery pipeline to ensure software can be released to production at any time. It's the process of releasing software updates, patches, and new versions any time the code changes.
+
+Value stream mapping (VSM)
+Value stream mapping (VSM) is a technique used to analyze, design, and manage the flow of materials and information required to bring a product to a customer. Also known as a material and information flow map, VSM can help you identify bottlenecks in your value stream, inefficiencies in your process, and current areas of improvement. It can also help to reduce the number of steps in your process and help you visualize where handoffs occur. This way, you can identify where wait time is preventing work from moving through your system.
+
+A significant goal of VSM is to reduce waste. 
+
+Another goal of a VSM is to increase the efficiency of your processes. To do this, create a detailed map of all the necessary steps involved in your business process with a diagram or a flowchart.
+
+This diagram outlines these steps: 
+
+Define the problem. What are you trying to solve or achieve?
+
+List the steps in your current process. For each step, make sure to note the amount of time needed, any inputs and outputs, and the resources—both people and materials—necessary to complete each step.
+
+Create and organize the map using the above data. Your goal is to illustrate the flow of your process, so begin with the start and finish with the end of your process. If you need help organizing the flow, think back to the steps in the software development lifecycle and use that as a guide to organize your steps. 
+
+Find areas that can be improved. Gather information about your current process by answering questions like:
+
+Can some tasks be done in parallel? 
+
+Can tasks be reordered to improve efficiency? 
+
+Can tasks be automated to reduce the amount of manual labor? 
+
+Update the map with your findings. This will show you where you need to make improvements or change your process. 
+
+Implement the new process. But don’t stop here! If this new process works well for your project—great! Keep in mind that coding, software, programs, apps—everything digital—are constantly updating to meet client or business needs. It can be helpful to implement an iterative process—either manual or automated—to make sure that any new hiccups in your process can be identified and addressed before they become a larger issue. 
+
+For more information and an explanation of how value maps benefit DevOps, see the article 
+How to Use Value Stream Mapping in DevOps
+ on the Lucidchart website. 
+
+In software development, a kanban board is probably the best and most common way of visualizing VSM. Kanban is the practice of visualizing tasks in a grid. Each column in the grid represents one of the states a task may be in, such as “to do,” “in progress,” or “done.” As a task progresses, it moves from left to right across the grid. Your “in progress” column can be broken down further into the steps of your process. In software development, this can be the steps of the software development lifecycle like plan, design, build, test, and review for feedback. 
+
+You can add as many columns as you need to your VSM or kanban board. The more information you have, the more comprehensive your view of the process will be. This will also help you identify waste, inefficiencies, and areas of improvement. 
+
+Other common components of a VSM include: lead times, wait times, handoffs, and waste. 
+
+Lead time is the length of time between when a code change is committed to the repository and when it is in a deployable state. 
+
+Wait time indicates the length of time a product has to wait between teams.  
+
+Handoffs are the transfer of information or responsibilities from one party to another. 
+
+Waste refers to any time you are not creating value. In software development, there are seven types of waste production. 
+
+Partially completed work refers to when software is released in an incomplete state. This leads to more waste because additional work is needed to make updates. 
+
+Extra features refers to creating waste by doing more work than is required. This may be well-intentioned but can signal a disconnect between what the customer wants and what’s being created. 
+
+Relearning refers to waste generated from a lack of internal documentation. This can be a result of not investigating software errors, failures, or outages when they occur and having to relearn what to do if they happen again. It also includes having to learn new or unfamiliar technologies, which can create delays or wait times in workflows. 
+
+Handoff waste can occur in a few places—when project owners change, when roles change, when there is employee turnover, and when there is a breakdown in the communication pipeline between teams.
+
+Delays refer to when there are dependencies on coupled parts of the project. A delay in one stage or decision may create a delay in another, which can create a surge in waste.
+
+Task switching refers to the waste that is generated when an individual has to jump between tasks, which involves mental context switching. This may result in the individual working more slowly and/or less efficiently.
+
+Defects refers to waste that is generated when bugs are released with software. Similar to partially completed work, defects can result in extra time and money down the line, as well as delays and interruptions in workflow due to task switching.
+
+VSM can be implemented with something as simple as sticky notes on a whiteboard, by using project tracking software (like Jira, Asana, Trello, or others), or with special purpose-built tools. Due to its visual nature, VSM can foster collaboration and communication between teams and other stakeholders. 
+
+Key takeaways
+Value stream mapping, or VSM, is a technique used to analyze, design, and manage the flow of materials and information required to bring a product to a customer. It’s important because it can improve the efficiency of your software delivery process, reduce the time needed to deliver updates to your customers, and give you a competitive advantage over other businesses.
+
+Pro tip #1: Don’t be surprised if your initial attempt at creating a value stream map omits some tasks that are vital to the process. Documentation isn’t perfect and neither is anyone’s memory. 
+
+Pro tip #2: Involve multiple coworkers in the process. This can give you the benefit of different perspectives.
+
+Pro tip #3: Share the results of your work with your team so they can understand the benefit(s) of making a change in their workflow or the overall process (or both!).  
+
+
+Configuration management
+Image this: You just got a new job as a system engineer to develop a new software product. As you begin to write code for the product, you change and update it continuously to correct any issues found. You use configuration management to optimize your IT responsibilities, creating a more efficient workflow. 
+
+Configuration management is an automated process that ensures your new software project and its assets perform as they should as you update and change your code.
+
+In this reading, you will learn more about configuration management, its role in maintaining consistency and stability, and how to use configuration files to describe desired system states.
+
+Consistency and stability
+Configuration management helps you manage your code and all of its components. In addition, it ensures that each component of your code is automatically and properly built, monitored, and updated as needed. It’s common to have multiple copies of an application running at the same time to guarantee a highly available, properly functioning system.
+
+If configuration management is not used, a developer will have to manually update and correct any issues or errors on each individual server. Something as simple as a typo could create misconfigured servers, causing errors and unexpected behaviors. The developer would have to correct each typo on each server. This process would be frustrating and unsustainable. That’s where configuration management plays a role in maintaining consistency and stability in software systems. It enables you to duplicate server instances, resulting in consistent behavior across all servers.
+
+Configuration files
+Configuration files are commonly referred to as a manifest or playbook—depending on the DevOps tool you use. You can think of these as statements on how you want the system to look and perform. Let’s take a look at an example. A playbook might say, “I need a server with 32GB of RAM running Debian Linux, with Python 3.9 and Nginx installed.” Notice that this playbook statement does not specify the steps to achieve the desired state—it only describes what the desired state should look like. To use configuration files, create a configuration file as the input to your configuration management tool describing the desired state. The configuration management tool works to determine a solution to have the server look and perform as you described in your manifest or playbook.
+
+Pro tip: Store configuration management files alongside the application code in your revision control system, allowing changes to be tracked and audited.
+
+Key takeaways
+Configuration management provides developers a solution to simplify and effectively manage changes and updates to codes. It streamlines the process of correcting any issues or errors found on multiple copies of the same application. It operates off of configuration files—manifests or playbooks—to understand what the desired state of the system should be and determine a solution to achieve the desired state.
+
+CD best practices
+At this point, we have covered that Continuous Delivery and Continuous Deployment are at the heart of iterative development. The core principles of Continuous Deployment (CD) are:
+
+Automation: The entire process must be automated so that results are repeatable and consistent.
+
+Version control: CD configuration and scripts must be stored in your version control system and treated just like code.
+
+Monitoring: Monitoring the deployed application is essential so that you can confirm the app is working properly after deployment.
+
+Pairing: CD must be paired with CI and automated testing. Deployment should proceed automatically once tests have completed successfully.
+
+The key of CD is automation. Automation not only reduces errors but also saves you time. As much as you can, automate everything from testing to releasing.
+
+Feature flags 
+Feature flags are also called feature toggles, release toggles, or feature flippers. The idea behind feature flags is that new features or application behaviors can be hidden and turned on when you’re ready to introduce them to users. Feature flags can often be set on a per-user or per-role basis. As you might already know, “ready to be deployed” isn’t always the same as “ready for users to see.”
+
+For example, when you’re deploying a major new feature in an application. You may create a feature flag and turn it off for everyone. In your code, you check the flag before allowing the new feature to be used. Now, you can do the following:
+
+Allow the new code to be built, tested, and deployed to production. Because the flag is turned off, no one sees the new feature.
+
+Turn the flag on for a specific group of internal testers. 
+
+If all goes well, you can turn the flag on for a larger group of early adopters or beta testers to gather their feedback.
+
+Once all the bugs are fixed and feedback has been incorporated, you can turn the flag on for everyone.
+
+Incremental rollout
+Incremental rollout means to slowly deploy changes throughout your infrastructure so that you can monitor for trouble and quickly roll back the deployment if there’s a problem. The practices that are associated with the incremental rollout are canary releases and blue-green deployments.
+
+Canary releases and blue-green deployments
+Both of these are extensions of the concept of incremental rollout. You deploy changes to a portion of your infrastructure or user base. You can then use a variety of monitoring tools to observe any changes in key metrics such as error rate, user engagement, feedback scores, etc. and compare those against the rest of the population.
+
+The difference between the two is that a canary release is often targeted at a specific population of testers or early adopters, whereas a blue-green deployment will send X% of randomly selected users to the blue or green servers.
+
+A canary release can be used to closely observe and gather feedback from a small group of users before unleashing a new release on everyone. If the feedback is negative, or the canary group experiences issues with the new release, you can halt further deployment and fix the issues before deploying everywhere.
+
+With a blue-green deployment, you can use automated monitoring to observe any differences between the blue and green populations. If there is a problem, you can instantly shut off traffic to the blue or green side and direct all user traffic to the other side until the problem is fixed.
+
+Key takeaways
+CD must be paired with CI and automated testing. The CD practices of using feature flags, incremental rollout, canary releases, and blue-green deployments will minimize problems that often are caused by human errors.
+
+Release
+As a technology user, you may be familiar with alerts on your computing devices for new releases of the software or applications you’ve downloaded. A release, in the software development world, is a new version of a piece of software. For example, Apple released a new Mac operating system (OS), Ventura, to replace Monterey in 2022. Microsoft released Windows 11 to replace Windows 10 in 2021. There are several parts and processes involved in carrying out a release, and therefore, project management, especially agile, is key to ensure the process goes smoothly. The agile approach has become popular in software development because it focuses on short sprints where incremental changes are implemented, tested, and sent out to end users.
+
+Release management
+Release management uses project management methods with CI/CD DevOps tools to produce, document, and release stable new versions of software (“releases”). Release managers, who are in charge of overseeing the release process, coordinate among multiple teams and orchestrate the whole process to make sure the project goes according to plan and meets deadlines. The concepts and processes associated with release management include:
+
+Release planning: Release management begins with detailed release planning. It involves setting the scope of the software build, identifying the features and changes to be included, and setting release goals and timelines. 
+
+Versioning: Versioning assigns unique identifiers to different software versions. Each team may have developed their components independently, resulting in various codebases. Release managers use versioning to keep track of the different parts and ensure a coherent and structured integration of the code.
+
+Coordinating development and testing: Release management ensures smooth coordination between the development and testing phases. As the teams complete their individual work, release managers facilitate integration testing to identify and resolve any issues arising from combining the codebases. They also work with testing teams to create test plans and verify that all components function correctly together.
+
+Risk assessment and mitigation: Release managers identify potential risks associated with the software release and plan mitigation strategies. For example, if the release has conflicts or compatibility issues between the modules developed by different teams, the release manager addresses these risks proactively to prevent disruptions during deployment.
+
+Communication and stakeholder management: Release management involves clear and consistent communication with all stakeholders, including the development teams, testing teams, project managers, and end-users. Regular status updates, progress reports, and discussions are essential to keep everyone informed about the release progress and any adjustments to the plan.
+
+Release schedule: Release managers create a detailed release schedule that outlines the steps leading up to the deployment. This includes code integration deadlines, testing periods, and the final release date. The schedule serves as a roadmap for the teams, ensuring that each phase is completed on time and within the defined scope.
+
+Change management: Throughout the development process, changes are inevitable. Release management establishes a structured change management process to evaluate, approve, and track changes effectively. This ensures that only authorized and tested changes are included in the release build.
+
+Documentation and release notes: As part of the coordination process, release managers oversee the creation of comprehensive release notes and documentation. These documents provide crucial information about the software update, including new features, bug fixes, known issues, and any special instructions for end-users.
+
+Types of release
+Releases are not created equally. There are four types of release. 
+
+Major releases
+Major releases are significant updates that introduce substantial changes and new features to the application (e.g., the release of macOS Ventura and Windows 11). These updates often involve major improvements, enhancements, or redesigns that may have a significant impact on the user experience or functionality. Major releases may require extensive testing and development efforts, as they can involve rewriting core components or introducing new infrastructure. Since they bring significant changes, they also have a higher chance of introducing new bugs or issues that need to be addressed in subsequent releases. For example, SoundGrounds is a coffee-drinker-friendly streaming phone app that makes recommendations on music and drinks. A major release from SoundGrounds is when the app introduces new features like personalized playlists or a complete UI overhaul to enhance the user’s streaming experience.
+
+Minor releases
+Minor releases are smaller updates that include additional features, improvements, or minor changes. They are often aimed at enhancing the application's existing functionalities without introducing major overhauls. Minor releases are generally less complex than major releases, as they build upon the existing stable version. However, they still require thorough testing to ensure that the new features integrate seamlessly with the current application. An example is the releases of MacOS Ventura 13.4 and 13.5, which involve bug fixes. For SoundGrounds, a minor release may involve adding features like sleep timer functionality or an integration with a new payment gateway for premium features.
+
+Patch releases
+Patch releases are focused on fixing bugs, vulnerabilities, and addressing critical issues present in the software. They aim to provide quick solutions to problems that affect the application's stability or security. Patch releases are typically smaller in scope and can be deployed more rapidly than major or minor releases. Since they focus on bug fixes, thorough testing is crucial to ensure that the patches do not introduce new issues.
+
+Hotfix releases
+Hotfix releases are immediate updates to address critical and high-priority issues that affect the application's functionality or pose security risks. They are typically rolled out urgently to resolve pressing problems. Hotfix releases undergo minimal testing and are immediately pushed to production to mitigate the impact of urgent problems. For example, Mac OS released hotfixes to resolve issues on bluetooth and other basic tools.
+
+Key takeaways
+A release is a new version of a piece of software. For a company to carry out a release, it involves effective release management–from planning the release scope, coordinating between teams, mitigating potential issues, to meeting the deadlines. There are four types of release: major, minor, patch, and hotfix. 
+
+
+End-to-end testing or E2E testing involves testing of a complete application environment in a scenario that mimics real-world use, such as interacting with a database, using network communications, or interacting with other hardware, applications, or systems. Unlike unit testing or integration testing, E2E testing is a comprehensive evaluation.
+
+Scope and objectives 
+E2E testing covers:
+
+User experience: Ensuring the system behaves as expected and delivers the right user experience from front-end UI interactions to back-end database operations
+
+Integration and communication: Validating the interaction between different system components, such as databases, network protocols, and other interfacing systems
+
+Data flow: Checking the data integrity between different system components. It ensures that data is correctly sent, received, and processed.
+
+For example, imagine your team develops a coffee-and-music app with social media features. A typical user journey involves creating an account, logging in, choosing a coffee, selecting music, interacting with other users, and logging out. To conduct an E2E test, your team would identify all the main user journeys (from account creation to logging out) and create a detailed test case for each journey that includes the expected outcomes.
+
+One of the key objectives of E2E testing is the opportunity to simulate critical user journeys or the real-world user scenarios. The journeys usually cover essential user flows like account creation, log-in, placing an order, or making a payment. In addition, the E2E testing allows you to verify if business processes are working as expected. For example, if a user places an order, it should trigger a series of events like payment processing, order confirmation, and dispatch details. 
+
+Tools for end-to-end tests
+You can use testing frameworks such as Selenium and Puppeteer to conduct an E2E testing. Most of these UI testing frameworks target web applications and they tend to be JavaScript-based as web apps almost always use HTML+JavaScript (react.js, angular, vue.js) for their user interface components. For Python developers, when you utilize these frameworks, you will need to use Flask or Django. Flask is commonly used to build web apps and it can handle microservices. Django is used for larger or more complex applications. 
+
+Here are some of the testing tools you can use with Flask and Django:
+
+Selenium 
+is a popular open-source tool that allows for automated testing across various platforms and browsers. It supports multiple programming languages like Java, C#, and Python.
+
+Puppeteer 
+is a Node library that provides a high-level API to control Chrome or Chromium over the DevTools Protocol. It can be used for testing Chrome extensions and for generating screenshots and PDFs of pages.
+
+Cypress 
+is a JavaScript-based testing framework that doesn't use Selenium. It allows you to write all types of tests: E2E tests, integration tests, and unit tests. However, Cypress doesn’t support Python.
+
+Appium 
+is an open-source tool for automating native, mobile web, and hybrid applications on iOS mobile, Android mobile, and Windows desktop platforms. It's widely used for end-to-end testing of mobile applications.
+
+Protractor 
+is an end-to-end test framework for Angular and AngularJS applications. It runs tests against your application running in a real browser, interacting with it as a user would.
+
+Key takeaways
+End-to-end testing is a comprehensive evaluation that includes testing of a complete application environment using real-world user scenarios. Its scope includes the testing of user experience, integration and communication, and data flow. Python users can use testing tools and frameworks such as Selenium. But keep in mind that these tools require Flask or Django.
+
+
+Key components
+A postmortem report provides clear details of the incident to all team members and promotes a culture of continuous improvement. Key components of a postmortem include:
+
+Incident timeline: This describes what happened and when it happened. 
+
+Root cause analysis: This includes details of why the incident happened.
+
+Impact analysis: This includes details of who and what was affected by the incident. 
+
+Mitigation and recovery: This includes the steps taken to correct the incident.
+
+Action items for improvement: This describes the steps to take to prevent a future incident.
+

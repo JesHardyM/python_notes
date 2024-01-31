@@ -1,0 +1,40 @@
+
+result = 118613842 % 9091
+print(result)
+
+
+from rearrange import rearrange_name
+
+This line imports the rearrange_name function from the rearrange module. 
+Presumably, this module contains the logic for rearranging names.
+import unittest
+
+This line imports the unittest module, which provides a testing framework.
+class TestRearrange(unittest.TestCase):
+
+This line defines a test class named TestRearrange that inherits from unittest.
+TestCase. Test methods within this class should start with the word "test."
+def test_basic(self):
+
+This method defines a test case named test_basic.
+It provides an input (testcase) in the format "Lovelace, Ada" and the expected 
+output (expected) as "Ada Lovelace."
+It uses self.assertEqual to check if the result of rearrange_name(testcase) matches 
+the expected output.
+def test_empty(self):
+
+Similar to the previous method, this test case handles an empty string input.
+def test_double_name(self):
+
+This test case deals with a name containing a middle initial, like "Hopper, Grace M."
+def test_one_name(self):
+
+This test case handles a single-name input, like "Voltaire."
+unittest.main()
+
+This line runs the tests when the script is executed. It triggers the test discovery
+ and execution within the unittest framework.
+When you run this script, the unittest framework will execute each test case method 
+and report whether the actual results match the expected results. If everything is 
+correct, there should be no output. If a test fails, the framework will provide 
+information about the failure.

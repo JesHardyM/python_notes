@@ -1,0 +1,186 @@
+RESEARCH AND PYTHON
+SORT VS SORTED - SORT ORDERS A LIST, BUT
+SORTED RETURNS A NEW LIST AND LEAVES THE ORIGINAL LIST UNTOUCHED
+
+SORT
+numbers = [ 4, 6, 2, 7, 1 ]
+numbers.sort()
+print(numbers)
+#RETURNS: [1, 2, 4, 6, 7]
+
+
+SORTED
+names = ["Carlos", "Ray", "Alex", "Kelly"]
+print(sorted(names))
+    #RETURNS: ['Alex', 'Carlos', 'Kelly', 'Ray']
+print(names)
+    #RETURNS: ['Carlos', 'Ray', 'Alex', 'Kelly']
+print(sorted(names, key=len))
+    #RETURNS: ['Ray', 'Alex', 'Kelly', 'Carlos']
+
+PLANNING
+
+SEPERATING THE FUNCTION TO GENERATE DATA AND PRINT IT IS THE BEST OPTION
+IT IS EASIER TO FIX BUGS AND ALLOWS CHANGES TO BE MADE MORE READILY
+SUCH AS PRINTING A DIFFERENT TYPE OF DOCUMENT ex. PDF OR USING THE FUNCTION 
+TO GENERATE OTHER TYPES OF DATA
+
+//////////ONE GIANT EXAMPLE ///////////////////
+
+def get_event_date(event):
+  return event.date
+
+///// CREATE SCRIPT WHICH WILL ACCOMODATE LOGINS AND LOGOUTS, AND 
+//// ONLY CLEARS THE REGISTER IF THE SAME PERSON LOGS IN AND OUT.
+def current_users(events):
+  events.sort(key=get_event_date)
+  machines = {}
+  for event in events:
+    if event.machine not in machines:
+      machines[event.machine] = set()
+    if event.type == "login":
+      machines[event.machine].add(event.user)
+    elif event.type == "logout" and event.user in machines[event.machine]:
+      machines[event.machine].remove(event.user)
+  return machines
+
+def generate_report(machines):
+  for machine, users in machines.items():
+    if len(users) > 0:
+      user_list = ", ".join(users)
+      print("{}: {}".format(machine, user_list))
+
+    ////To check that our code is doing everything it's supposed to do, 
+    ////we need an Event class. 
+    ///The code in the next cell below initializes our Event class.
+
+class Event:
+  def __init__(self, event_date, event_type, machine_name, user):
+    self.date = event_date
+    self.type = event_type
+    self.machine = machine_name
+    self.user = user
+
+    //// we have an Event class that has a constructor and sets the necessary 
+    //// attributes. Next let's create some events and add them to a list by 
+    //// running the following code.
+
+
+events = [
+  Event('2020-01-21 12:45:46', 'login', 'myworkstation.local', 'jordan'),
+  Event('2020-01-22 15:53:42', 'logout', 'webserver.local', 'jordan'),
+  Event('2020-01-21 18:53:21', 'login', 'webserver.local', 'lane'),
+  Event('2020-01-22 10:25:34', 'logout', 'myworkstation.local', 'jordan'),
+  Event('2020-01-21 08:20:01', 'login', 'webserver.local', 'jordan'),
+  Event('2020-01-23 11:24:35', 'login', 'mailserver.local', 'chris'),
+]
+
+    //// Let's feed these events into our custom_users function and 
+    //// see what happens.
+
+users = current_users(events)
+print(users)
+##RETURNS: {'webserver.local': {'lane'}, 'myworkstation.local': set(), 
+            'mailserver.local': {'chris'}}
+generate_report(users)
+
+##RETURNS:  webserver.local: lane 
+            mailserver.local: chris
+
+///////////////////////////////////////////////////////////////////////
+
+
+The problem and solution
+Imagine this scenario: Every month, you are handed a spreadsheet with 
+hundreds of new hires. You are asked to create user accounts for all of 
+them on a Linux server. The formatting on the spreadsheet looks like this:
+
+username,password,real_name
+amanda,,Amanda Alonso
+
+Notice that the password field is empty for all the records. 
+This means you need to generate random passwords for each user and then 
+create their accounts. You also want to write the passwords that you generate 
+back to a new CSV file so that you can tell the new employees their passwords. 
+
+To automate the task of creating passwords and accounts for all of these 
+new hires, the script should do the following:
+
+1. Read a list of new hires from users_in.csv.
+2. Generate random 16-character passwords for each user.
+3. Create each user account.
+4. Write the spreadsheet back to users_out.csv with the new passwords.
+
+YOUR TOOLS
+A few standard Python libraries. 
+
+import csv  
+- This library helps read and write the CSV files. 
+
+import secrets
+- This helps generate random passwords for each user account. 
+
+import subprocess
+- This calls the useradd command, which creates and adds each user account.
+
+from pathlib import Path   # to locate the data files
+- This library helps to locate the data files for each user account.
+
+
+GETTING STARTED
+
+You need to get the current working directory and find the subdirectory where 
+the CSV files are stored. Use cwd for “current working directory” and identify 
+the path of the Python directory as a string: 
+
+cwd = Path.cwd() / "drive/MyDrive/Colab Notebooks"
+
+Next, you use a with statement and an as keyword. 
+The with statement helps with resource management, and the as keyword 
+creates an alias for the resource you want to call. 
+
+with open(cwd / "data/users_in.csv", "r") as file_input, open(cwd / "data/users_out.csv", "w") as file_output:
+
+The CSV library takes care of reading and parsing the input from the file. 
+Next, you can use a DictReader object so that each row in the file is read 
+into a dict() with the field names and values, like this: 
+{"username": "amanda", "password": "", "real_name": "Amanda Alonso"}.
+
+The following code is an example of how you use the DictReader: 
+    reader = csv.DictReader(file_input)
+
+Now you need to set up the output. You create a DictWriter and 
+use the same field names from the input, like so:
+
+    writer.writeheader()
+
+
+Create a for loop to run through each record from the input file. 
+
+    for user in reader:
+
+After the for loop, you use the secrets library that you imported at the 
+beginning of the script to generate a random password of eight hex bytes, 
+which equals 16 characters in total. Then, run the /sbin/useradd command 
+to create each user. The check=True parameter causes the script to exit with 
+a CalledProcessError if the command fails for any reason.
+
+        user["password"] = secrets.token_hex(8)
+        useradd_cmd = ["/sbin/useradd",
+                       "-c", user["real_name"],
+                       "-m",
+                       "-G", "users",
+                       "-p", user["password"],
+                       user["username"]]
+        subprocess.run(useradd_cmd, check=True)
+
+Finally, you write the records back to the output file, including the passwords. 
+When you run the code, the new user accounts and their passwords are generated 
+into a new CSV file.
+
+    writer.writerow(user)
+
+
+And there you have it! You’ve just saved yourself countless hours of 
+creating hundreds of new employee accounts and passwords by creating a short, 
+simple script to do the work for you. 

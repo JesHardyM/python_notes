@@ -1,0 +1,1029 @@
+
+Kubernetes is an open-source platform that gives programmers the power to manage containers. A Kubernetes pod is one or more containers scheduled and run together on a single worker node, or host. Pods can be scaled, rolled back, and dug into for trends and log information. Kubernetes provides access permission on top of what Docker provides. Kubernetes is an important tool for the right application. Kubernetes makes it easy to share data, resources, and applications with other teams and users. This helps improve collaboration, efficiency, and productivity. We'll talk more about these pods next time.
+
+There's really nothing on the server side to protect your app from a few extremely enthusiastic users monopolizing all the server bandwidth. The result? Some users get slow, glitchy service. Anticipating the problem, many programmers post multiple Docker images of the same application to make sure everybody gets the best, fastest service. But what about updating the application, addressing bugs, adding features? Every change you make also has to be added to those 20 instances up in the cloud. Kubernetes is a tool that addresses issues like this. 
+
+Kubernetes, abbreviated as K8s, is an open-source platform that gives programmers the power to orchestrate or manage containers. Think of it as a school of fish, or more aptly, a pod of whales. Containers you use and name in K8s are deployed as pods in the cloud. A pod is a logical group of one or more containers that are scheduled and run together on a single worker node, a host, within a Kubernetes cluster. Containers in a pod share the same namespace on the network and the same IP address and resources, so they can communicate with one another. This makes deployment efficient. You can do a lot of things with a Kubernetes pod. You can scale it, which means adding more replicas of your pod, like the 20 we needed in the greedy user example. Better still, you can update all of those replicas at the same time just by updating your pod.
+
+You can roll back a pod and its replicas if you need your users to go back to the pre-update version because you found a bug. This allows you to fix the bug and send out a new update. Kubernetes also allows you to list all of your pods and replicas and to check descriptions and logs to look for trends or uncover information based on usage. Or you can expose your deployments to the outside world, providing a second layer of access permissions on top of the access provided by Docker. The second layer allows you to automate load balancing. Once you expose your deployment, you can use a special server to communicate with all of your clients, rerouting each contact to the most unused Docker image in the pod at that time, so everyone gets the best access. To better understand the relationship between Docker and Kubernetes, imagine Docker is a shipping container. It lets you package each application and its dependencies in a separate crate within a container, just like shipping containers allow you to package goods for transport. In this example, Kubernetes is the port orchestrating how the containers and packages are handled and directing them to the right place. 
+
+Kubernetes gives you the ability to automate container deployment across the cloud to best accomplish the goals of your application strategy. But, be advised, the power comes at a cost. The learning curve is steep. So unless you need all of that power and efficiency, you might want to use a lesser deployment method. 
+
+________________________
+
+Kubernetes principles
+Kubernetes—a cloud-native application—follows principles to ensure the containerized application runs properly. These principles take into consideration build time and run time. A container is self-contained, relying only on the Linux kernel. Once the container is built, then additional libraries can be added. In addition, containerized applications are not meant to change to different environments after they are built.
+
+In terms of run time, each container needs to implement APIs to help the platform manage the application in the most efficient way possible. All APIs must be public, as there should be no hidden or private APIs. In addition, APIs should be declarative, meaning the programmer should be able to communicate their desired end result, allowing Kubernetes to find and implement a solution. Support is available to developers, if needed, to run applications in Kubernetes. Workloads are portable, and the control plane is able to transfer a workload to another node without disrupting the overall program.
+
+Declarative configuration
+Declarative configuration is an approach that is commonly used in Kubernetes to achieve a desired state of an application. In this approach, developers specify the desired state, but they do not explicitly define how to achieve or reach the desired state. The approach is more focused on what the desired state should be. The system will determine the most efficient and reliable way to achieve the desired state. These configuration assets are stored in a revision control system and track changes over time.
+
+To use declarative configuration in Kubernetes, create a manifest that describes the desired state of an application. Then, the control plane will determine how to direct nodes in the cluster to achieve the desired state.
+
+The control plane
+The Kubernetes control plane is responsible for making decisions about the entire cluster and desired state and for ensuring the cluster’s components work together. Components of the control plane include: 
+
+etcd
+
+API server
+
+Scheduler
+
+Controller manager
+
+Cloud controller manager
+
+etcd is used as Kubernetes backing store for all cluster data as a distributed database. This key-value store is highly available and designed to run on multiple nodes.
+
+The Kubernetes API server acts as the front-end for developers and other components interacting with the cluster. It is responsible for ensuring requests to the API are properly authenticated and authorized.
+
+The scheduler is a component of the control plane where pods are assigned to run on particular nodes in the cluster.
+
+The control manager hosts multiple Kubernetes controllers. Each controller continuously monitors the current state of the cluster and works towards achieving the desired state.
+
+The cloud controller manager is a control plane component that embeds cloud-specific control logic. It acts as the interface between Kubernetes and a specific cloud provider, managing the cloud’s resources.
+
+Key takeaways
+Kubernetes is a portable and extensible platform to assist developers with containerized applications. Kubernetes core principles and key components support developers with starting, stopping, storing, building, and managing containers.
+
+___________________________
+
+Installation
+
+There are multiple ways to set up and run a Kubernetes cluster. Because Kubernetes acts as a set of containers that manages other containers, Kubenetes is not something you download. You decide on the installation type you need based on your programming requirements.
+
+After Docker is installed on your machine, follow the instructions below to run Kubernetes in Docker Desktop.
+
+From the Docker Dashboard, select Settings.
+
+Select Kubernetes from the left sidebar.
+
+Select the checkbox next to Enable Kubernetes.
+
+Select Apply & Restart to save the settings.
+
+Select Install to complete the installation process.
+
+The Kubernetes server runs as containers and installs the /usr/local/bin/kubect1 command on your machine.
+
+And that’s it! Setting up Kubernetes on Docker Desktop is typically the most common way that developers use Kubernetes since Docker Desktop has built-in support for it.
+
+In Kubernetes, a container is a lightweight, standalone, executable package that includes everything needed to run a piece of software, including the code, a runtime, libraries, environment variables, and system tools. Containers are isolated from each other and bundle their own software, libraries, and configuration files, but they share the operating system kernel with other containers. They are designed to be easily portable across different environments, which makes them ideal for consistent deployment across different platforms.
+
+In the context of Kubernetes, containers are the smallest units of deployment that are scheduled and managed. They are encapsulated within Pods, which are the fundamental deployment units in a Kubernetes cluster. A Pod can contain one or more containers that need to run together on the same host and share the same network and storage resources, allowing them to communicate with each other using localhost.
+
+Pods serve as an abstraction layer, allowing Kubernetes to schedule and orchestrate containers effectively. When a deployment requires multiple containers to work together on the same node, a Pod is created to ensure they are co-located and can communicate efficiently. This simplifies the deployment and management of containerised applications, making it easier to scale, monitor, and update as needed.
+
+Also note that Pods in Kubernetes are considered to be ephemeral; they can be created, terminated, and replaced dynamically based on the desired state and resource availability in the cluster. As a result, Kubernetes ensures that the desired number of Pods are always running, enabling high availability and fault tolerance for containerised applications.
+
+Pods serve together as a logical host that encapsulates one or more tightly coupled containers within a shared network and storage context. This provides a way to group containers that need to work closely together, allowing them to share the same resources and interact with each other as if they were running on the same physical or virtual machine.
+
+When designing a Pod, consider aspects like resource requests and limits, handling graceful shutdowns, logging and monitoring, and appropriate container images.
+
+Pods as logical host
+A Pod can run one or more closely-related containers which share the same network and storage context. This shared context is much like what you would find on a physical or virtual machine, hence the term "logical host." 
+
+The key points to understand about a Pod as a logical host are:
+
+Tightly coupled containers: When multiple containers within a Pod are considered tightly coupled, it means they have a strong interdependency and need to communicate with each other over localhost. This allows them to exchange data and information efficiently without the need for complex networking configurations.
+
+Shared network namespace: Containers within the same Pod share the same network namespace. This implies that they have the same IP address and port space, making it easier for them to communicate using standard inter-process communication mechanisms.
+
+Shared storage context: Pods also share the same storage context, which means they can access the same volumes or storage resources. This facilitates data sharing among the containers within the Pod, further enhancing their collaboration.
+
+Co-location and co-scheduling: Kubernetes ensures that all containers within a Pod are scheduled and co-located on the same node. This co-scheduling ensures that the containers can efficiently communicate with each other within the same network and storage context.
+
+Ephemeral nature: Like individual containers, Pods are considered to be ephemeral and can be easily created, terminated, or replaced based on scaling requirements or resource constraints. However, all containers within the Pod are treated as a single unit in terms of scheduling and lifecycle management.
+
+Pods in action
+Let's say you're a software developer in charge of a web application that includes a main web server and a helper component for log processing. The web server interacts with the log processor to handle, analyze, and store log data in real-time. These two components need to be tightly integrated and should communicate with each other efficiently.
+
+In this scenario, you would use a Kubernetes Pod to encapsulate both the web server and the log processor containers. Since both containers exist within the same Pod, they share the same network namespace (they can communicate via localhost) and they can share the same storage volumes. This allows the web server to generate logs and the log processor to access and process these logs efficiently.
+
+The Pod ensures that both the web server and log processor are scheduled on the same node (co-location) and managed as a single entity. If the Pod needs to be rescheduled or if it fails, both containers would be dealt with together, maintaining their coupled relationship. The Pod abstracts away the details of the host machine and the underlying infrastructure, allowing you to focus on managing your application.
+
+This setup, where multiple related containers are grouped in a Pod, is known as a multi-container Pod. You’ll explore single– and multiple-container pods in more detail below; for now, just know that multiple containers are an ideal way to manage and deploy tightly coupled application components. 
+
+Advantages of Pods
+From the above example, you can see that Pods offer a number of advantages in facilitating co-location of containers, enabling data sharing, and simplifying inter-container communication:
+
+Facilitating co-location: Pods allow multiple containers to be co-located on the same host machine. This is particularly useful for closely related components that need to work together, such as an application and its helper components (like sidecar containers that handle logging or monitoring). By running these components in the same Pod, they can be scheduled onto the same machine and managed as a single entity.
+
+Enabling data sharing: Containers within a Pod share the same network namespace, which means they share an IP address and port space. They can communicate with each other using localhost and they can also share data through shared volumes. Shared volumes in a Pod enable data to be easily exchanged between containers, and also allow data to persist beyond the life of a single container, which can be useful for applications that require persistent data storage.
+
+Simplifying inter-container communication: The shared network namespace also simplifies inter-container communication. Because all containers in a Pod share a network stack, they can communicate with each other on localhost, without the need for inter-process communication (IPC) or shared file systems. This simplifies the development of distributed systems, where components often need to communicate with each other.
+
+Single container vs. multiple containers
+The difference between single-container and multi-container Pods lies in the number of containers they host.
+
+As the name suggests, single-container Pods contain only one container. This container typically represents the primary application or service that the Pod is meant to run. Single-container Pods are straightforward and are commonly used when you have a simple application that requires no additional sidecar containers or closely related helper components. They are also suitable for running standalone applications that do not need to communicate with other containers within the same Pod. 
+
+Multi-container Pods, on the other hand, contain multiple containers that are co-located and share the same resources and network namespace. These containers are meant to work together and complement each other's functionalities. Multi-container Pods are appropriate in various scenarios:  	
+
+Sidecar pattern: The sidecar pattern is a common use case for multi-container Pods. In this pattern, the main container represents the primary application, while additional sidecar containers provide supporting features like logging, monitoring, or authentication. The sidecar containers enhance and extend the capabilities of the main application without modifying its code.
+
+Proxy pattern: Multi-container Pods can use a proxy container that acts as an intermediary between the main application container and the external world. The proxy container handles tasks like load balancing, caching, or SSL termination, offloading these responsibilities from the main application container.
+
+Adapter pattern: Multi-container Pods can employ an adapter container that performs data format conversions or protocol translations. This allows the main container to focus solely on its core functionality without worrying about the intricacies of data exchange formats.
+
+Shared data and dependencies: Containers within a multi-container Pod can share volumes and communicate over localhost, making them suitable for applications that require data sharing or have interdependent components.
+
+Use a single-container Pod when you have a simple application that does not require additional containers, or when you want to isolate different applications or services for easier management and scaling. 
+
+Use multi-container Pods when you have closely related components that need to work together, such as those following the sidecar pattern. This is useful for tasks like logging, monitoring, or enhancing the main application's capabilities without modifying its code. Multi-container Pods are also appropriate for scenarios where multiple containers need to share data or dependencies efficiently.
+
+Key terms
+Here are some key terms to be familiar with as you’re working with Kubernetes.
+
+Pod lifecycle: Pods have specific lifecycle phases, starting from "Pending" when they are being scheduled, to "Running" when all containers are up and running, "Succeeded" when all containers successfully terminate, and "Failed" if any container within the Pod fails to run. Pods can also be in a "ContainerCreating" state if one or more containers are being created.
+
+Pod templates: Pod templates define the specification for creating new Pods. They are used in higher-level controllers like ReplicaSets, Deployments, and StatefulSets to ensure the desired state of the Pods.
+
+Pod affinity and anti-affinity: Pod affinity and anti-affinity rules define the scheduling preferences and restrictions for Pods. They allow you to influence the co-location or separation of Pods based on labels and other attributes.
+
+Pod autoscaling: Kubernetes provides Horizontal Pod Autoscaler (HPA) functionality that automatically scales the number of replicas (Pods) based on resource usage or custom metrics.
+
+Pod security policies: Pod security policies are used to control the security-related aspects of Pods, such as their access to certain host resources, usage of privileged containers, and more.
+
+Init containers: Init containers are additional containers that run and complete before the main application containers start. They are useful for performing initialization tasks, such as database schema setup or preloading data.
+
+Pod eviction and disruption: Pods can be evicted from nodes due to resource constraints or node failures. Understanding Pod eviction behavior is important for managing application reliability.
+
+Pod health probes: Kubernetes supports different types of health probes (liveness, readiness, and startup probes) to check the health of containers within a Pod. These probes help Kubernetes decide whether a Pod is considered healthy and ready to receive traffic.
+
+Taints and tolerations: Taints are applied to nodes to repel Pods, while tolerations are set on Pods to allow them to be scheduled on tainted nodes.
+
+Pod DNS: Pods are assigned a unique hostname and IP address. They can communicate with each other using their hostname or service names. Kubernetes provides internal DNS resolution for easy communication between Pods.
+
+Pod annotations and labels: Annotations and labels can be attached to Pods to provide metadata or facilitate Pod selection for various purposes like monitoring, logging, or routing.
+
+Pods and Python
+To manage Kubernetes pods using Python, you can use the kubernetes library. Here is some example code of how to create, read, update, and delete a Pod using Python.
+
+
+from kubernetes import client, config
+
+# Load the Kubernetes configuration from the default location
+config.load_kube_config()
+
+# Alternatively, you can load configuration from a specific file
+# config.load_kube_config(config_file="path/to/config")
+
+# Initialize the Kubernetes client
+v1 = client.CoreV1Api()
+
+# Define the Pod details
+pod_name = "example-pod"
+container_name = "example-container"
+image_name = "nginx:latest"
+port = 80
+
+# Create a Pod
+def create_pod(namespace, name, container_name, image, port):
+	container = client.V1Container(
+    	name=container_name,
+    	image=image,
+    	ports=[client.V1ContainerPort(container_port=port)],
+	)
+
+	pod_spec = client.V1PodSpec(containers=[container])
+	pod_template = client.V1PodTemplateSpec(
+    	metadata=client.V1ObjectMeta(labels={"app": name}), spec=pod_spec
+	)
+
+	pod = client.V1Pod(
+    	api_version="v1",
+    	kind="Pod",
+    	metadata=client.V1ObjectMeta(name=name),
+    	spec=pod_spec,
+	)
+
+	try:
+    	response = v1.create_namespaced_pod(namespace, pod)
+    	print("Pod created successfully.")
+    	return response
+	except Exception as e:
+    	print("Error creating Pod:", e)
+
+
+# Read a Pod
+def get_pod(namespace, name):
+	try:
+    	response = v1.read_namespaced_pod(name, namespace)
+    	print("Pod details:", response)
+	except Exception as e:
+    	print("Error getting Pod:", e)
+
+
+# Update a Pod (e.g., change the container image)
+def update_pod(namespace, name, image):
+	try:
+    	response = v1.read_namespaced_pod(name, namespace)
+    	response.spec.containers[0].image = image
+
+    	updated_pod = v1.replace_namespaced_pod(name, namespace, response)
+    	print("Pod updated successfully.")
+    	return updated_pod
+	except Exception as e:
+    	print("Error updating Pod:", e)
+
+
+# Delete a Pod
+def delete_pod(namespace, name):
+	try:
+    	response = v1.delete_namespaced_pod(name, namespace)
+    	print("Pod deleted successfully.")
+	except Exception as e:
+    	print("Error deleting Pod:", e)
+
+
+if __name__ == "__main__":
+	namespace = "default"
+
+	# Create a Pod
+	create_pod(namespace, pod_name, container_name, image_name, port)
+
+	# Read a Pod
+	get_pod(namespace, pod_name)
+
+	# Update a Pod
+	new_image_name = "nginx:1.19"
+	update_pod(namespace, pod_name, new_image_name)
+
+	# Read the updated Pod
+	get_pod(namespace, pod_name)
+
+	# Delete the Pod
+	delete_pod(namespace, pod_name)
+
+
+Key Takeaways
+Pods are the fundamental deployment units in a Kubernetes cluster. 
+
+A Pod can contain one or more containers that need to run together on the same host and share the same network and storage resources, allowing them to communicate with each other using localhost.
+
+Pods serve as an abstraction layer, allowing Kubernetes to schedule and orchestrate containers effectively.
+
+Use a single-container Pod when you have a simple application that does not require additional containers, or when you want to isolate different applications or services for easier management and scaling. 
+
+Use multi-container Pods when you have closely related components that need to work together, such as those following the sidecar pattern. 
+______________________________________________-
+
+SERVICES
+
+The challenge
+Imagine you're developing a Python-based web application deployed in a Kubernetes cluster. 
+
+This application is composed of multiple components such as a web server, a caching layer, and a database, each running in separate Pods. These components need to communicate with each other to function properly, but there’s a wrinkle: Pods have ephemeral life cycles and their IP addresses can change dynamically due to reasons like scaling, rescheduling, or node failures. But this isn’t the only challenge you’re facing! 
+
+Imagine that your web server, for instance, was directly communicating with the database Pod using its Pod IP address. The server would need constant updates whenever this IP changes—a manual and error-prone process.
+
+Furthermore, consider if your caching layer is designed to handle high traffic and hence is replicated into multiple Pods for load balancing. Now, your web server needs to distribute requests among all these cache Pods. Maintaining and managing direct communication with every single cache Pod by their individual IP addresses would be a daunting task, and an inefficient use of resources.
+
+Plus, there's the issue of service discovery. Say your web server needs to connect with a new analytics service you've just launched. It would require an updated list of all the active Pods and their IP addresses for this service—a difficult and dynamic challenge.
+
+What is a Python developer to do in this scenario?
+
+Services to the rescue
+Fortunately, services come to the rescue in these scenarios. Services offer an abstraction layer over Pods. For starters, they provide a stable virtual IP and a DNS name for each set of related Pods (like your caching layer or database), and these remain constant regardless of the changes in the underlying Pods. So, your web server only needs to know this Service IP or DNS name, saving it from the ordeal of tracking and updating numerous changing Pod IPs.
+
+Furthermore, Services automatically set up load balancing. When your web server sends a request to the caching layer's Service, Kubernetes ensures the request is distributed evenly among all available caching Pods. This automatic load balancing allows for efficient use of resources and improved performance.
+
+In essence, a Service acts like a stable intermediary within the cluster. Instead of applications (like a front-end interface) directly addressing specific Pods, they communicate with the Service. The Service then ensures the request reaches the right backend Pods. This layer of abstraction streamlines intra-cluster communication, making the system more resilient and easier to manage—even as the underlying Pod configurations change dynamically.
+
+Types of Services
+Let's imagine that, with the basic challenges addressed, you've expanded your Python web application and it now includes a user interface, an API layer, a database, and an external third-party service. Different components of your application have different networking needs, and Kubernetes services, with their various types, can cater to these needs effectively.
+
+First, you have the ClusterIP service. This is the default type and serves as the go-to choice when you need to enable communication between components within the cluster. For example, your API layer and your database might need to communicate frequently, but these exchanges are internal to your application. A ClusterIP service would give you a stable, cluster-internal IP address to facilitate this communication.
+
+Next, you may want to expose your API layer to external clients. You could use a NodePort service for this purpose. It makes your API layer available on a specific port across all nodes in your cluster. With this setup, anyone with access to your node's IP address can communicate with your API layer by contacting the specified NodePort.
+
+However, a NodePort might not be enough if your application is hosted in a cloud environment and you need to handle large volumes of incoming traffic. A LoadBalancer service might be a better choice in this scenario. It exposes your service using your cloud provider's load balancer, distributing incoming traffic across your nodes, which is ideal for components like your user interface that might experience heavy traffic.
+
+Finally, you might be integrating an external third-party service into your application. Rather than expose this service directly within the cluster, you can use an ExternalName service. This gives you an alias for the external service that you can reference using a Kubernetes DNS name.
+
+In summary, Kubernetes provides different types of services tailored to various networking requirements:
+
+ClusterIP: Facilitates internal communication within the cluster
+
+NodePort: Enables external access to services at a static port across nodes
+
+LoadBalancer: Provides external access with load balancing, often used with cloud provider load balancers
+
+ExternalName: Serves as an alias for an external service, represented with a Kubernetes DNS name
+
+Other features
+So far we’ve just scratched the surface of services. There are several features that extend the capabilities of services and can be employed to address specific use cases within your application's networking requirements. 
+
+Service discovery with DNS: As your application grows, new services are added and existing ones might move around as they are scheduled onto different nodes. Kubernetes has a built-in DNS service to automatically assign domain names to services. For instance, your web server could reach the database simply by using its service name (e.g., database-service.default.svc.cluster.local), rather than hard-coding IP addresses.
+
+Headless services: Let's say you want to implement a distributed database that requires direct peer-to-peer communication. You can use a headless service for this. Unlike a standard service, a headless service doesn't provide load-balancing or a stable IP, but instead returns the IP addresses of its associated pods, enabling direct pod-to-pod communication.
+
+Service topology: Suppose your application is deployed in a multi-region environment, and you want to minimize latency by ensuring that requests are served by the nearest pods. Service topology comes to the rescue, allowing you to preferentially route traffic based on the network topology, such as the node, zone, or region.
+
+External Traffic Policy: If you want to preserve the client source IP for requests coming into your web server, you can set the External Traffic Policy to "Local". This routes the traffic directly to the Pods running on the node, bypassing the usual load balancing and ensuring the original client IP is preserved.
+
+Session affinity (sticky sessions): Suppose users log into your application, and their session data is stored locally on the server pod handling the request. To maintain this session data, you could enable session affinity on your service, so that all requests from a specific user are directed to the same pod.
+
+Service slicing: Imagine you're rolling out a new feature and want to test it with a subset of your users. Service Slicing enables you to direct traffic to different sets of pods based on custom labels, providing granular control over traffic routing for A/B testing or canary releases.
+
+Connecting external databases: Perhaps your application relies on an external database hosted outside the Kubernetes cluster. You can create a Service with the type ExternalName to reference this database. This allows your application to access the database using a DNS name without needing to know its IP address, providing a level of indirection and increasing the flexibility of your application configuration.
+
+Services and Python
+Here’s an example of some Python code that uses the Kubernetes Python client to create, list, and delete Kubernetes Services in a given namespace:
+
+from kubernetes import client, config
+
+def create_service(api_instance, namespace, service_name, target_port, port, service_type):
+	# Define the Service manifest based on the chosen Service type
+	service_manifest = {
+    	"apiVersion": "v1",
+    	"kind": "Service",
+    	"metadata": {"name": service_name},
+    	"spec": {
+        	"selector": {"app": "your-app-label"},
+        	"ports": [
+            	{"protocol": "TCP", "port": port, "targetPort": target_port}
+        	]
+    	}
+	}
+
+	if service_type == "ClusterIP":
+    	# No additional changes required for ClusterIP, it is the default type
+    	pass
+	elif service_type == "NodePort":
+    	# Set the NodePort field to expose the service on a specific port on each node
+    	service_manifest["spec"]["type"] = "NodePort"
+	elif service_type == "LoadBalancer":
+    	# Set the LoadBalancer type to get an external load balancer provisioned
+    	service_manifest["spec"]["type"] = "LoadBalancer"
+	elif service_type == "ExternalName":
+    	# Set the ExternalName type to create an alias for an external service
+    	service_manifest["spec"]["type"] = "ExternalName"
+    	# Set the externalName field to the DNS name of the external service
+    	service_manifest["spec"]["externalName"] = "my-external-service.example.com"
+
+	api_response = api_instance.create_namespaced_service(
+    	body=service_manifest,
+    	namespace=namespace,
+	)
+	print(f"Service '{service_name}' created with type '{service_type}'. Status: {api_response.status}")
+
+
+def list_services(api_instance, namespace):
+	api_response = api_instance.list_namespaced_service(namespace=namespace)
+	print("Existing Services:")
+	for service in api_response.items:
+    	print(f"Service Name: {service.metadata.name}, Type: {service.spec.type}")
+
+
+def delete_service(api_instance, namespace, service_name):
+	api_response = api_instance.delete_namespaced_service(
+    	name=service_name,
+    	namespace=namespace,
+	)
+	print(f"Service '{service_name}' deleted. Status: {api_response.status}")
+
+
+if __name__ == "__main__":
+	# Load Kubernetes configuration (if running in-cluster, this might not be necessary)
+	config.load_kube_config()
+
+	# Create an instance of the Kubernetes API client
+	v1 = client.CoreV1Api()
+
+	# Define the namespace where the services will be created
+	namespace = "default"
+
+	# Example: Create a ClusterIP Service
+	create_service(v1, namespace, "cluster-ip-service", target_port=8080, port=80, service_type="ClusterIP")
+
+	# Example: Create a NodePort Service
+	create_service(v1, namespace, "node-port-service", target_port=8080, port=30000, service_type="NodePort")
+
+	# Example: Create a LoadBalancer Service (Note: This requires a cloud provider supporting LoadBalancer)
+	create_service(v1, namespace, "load-balancer-service", target_port=8080, port=80, service_type="LoadBalancer")
+
+	# Example: Create an ExternalName Service
+	create_service(v1, namespace, "external-name-service", target_port=8080, port=80, service_type="ExternalName")
+
+	# List existing Services
+	list_services(v1, namespace)
+
+	# Example: Delete a Service
+	delete_service(v1, namespace, "external-name-service")
+
+Key Takeaways
+Services offer an abstraction layer over Pods. 
+
+Services provide a solution for consistent and reliable networking among ephemeral Pods. 
+
+For Python developers, and developers in general, Kubernetes Services enable the creation of robust and reliable distributed systems, abstracting away the complexities of dynamic Pod networking.
+
+Services offer flexibility through different types of load balancing and service discovery mechanisms, such as ClusterIP, NodePort, LoadBalancer, and ExternalName. This allows you to choose the mechanism that best aligns with your application's requirements.
+
+_________________________________
+
+DEPLOYMENT
+
+What are deployments?
+Let’s continue the example of the Python-based web application running in a Kubernetes cluster, specifically the web server component of the application. As traffic to your application grows, you'll need to scale the number of web server instances to keep up with demand. Also, to ensure high availability, you want to maintain multiple replicas of the web server so that if one instance fails, others can take over. This is where Kubernetes Deployments come in.
+
+In Kubernetes, a Deployment is like your application's manager. It's responsible for keeping your application up and running smoothly, even under heavy load or during updates. It ensures your application, encapsulated in Pods, always has the desired number of instances—or “replicas”—running.
+
+Think of a Deployment as a blueprint for your application's Pods. It contains a Pod Template Spec, defining what each Pod of your application should look like, including the container specifications, labels, and other parameters. The Deployment uses this template to create and update Pods.
+
+A Kubernetes Deployment also manages a ReplicaSet, a lower-level resource that makes sure the specified number of identical Pods are always running. The Deployment sets the desired state, such as the number of replicas, and the ReplicaSet ensures that the current state matches the desired state. If a Pod fails or is deleted, the ReplicaSet automatically creates new ones.  In other words, Deployments configure ReplicaSets, and thus, they are the recommended way to set up replication.
+
+And by default, deployments support rolling updates and rollbacks. If you update your web server's code, for example, you can push the new version with a rolling update, gradually replacing old Pods with new ones without downtime. If something goes wrong, you can use the Deployment to rollback to a previous version.
+
+So, in summary, a Kubernetes Deployment consists of several key components:
+
+Desired Pod template: This is the specification that defines the desired state of the Pods managed by the Deployment. It includes details such as container images, container ports, environment variables, labels, and other configurations.
+
+Replicas: This field specifies the desired number of identical copies of the Pod template that should be running. Kubernetes ensures this number of replicas is maintained, automatically scaling up or down as needed.
+
+Update strategy: This defines how the Deployment handles updates. The default is a rolling update strategy, where Kubernetes performs updates by gradually replacing Pods, keeping the application available throughout the process. This strategy can be further customized with additional parameters.
+
+Powerful features
+Deployments not only help maintain high availability and scalability, but they also provide several powerful features:
+
+Declarative updates: With a declarative update, you just specify the desired state of your application and the Deployment ensures that this state is achieved. If there are any differences between the current and desired state, Kubernetes automatically reconciles them. 
+
+Scaling: You can easily adjust the number of replicas in your Deployment to handle increased or decreased loads. For example, you might want to scale up during peak traffic times and scale down during off-peak hours.
+
+History and revision control: Deployments keep track of changes made to the desired state, providing you with a revision history. This can be useful for debugging, auditing, and rolling back to specific versions.
+
+A Kubernetes Deployment is typically defined using a YAML file that specifies these components. Here is an example YAML manifest:
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: example-deployment
+spec:
+  replicas: 3
+  selector:
+	matchLabels:
+  	app: example-app
+  template:
+	metadata:
+  	labels:
+    	app: example-app
+	spec:
+  	containers:
+  	- name: example-container
+    	image: example-image:latest
+    	ports:
+    	- containerPort: 80
+
+This Deployment specifies that it should maintain three replicas of the example-container Pod template. The Pods are labeled with app: example-app, and the container runs an image tagged as example-image:latest on port 80. The default rolling update strategy will be used for any updates to this Deployment. 
+
+By utilizing Deployments, you can manage your Python web server's life cycle more efficiently, ensuring its high availability, scalability, and smooth updates. 
+
+Deployments and Python
+The following Python script uses the Kubernetes Python client to create, list, and delete Kubernetes Services in a given namespace:
+
+from kubernetes import client, config
+
+def create_deployment(api_instance, namespace, deployment_name, image, replicas):
+	# Define the Deployment manifest with the desired number of replicas and container image.
+	deployment_manifest = {
+    	"apiVersion": "apps/v1",
+    	"kind": "Deployment",
+    	"metadata": {"name": deployment_name},
+    	"spec": {
+        	"replicas": replicas,
+        	"selector": {"matchLabels": {"app": deployment_name}},
+        	"template": {
+            	"metadata": {"labels": {"app": deployment_name}},
+            	"spec": {
+                	"containers": [
+                    	{"name": deployment_name, "image": image, "ports": [{"containerPort": 80}]}
+                	]
+            	},
+        	},
+    	},
+	}
+
+	# Create the Deployment using the Kubernetes API.
+	api_response = api_instance.create_namespaced_deployment(
+    	body=deployment_manifest,
+    	namespace=namespace,
+	)
+	print(f"Deployment '{deployment_name}' created. Status: {api_response.status}")
+
+def update_deployment_image(api_instance, namespace, deployment_name, new_image):
+	# Get the existing Deployment.
+	deployment = api_instance.read_namespaced_deployment(deployment_name, namespace)
+
+	# Update the container image in the Deployment.
+	deployment.spec.template.spec.containers[0].image = new_image
+
+	# Patch the Deployment with the updated image.
+	api_response = api_instance.patch_namespaced_deployment(
+    	name=deployment_name,
+    	namespace=namespace,
+    	body=deployment
+	)
+	print(f"Deployment '{deployment_name}' updated. Status: {api_response.status}")
+
+def delete_deployment(api_instance, namespace, deployment_name):
+	# Delete the Deployment using the Kubernetes API.
+	api_response = api_instance.delete_namespaced_deployment(
+    	name=deployment_name,
+    	namespace=namespace,
+    	body=client.V1DeleteOptions(
+        	propagation_policy="Foreground",
+        	grace_period_seconds=5,
+    	)
+	)
+	print(f"Deployment '{deployment_name}' deleted. Status: {api_response.status}")
+
+
+if __name__ == "__main__":
+	# Load Kubernetes configuration (if running in-cluster, this might not be necessary)
+	config.load_kube_config()
+
+	# Create an instance of the Kubernetes API client for Deployments
+	v1 = client.AppsV1Api()
+
+	# Define the namespace where the Deployment will be created
+	namespace = "default"
+
+	# Example: Create a new Deployment
+	create_deployment(v1, namespace, "example-deployment", image="nginx:latest", replicas=3)
+
+	# Example: Update the image of the Deployment
+	update_deployment_image(v1, namespace, "example-deployment", new_image="nginx:1.19.10")
+
+	# Example: Delete the Deployment
+	delete_deployment(v1, namespace, "example-deployment")
+
+
+    Beyond the fundamental concepts, you should be aware of a few additional features and best practices related to Kubernetes Deployments.
+
+A fresh start: While the default update strategy is rolling updates, Kubernetes also supports a "Recreate" strategy. In the "Recreate" strategy, all existing Pods are terminated before new Pods are created. This strategy may lead to brief periods of downtime during updates but can be useful in specific scenarios where a clean restart is necessary.
+
+Don’t get stuck: Deployments have a progressDeadlineSeconds field, which sets the maximum time (in seconds) allowed for a rolling update to make progress. If progress stalls beyond this duration, the update is considered failed. This field helps prevent deployments from getting stuck in a partially updated state. Likewise, the minReadySeconds field specifies the minimum time Kubernetes should wait after a Pod becomes ready before proceeding with the next update. This can help ensure the new Pods are fully functional and ready to handle traffic before more updates are made.
+
+Press pause: Deployments can be paused and resumed to temporarily halt the progress of rolling updates. This feature is helpful when investigating issues or performing maintenance tasks. Pausing a Deployment prevents further updates until it is explicitly resumed.
+
+It’s alive!: Deployments can utilize liveness and readiness probes to enhance the health management of Pods. Liveness probes determine if a Pod is still alive and running correctly, while readiness probes determine if a Pod is ready to accept traffic. These probes help Kubernetes decide whether to consider a Pod as healthy or not during rolling updates and scaling operations.
+
+If you want to learn more about Kubernetes Deployments and their components, you can explore the provided resources below.
+
+Key takeaways
+From maintaining the desired state of your applications, managing updates and rollbacks, to ensuring high availability, Deployments provide a set of key features that streamline the deployment and management of containerized applications. 
+
+Deployments are crucial resources that manage and scale containerised applications. They automate the deployment and management of Pods and ReplicaSets.
+
+Deployments use a declarative approach, ensuring that the application's desired state is maintained across the cluster, providing high availability. In case of Pod or node failures, the Deployment replaces the affected Pods automatically.
+
+Deployments support rolling updates, allowing for smooth transitions during application updates with no downtime. They also offer the capability to roll back to a previous stable version in case of issues with a new update.
+
+Deployments have several key components, including the desired Pod template (which defines the desired state of the Pods), the number of replicas (indicating the desired level of availability and scalability), and the update strategy (which defines how updates to the Pod template are handled).
+
+_________________
+What are some of the advantages of Kubernetes?
+
+Kubernetes has become a de facto industry standard.
+Kubernetes adds self-healing features (like fault tolerance and load balancing) across multiple servers.
+
+
+What is the easiest tool for local developers using Windows or macOS to learn Kubernetes? 
+DockerDesktop
+
+____________________________
+
+using Kubernetes on the Google Cloud Platform, or GCP. As an open-source program, Kubernetes is very flexible. Programmers can run it on their own computers, directly on the Google Compute Engine, GCE, or on GCP using the Google Kubernetes engine, GKE, which is a managed service dedicated to improving Kubernetes use for its users. You can run Kubernetes on other cloud providers as well. Most have engines similar to GKE designed to improve Kubernetes functionality. Running Kubernetes on the Google Cloud with GKE offers a web-based interface that gives programmers immediate visibility into their containers and projects and how they're being managed. Most open-source tools don't provide such an interface, so it's up to each individual user to create their own interface or use a third-party interface, like GKE, to make Kubernetes more efficient for them. GKE provides a dashboard that features at-a-glance visibility into your Kubernetes use such as how many people are using it at the moment and other usage statistics, automatic cluster provisioning, scaling, and upgrades. Using GKE allows you to simply copy and paste in Docker files instead of uploading them through a terminal. It also handles security patches and updates to Kubernetes software automatically. Without GKE, these tasks would fall to the programmer or their DevOps team. This means a systems developer who doesn't have a dedicated DevOps team can manage their infrastructure from a single web portal using GKE as their DevOps solution. We'll talk more about DevOps later in the certificates. Think of GKE as an extra layer of management that makes it easier for Python programmers like you to take better advantage of Kubernetes capabilities, and as you become more experienced in Python and other programming languages, GKE can help you use Kubernetes even more efficiently by automating common tasks and creating advanced deployment triggers, but do your research. Compare the advantages and disadvantages of GKE and other such engines, reviewing how well their cost and capabilities align with your goals or your company's goals before selecting a service like GKE. 
+
+___________________________________--
+
+Create a Kubernetes cluster on GCP
+Introduction
+A Kubernetes cluster is a fundamental construct within Kubernetes. The cluster enables the deployment, coordination, and operation of containerised applications at scale. Instead of one incredibly huge, ridiculously fast server positioned in one place to process requests from all around the world, clusters are lots of smaller servers spread out and coordinated to serve everyone close to where they are. 
+
+A cluster is a group of machines grouped to work together, but not necessarily all doing the same tasks. In a Kubernetes cluster, virtual machines (VMs) are coordinated to execute all of the functions needed to process requests, such as serving a web application, running a database, or solving big-data problems. Each cluster consists of at least one cluster control plane machine, a server that manages multiple nodes. You submit all of your work to the control plane, and the control plane distributes the work to the node or nodes where it will run. These worker nodes are virtual machine (VM) instances running the Kubernetes processes necessary to make them part of the cluster. They can be in a single zone or spread out all over the world. Depending on the use case, one node might be used for data processing and another for hosting a web server. Each of these nodes is made up of pods, which are assigned by the control plane. Each pod is made up of one or more containers that work together to execute necessary functions. 
+
+Setup
+You have already gone through a lot of the prerequisites to creating a Kubernetes cluster on GCP. As a review, and for when you do this work outside of the course, you’ll need to do the following:
+
+Create a valid GCP account and access to the Google Cloud Console. To open a new GCP account, start at the 
+Google Cloud console start page
+. 
+
+Create a GCP project where you will deploy your Kubernetes cluster.
+
+Enable billing for your GCP project to use Google Kubernetes Engine (GKE), as this may involve charges for the resources you use.
+
+Create a service account for GKE with the necessary permissions to manage resources in your GCP project.
+
+Install the Google Cloud SDK on your local machine. It provides the necessary tools and commands to interact with GCP resources.
+
+Install kubectl on your local machine. kubectl is a command-line tool used to interact with Kubernetes clusters.
+
+(Optional) If you're creating a private Kubernetes cluster, set up a Virtual Private Cloud (VPC) network or use an existing one to define the network boundaries for your cluster.
+
+Configure firewall rules to allow necessary network traffic to and from your cluster.
+
+Note: If you plan to use private container images, set up a container registry like 
+Google Artifact Registry
+ to store your Docker images. This is entirely optional. 
+
+Once you have met these prerequisites, you can proceed to create your Kubernetes cluster using Google Kubernetes Engine through the Google Cloud Console or use the gcloud command-line tool.
+
+Let’s get started! 
+
+Creating a GKE Cluster using Google Cloud Console
+As you get started working with Kubernetes clusters on Google Cloud Platform (GCP), the first thing to do is create a cluster to work with. Here are the steps to creating a standard cluster: 
+
+1.  Log in to Google Cloud Console: Go to https://console.cloud.google.com/ and log in with your Google Cloud account.
+
+2.  Open Google Kubernetes Engine (GKE). In the left-hand navigation menu, select Kubernetes Engine, and then Clusters.
+
+3.  Click Create Cluster to create a new Kubernetes cluster. By default, this will take you to Autopilot cluster. For these instructions, we are setting up a standard cluster, so click Switch to Standard Cluster. For more information on the difference between Standard and Autopilot, see 
+Compare GKE Autopilot and Standard
+.
+
+4.  Configure cluster basics. Enter a unique cluster name for your GKE cluster.
+
+5.  Choose a Location type. Zonal is for creating a cluster within a single zone. When selecting this, you will also need to select the zone where your cluster's control plane will run.
+
+Regional is for multi-zone deployment. Deployment across a larger area means higher availability to users. When selecting a regional cluster, you’ll also need to choose the region. By default, three zones will be selected within the chosen region, or you can manually select the zones if you wish.
+
+6.  Configure the node pool. In the Node pool section, specify the desired node count for the initial number of nodes in the default node pool depending on the needs of your application on your Kubernetes cluster. For production clusters, the recommended minimum is usually three nodes. 
+
+The maximum number of nodes will depend on the type of application, the expected amount of traffic, and your budget. A maximum of five to ten nodes is a good start while you get a feel for what's needed. As you configure the node pool, there's a cost estimator on the right side of the screen that estimates how much you will pay per month. You can also look over the 
+GKE pricing for Standard mode
+. If you don’t set a maximum that suits your budget, and demand for your application rises sharply, you could get an expensive wake-up call. 
+
+Once you have configured the node pool, you can enable Autoscaling by checking the box for Enable cluster autoscaler. Once enabled, Autoscaler will automatically adjust the number of nodes based on resource utilization up to the maximum number of nodes you set for the Node pool. 
+
+Finally, choose the machine type for your nodes. There are four machine families: 
+
+General purpose machines are suitable for most workloads. These machines balance performance with price.
+
+Compute-optimized machines provide high performance for intensive workloads like artificial intelligence and machine learning, entertainment streaming, and game servers
+
+Memory-optimized machines offer the highest memory configurations. These machines process large data sets in memory in use cases like Big Data analytics.
+
+Accelerator-optimized machines are for very demanding workloads like machine learning (ML) training and inference, in which a neural network makes deductions about new data based on what it has already learned. 
+
+For more details on choosing machine families or specific types, see 
+Choosing the right machine family and type
+.
+
+7.  Choose any optional configurations needed. Based on your projects’ specific requirements, you can expand the Node pool section to configure advanced settings including boot disk size, preemptible nodes, node labels, and node locations.
+
+You can also enable networking and security features based on the data governance laws and the level of security you need to maintain for your data. In the Networking section, you can choose the VPC network and subnetwork where your cluster's nodes will be placed. You can also enable Private cluster mode to hide the cluster's master endpoint from the public internet. For pod-level firewall rules, you can define network tags and network policies.
+
+8.  Click the Create button to start creating the GKE cluster.
+
+9.  Wait for cluster creation. GKE will begin creating your cluster based on your specified configuration. The process may take a few minutes.
+
+10.  Access and use your cluster. Once the cluster is successfully created, you can click on the cluster name in the GKE dashboard to view its details and manage the cluster.
+
+__________________________
+
+
+Types of clusters
+Kubernetes clusters
+A Kubernetes cluster comprises multiple servers (which Kubernetes calls “nodes”) that work together as a group. These nodes are virtual or physical machines that form the underlying infrastructure of the Kubernetes cluster. 
+
+Each node is capable of running containers and hosting workloads. Kubernetes clusters are designed for scalability and high availability. Nodes can be added or removed as needed as workloads vary, so applications can scale up or down seamlessly. 
+
+Nodes are interconnected and communicate with each other through the Kubernetes control plane to ensure seamless coordination and collaboration. The control plane is the brain of the Kubernetes cluster. It consists of several components that manage and monitor the cluster's overall state, including:
+
+An API server
+
+A controller manager
+
+A scheduler
+
+An etcd: This is a reliable data storage that can be accessed by the cluster of machines. 
+
+Every Kubernetes cluster has one control plane and at least one control plane node. However, multiple nodes can be tasked with running the control plane components, and these component nodes can be spread out across zones for redundancy. 
+
+The standard unit for deployment to a Kubernetes cluster is a container. Containerized applications are software applications packaged along with their dependencies, libraries, and configurations into isolated containers. Containers can be easily duplicated, ensuring easy, consistent deployment across different environments. 
+
+Kubernetes is a powerful orchestration platform designed to manage and scale containerised applications. Kubernetes automates the deployment, scaling, and management of containerised applications across the cluster's nodes. Kubernetes also manages resources across the cluster by optimally allocating CPU, memory, and storage based on application requirements. This ensures that resources are used efficiently, and it minimizes conflicts between applications. And Kubernetes also maintains the health of the cluster by employing features that automatically replace failed or unhealthy containers. 
+
+To manage a Kubernetes cluster, users specify the desired state of their applications, and then the cluster handles the actual execution and maintenance of the applications to match that desired state. This is called a “declarative approach.” The declarative approach simplifies management and reduces the need for manual intervention once the initial parameters are set. 
+
+Different types of Kubernetes clusters 
+Selecting the right type of cluster ensures a well-aligned Kubernetes deployment that will meet your specific business needs and objectives. Here are some of the major cluster architectures:
+
+On-premises cluster
+An on-premises Kubernetes cluster is deployed within an organization's own data center or on a private infrastructure. Deploying an on-premises cluster involves setting up the control plane and worker nodes on the organization's own hardware, and the organization is responsible for cluster maintenance. This provides complete control over the hardware, networking, and security. This is particularly suitable for situations with specific compliance or data governance requirements. 
+
+On-premises clusters are one of the primary types of Kubernetes clusters.  Tools like Kubernetes kubeadm and Kubernetes Operations (kOps) are designed for deploying this type of cluster, and there are multiple custom configurations that can be used to create and manage on-premises clusters
+
+Public cloud managed cluster
+Another primary type of Kubernetes cluster is a public cloud managed cluster. Public cloud providers offer managed Kubernetes services, handling the underlying infrastructure management so it is easier for users to deploy and manage Kubernetes clusters on the cloud. This is a useful option for teams that prefer to offload cluster management tasks, but who still require the scalability and flexibility of cloud-based deployments.  This type of cluster allows the organization to focus on deploying and managing applications without dealing with the complexities of cluster maintenance in the way you would with an on-premise cluster. When you run Kubernetes in the cloud, cluster maintenance is automatically handled by the cloud provider. You don't need to worry about it. 
+
+Another advantage of public cloud managed clusters is that they can be spread over zones or even regions. Just by checking a box in your configurations, you can spread your clusters geographically in case a cloud data center goes down or there are network problems. Some examples of managed services by public cloud providers are Amazon Elastic Kubernetes Service (EKS) on AWS, Google Kubernetes Engine (GKE) on Google Cloud, and Azure Kubernetes Service (AKS) on Microsoft Azure. 
+
+Private cloud managed cluster
+These clusters function similarly to public cloud managed clusters, but private cloud providers manage Kubernetes services for deploying clusters within a private cloud environment. This combines the ease and flexibility of managed services with control over the private infrastructure. 
+
+Some examples of managed private cloud providers are Nutanix, OpenStack, and Hewlett Packard Enterprises (HPE). 
+
+Local development clusters
+The third primary type of Kubernetes clusters are local development clusters. These are lightweight and easy-to-set-up Kubernetes environments which facilitate a fast development workflow for individual developers. These are most often set up as local development and testing clusters, and they’re primarily used for application development and testing on a developer's local machine. They are often employed during the development phase to enable rapid iteration and debugging of applications before deploying them to production clusters. 
+
+Tools commonly used to create local development clusters include Minikube, Docker Desktop (with Kubernetes enabled), and Kubernetes kind (Kubernetes in Docker). Each of these tools allows developers to spin up a single-node Kubernetes cluster locally to develop and validate applications without the need for a full-scale production cluster.
+
+Hybrid cluster
+A hybrid Kubernetes cluster coordinates on-premises and cloud environments, allowing workloads to run seamlessly across both locations. This type of cluster is suitable for scenarios in which some applications need to reside on-premises, for instance for security requirements, while others benefit from cloud scalability and services. 
+
+Edge cluster
+An edge Kubernetes cluster is deployed at the edge of the network, closer to the locations of end-users or Internet of Things (IoT) devices. Edge clusters are designed to support low latency, particularly in regions or zones where power and network connectivity are scarce and expensive.
+
+High-performance computing (HPC) cluster
+HPC Kubernetes clusters are tailored for running computationally intensive workloads, such as scientific simulations or large data processing tasks. These clusters optimize performance by leveraging specialized hardware and configurations. 
+
+Multi-cluster federation
+Multi-cluster federation involves managing multiple Kubernetes clusters as a single logical cluster. This allows centralized management of workloads, which are deployed across clusters similarly to the way a single Kubernetes cluster distributes workloads to multiple nodes. Multi-cluster federation facilitates global-scale deployments like disaster recovery scenarios. 
+
+Key takeaways
+Kubernetes clusters are nodes which are coordinated to act as singular, cohesive units to provide a flexible and reliable platform. Clusters offer high availability, efficient scaling, and robust security. Depending on the computational purpose and requirements, you can configure a cluster to suit any organization.
+
+____________________________________
+
+Deploying Docker containers on GCP
+Docker containers make it simple to deploy applications across different systems and platforms, allowing them to run the same way no matter what environment they are deployed to. This makes it easy to share, test, manage, and deploy applications quickly and reliably. 
+
+There are several platforms that allow you to deploy Docker containers, and each has its own set of advantages. Let’s look at some of these, and some considerations when choosing where to deploy containers. 
+
+Docker containers on Google Cloud Run
+If you don’t need a lot of flexibility in your configuration, you might find  Google Cloud Run to be a good option. Cloud Run is a fully-managed platform that allows you to run containerised applications without having to manage the underlying infrastructure. The platform offers easy deployment, and automatically manages scaling and routing traffic based on incoming requests. It can scale down to zero, which means it will not use any unnecessary resources if there are no requests. The platform is based on containers, so you can write your code in any language and then deploy it through Docker images. 
+
+Cloud Run may be the best choice of platform for projects that do not need a high level of monitoring or configuration, providing that these applications are stateless. A stateless application is one which does not read or store information about their states from one run to the next. Kubernetes Deployment is most commonly used for stateless applications, so Cloud Run is often a great option . 
+
+Cloud Run Deploying Docker containers on Cloud Run 
+
+To deploy Docker containers on Cloud Run:
+
+Build your Docker image and push it to any supported  container registry.
+
+Deploy the container to Cloud Run using the gcloud run deploy command or through the Cloud Run Console.
+
+For more about deploying an app to Cloud Run, see 
+Deploy to Cloud Run
+. 
+
+Docker containers on Google Kubernetes Engine (GKE)
+Google Kubernetes Engine (GKE) is a container orchestration platform provided by Google Cloud that allows you to automate the process of deploying, managing, and scaling containerised applications. Its streamlined cluster setup process makes deploying Kubernetes clusters fast and straightforward. Many functions are automated as well, including version upgrades and management of SSL certificates. 
+
+Although GKE gives you control of all of your configurations, you can choose GKE Autopilot as a fully-managed option. Autopilot uses the Google Cloud Platform (GCP) to automate cluster configuration and to scale the underlying infrastructure based on your parameters and your application's resource requirements. This eliminates the need for manual intervention on your part, and optimizes resources. 
+
+GKE is also particularly resilient, continuously monitoring the cluster and its components. Built-in monitoring and logging features provide real-time insights into your application's performance and health. But you don’t have to watch constantly, because GKE features self-healing clusters which  automatically detect and replace unhealthy nodes or containers, maintaining the desired state and application availability. 
+
+GKE is also convenient for integration with all of the Google Cloud ecosystem, making it easy to leverage other services like Cloud Storage and Google Cloud Identity and Access Management (IAM) to enhance security and governance. GCP itself ensures regular security updates and follows industry best practices to protect the underlying infrastructure and containers.
+
+You may not be ready for the following consideration, but GKE also supports running “stateful” applications. A stateful application is one for which a server saves status and session information. Kubernetes Deployment is commonly used for stateless applications, but you can make an application stateful by attaching a persistent volume to it.  If you find yourself needing to run a stateful application, GKE is a great option. 
+
+Deploying Docker containers on GKE 
+Now that you’ve heard about GKE’s features, here's how you can deploy Docker containers on GKE:
+
+Build your Docker image and push it to any supported  container registry, such as Google Container Registry (GCR).
+
+Create a Kubernetes Deployment manifest that specifies your configuration settings, including the container image you want to run and the desired number of replicas.
+
+Use the GKE Console, or the Kubernetes command line tool kubectl, to deploy the application to your GKE cluster. GKE will handle the orchestration and scaling of the containers for you.
+
+For more about deploying an app to a GKE cluster, see 
+Deploy an app to a GKE cluster
+.
+
+For more on choosing between GKE and Cloud Run, see
+ Google Kubernetes Engine vs Cloud Run: Which should you use?
+
+Docker containers on Google Compute Engine 
+Finally, Google Compute Engine is a virtual machine (VM) service that allows you to run your containerized applications on Google's infrastructure. It has lower access time, which tends to translate to faster performance, and offers easy integration with other GCP services. 
+
+Perhaps most attractive to its users, Google Compute Engine lets you run code on Google’s infrastructure, but grants you more control over the underlying infrastructure of your VM instances than GKE, and far more than Cloud Run. It is particularly suitable for custom environments and applications requiring specific configurations. But with more control comes more responsibility: when using Google Compute Engine, you are responsible for managing the VM instances and scaling. The platform itself is not as simplified as GKE or Cloud Run, and you cannot use all programming languages. 
+
+Deploying Docker containers on Google Compute Engine
+To deploy Docker containers on Google Compute Engine:
+
+Build your Docker image and push it to any supported  container registry.
+
+Provision a VM instance on Google Compute Engine.
+
+Install Docker on the VM.
+
+Build your Docker image and copy it to the virtual machine (or pull the image from a container registry).
+
+Run the Docker container on the virtual machine using the docker run command.
+
+For more about containers on Compute Engine, see 
+Containers on Compute Engine
+.
+
+Key takeaways
+GCP offers several choices for deploying Docker containers, all of which allow you to integrate with other Google services. Cloud Run is the simplest to use, offering a fully managed platform, but with little customization. GKE is a powerful platform that offers more flexibility in configuration coupled with plenty of options for automation. Google Compute Engine lets you control your environments and applications while they run on Google’s infrastructure, but requires significantly more technical knowledge than Cloud Run or GKE. The best option for you will be based on your needs.  
+
+___________________________
+
+Kubernetes YAML files
+Suppose you're a Python developer working on a web application that's experiencing a surge in user traffic. You've containerized your application using Docker, but manually scaling the application to keep up with demand is becoming cumbersome. Kubernetes to the rescue! Kubernetes can manage and scale your containerized application automatically…if you can tell it what to do! This is where Kubernetes YAML files come in.
+
+Kubernetes YAML files define and configure Kubernetes resources. They serve as a declarative blueprint for your application infrastructure, describing what resources should be created, what images to use, how many replicas of your service should be running, and more.
+
+Structure of Kubernetes YAML files
+Every Kubernetes YAML file follows a specific structure with key components: API version, kind, metadata, and spec. These components provide Kubernetes with everything it needs to manage your resources as desired. 
+
+apiVersion: This field indicates the version of the Kubernetes API you're using to create this particular resource.
+
+kind: This field specifies the type of resource you want to create, such as a Pod, Deployment, or Service.
+
+metadata: This section provides data that helps identify the resource, including the name, namespace, and labels.
+
+spec: This is where you define the desired state for the resource, such as which container image to use, what ports to expose, and so on.
+
+
+Let's illustrate this with a simple Kubernetes YAML file for creating a Deployment of your Python web application:
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-web-app
+  labels:
+    app: python-web-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: python-web-app
+  template:
+    metadata:
+      labels:
+        app: python-web-app
+    spec:
+      containers:
+      - name: python-web-app
+        image: your-docker-repo/python-web-app:latest
+        ports:
+        - containerPort: 5000
+
+In the YAML file above, we're defining a "Deployment" resource for a Kubernetes cluster. A Deployment is a way to tell Kubernetes how to run our application. This YAML file tells Kubernetes to create a Deployment named "python-web-app", which will ensure that three instances of our Python web application are always running.
+
+Key components and fields in Kubernetes YAML files
+YAML files can include many other fields, depending on the type of object and your specific needs. 
+
+Pods
+As you’ve learned, a Pod is the smallest and simplest unit in the Kubernetes object model. It represents a single instance of a running process in a cluster and can contain one or more containers. Because it is the simplest unit, a Pod’s YAML file typically contains the basic key components highlighted above:
+
+apiVersion: This is the version of the Kubernetes API you're using to create this object.
+
+kind: This is the type of object you want to create. In this case, it's a Pod.
+
+metadata: This includes data about the Pod, like its name and namespace.
+
+spec: This is where you specify the desired state of the Pod, including the containers that should be running. Specifications include:
+
+Containers: An array of container specifications, including "name", "image", "ports", and "env".
+
+Volumes: Array of volume mounts to be attached to containers
+
+restartPolicy: Defines the Pod's restart policy (e.g., "Always," "OnFailure," "Never")
+
+Deployments
+A Deployment is a higher-level concept that manages Pods and ReplicaSets. It allows you to describe the desired state of your application, and the Deployment controller changes the actual state to the desired state at a controlled rate. In addition to the fields mentioned above, a Deployment's YAML file includes:
+
+spec.replicas: This is the number of Pods you want to run.
+
+spec.selector: This is how the Deployment identifies the Pods it should manage.
+
+spec.template: This is the template for the Pods the Deployment creates.
+
+Services
+A Service in Kubernetes is an abstraction which defines a logical set of Pods and a policy by which to access them. Key components in a Service's YAML file include:
+
+spec.type: This defines the type of Service. Common types include ClusterIP, NodePort, and LoadBalancer.
+
+spec.ports: This is where you define the ports the Service should expose.
+
+spec.selector: This is how the Service identifies the Pods it should manage.
+
+ConfigMaps
+A ConfigMap is an API object used to store non-confidential data in key-value pairs. In addition to the common fields, a ConfigMap's YAML file includes the data field, which is where you define the key-value pairs.
+
+Secrets
+A Secret is similar to a ConfigMap, but is used to store sensitive information, like passwords or API keys. A Secret's YAML file includes:
+
+type: The type of Secret. Common types include Opaque (for arbitrary user-defined data), kubernetes.io/service-account-token (for service account tokens), and others.
+
+data: This is where you define the key-value pairs. The values must be base64-encoded.
+
+Each of these resources can be defined and managed using Kubernetes YAML files. For example, a YAML file for a Secret resource might look like this:
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: db-secret
+type: Opaque
+data:
+  db_username: dXNlcm5hbWU=  # base64 encoded username
+  db_password: cGFzc3dvcmQ=  # base64 encoded password
+
+
+Parameterizing YAML files with Python
+As you’ve seen, YAML files are the backbone of defining and managing resources. However, static YAML files can be limiting, especially when you need to manage different configurations for different environments or deployment scenarios. This is where Python comes in, offering a dynamic and flexible approach to parameterize your YAML files.
+
+For instance, you can customize your rolling update strategy using Python with the following example code.
+
+from kubernetes import client, config
+
+def update_deployment_strategy(deployment_name, namespace, max_unavailable):
+    config.load_kube_config()
+    apps_v1 = client.AppsV1Api()
+
+    deployment = apps_v1.read_namespaced_deployment(deployment_name, namespace)
+    deployment.spec.strategy.rolling_update.max_unavailable = max_unavailable
+    apps_v1.patch_namespaced_deployment(deployment_name, namespace, deployment)
+
+if __name__ == "__main__":
+    update_deployment_strategy('my-deployment', 'my-namespace', '25%')
+
+This is just one example of how Python provides a powerful and flexible way to parameterize your YAML files in Kubernetes. 
+
+Key takeaways
+Kubernetes YAML files play a crucial role in defining and managing Kubernetes resources, enabling Python developers to manage their applications' infrastructure in a consistent, version-controlled, and automated manner. By understanding the structure of these files and their key components, developers can leverage Kubernetes to its full potential and focus more on writing the application logic rather than managing infrastructure.
+
+_____________________________________________
+
+SCALING
+
+Scaling containers on GCP
+One of the most important factors in cloud computing is scalability. For a moment, let’s imagine cloud computing as if it were an actual cloud in the sky. Clouds are made up of water vapor; the more vapor that joins the cloud, the larger it gets. As the cloud releases this water as snow or rain, the cloud gets smaller. That’s scalability; the process of expanding or shrinking as necessary.
+
+The conditions in the atmosphere determine the shape of a cloud throughout this scaling process. There is a lot more we could say about sky-clouds, but let’s return to computing clouds. Your application's requirements are the conditions that determine the direction and method of scaling in cloud computing. 
+
+Horizontal and vertical scaling
+Generally, we can talk about scaling on two axes, horizontal, meaning sideways, and vertical, meaning up and down. In horizontal scaling, more containers are added as needed. Horizontal scaling is useful for adding dedicated resources as the number of users increase, and creating fallback containers in case of failure. In vertical scaling, more resources are allocated to each container. Vertical scaling increases performance. 
+
+Multidimensional scaling
+Multidimensional scaling is a combination of horizontal and vertical scaling. This is sometimes called diagonal scaling, because you are doing some horizontal scaling, adding more containers to add to the number of resources, and some vertical scaling, increasing the performance of existing or added resources. 
+
+Imagine it’s autumn and someone is burning a pile of leaves, but the fire is a little bigger than they planned. That’s pretty dangerous, so they call the fire department. Meanwhile, they fill a bucket and use it to throw water on the fire. Neighbors come over, each with their own bucket, and start throwing more buckets of water. That’s horizontal scaling, the addition of more small resources. 
+
+The fire truck rolls up and hooks up the big hose, but the pressure isn’t very good. In fact it isn’t any better than the pressure from the hoses that other neighbors have stretched from their own homes. All these hoses are moving more water than the buckets, though. That’s diagonal scaling; more resources with a bit more performance in each. 
+
+But then the fire department cranks open the valve on the fire hydrant, and a huge jet of water flies out of the big hose. That’s vertical scaling; increasing resources to a single response unit to increase its performance. 
+
+Elastic scaling
+In cloud computing, you can employ elastic scaling to automatically increase or decrease the number of servers (horizontal) or the resources allocated to existing servers (vertical) or both (multidimensional) based on the current demand. 
+
+Containers can scale down to a fraction of a computer, or scale up to use all the resources of multiple computers. It’s important to decide on the type or types of scaling your application will require in advance so you can make sure to have the right service-level agreement (SLA). Your SLA is the contract with your platform provider; this dictates what will be furnished to you, and at what cost. 
+
+For more details about horizontal and vertical scaling, see 
+Horizontal Vs. Vertical Scaling: How Do They Compare?
+
+For more on the how-to of scaling, see 
+Scaling an application
+. 
+
+For more about horizontal autoscaling, see 
+Horizontal Pod autoscaling
+ and 
+Configuring horizontal Pod autoscaling
+. 
+
+For more on diagonal scaling, see 
+Configure multidimensional Pod autoscaling
+.
+
+For a primer on using autoscaling in Google Kubernetes Engine (GKE), see
+ Understanding and Combining GKE Autoscaling Strategies
+.
+
+Scaling containers on GCP
+Google Cloud Platform (GCP) has massive amounts of computers and components at the ready, so the platform lets you avoid a delayed response to scaling needs. These resources are shared between GCP users, which means you pay less during off hours when your app requires fewer resources. By comparison, if you were running a Kubernetes cluster on-premises, you would pay for electricity for a device that might always be on, regardless of whether it was idle or busy. 
+
+Scaling is also easy to automate using the dashboards in any of GCP’s platforms. These dashboards allow you to set policies and limits. When setting your scaling parameters, be sure to pay attention to the pricing involved with scaling. The base price for a Kubernetes cluster may be a lot lower than the price when it operates at scale. If traffic suddenly takes off for your application, you may be thrilled, but the thrill might be gone when you get the bill. 
+
+Before you choose settings for your scaling,  learn more about the details. 
+
+For more about adjusting capacity for demand and resilience, see 
+Patterns for scalable and resilient apps
+.
+
+For more on instance autoscaling, see
+ About instance autoscaling
+.
+
+For more about basing your autoscaling needs on metrics, see 
+Autoscale workloads based on metrics
+.
+
+Last but far from least, learn about pricing as you set limits for your scaling capabilities. For more on this, see 
+Google Kubernetes Engine pricing
+. 
+
+Pro tip
+Using kubectl, the Kubernetes command line tool, can be intimidating. But once you get used to working with kubectl, it can really streamline your process. It also lets you keep your notes and commands all in one place. 
+
+

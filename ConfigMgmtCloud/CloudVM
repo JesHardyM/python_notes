@@ -1,0 +1,152 @@
+
+
+
+The first line of this code uses the git clone command to clone the github repository blue-kale/hello. The second line uses the cd command to change the directory to this new directory, hello. The third line uses the ls command to list the files in the hello directory. This directory includes a simple web-serving application written in Python, called hello_cloud.py. The last line of code runs this application, which causes a socket to open and listen for HTTP connections on port 8000.
+
+git clone https://github.com/blue-kale/hello
+cd hello
+ls -l
+./hello_cloud.py
+
+The sudo command allows us to pass a different port, port 80, to the hello_cloud.py application so it listens on port 80 instead of on port 8000. 
+
+sudo ./hello_cloud.py 80
+
+This code opens the service definition file, also called a systemd file, for the hello_cloud.py application. 
+
+cat hello_cloud.service 
+
+CODEOUTPUT: 
+The service entry in this file displays the directory in which the configuration expects to find the script we want to execute, /usr/local/bin/.
+
+[Unit]
+After=network.target
+[Service]
+ExecStart=/usr/local/bin/hello_cloud.py 80
+[Install]
+WantedBy=default.target
+
+The first line of code copies the hello_cloud.py file into the directory /usr/local/bin/ . The second line copies the service file, hello_cloud.service, into the directory /etc/systemd/system/. In the third line of code, the systectl command enables hello_cloud to run automatically.
+
+sudo cp hello_cloud.py /usr/local/bin/
+sudo cp hello_cloud.service /etc/systemd/system/
+sudo systemctl enable hello_cloud
+
+This code triggers a reboot of the system, which will restart the hello_cloud application. 
+
+sudo reboot
+
+In this code, the ps ax command provides a list of the running processes. The grep command filters this list to match and keep any items that match the pattern hello. 
+
+ps ax | grep hello
+
+This code installs Puppet on this machine so it’s ready to run Puppet in the future.
+
+sudo apt install puppet
+
+This code runs a script to do the initial configuration of the Puppet server and sets the Puppet process to run automatically on boot.
+
+./hello/setup_puppet.sh
+
+
+_____________________________________
+
+Templating a customized VM
+
+gcloud init
+
+The gcloud init command sets up the authentication procedure between the virtual machine and Google Cloud. Note that you must log in to your cloud account to work with Google cloud from your CLI.
+
+gcloud compute instances create --source-instance-template webserver-template ws1 ws2 ws3 ws4 ws5
+
+This line of code creates five new virtual machines from the webserver template. In this code, the gcloud command calls Google Cloud. The compute parameter indicates we are working with virtual machines. The instances parameter indicates we’ll work with the VM instances, and the create command indicates that we’ll create new instances. The --source-instance-template webserver-template indicates which template to use to create these instances. And finally, the code ws1 ws2 ws3 ws4 ws5 lists the names of the five instances that will be created when this code is run.
+
+Templating in the context of virtual machines is the process of capturing the entire system configuration of a virtual machine. This template can then be used to reproduce or create new virtual machines with the same configuration. This is different from simply copying a virtual machine, which creates a disk image, but may not capture the entire configuration for easy reproduction.
+
+Considering the region and zone for your cloud service is important to ensure bandwidth and reliability for users. Choosing a server location close to your users can significantly reduce latency and improve the overall performance of the cloud service. Additionally, it can also help with adherence to local laws and regulations, but the primary concern is usually performance and reliability.
+
+The option used to determine which operating system will run on a virtual machine (VM) is the "Boot disk." When you create a VM, you specify the boot disk, which contains the OS image. The machine type, on the other hand, refers to the configuration of the VM in terms of CPU and memory resources.
+
+When updating services running on VMs at scale, one efficient method is to create a new reference image with each update. This updated image can then be used to spin up new VMs with the latest updates, ensuring that all VMs are uniform and up-to-date. Another method, not mentioned in your options, is to use configuration management tools like Puppet or Ansible, which can automate the update process across multiple VMs.
+
+When using gcloud to manage VMs, the two parameters that indicate you want to manage VM resources and deal with individual VMs are compute and instances. The compute parameter is used to specify that you are managing compute engine resources, which includes VMs. The instances parameter is used to indicate that the operation is specifically related to individual VM instances. create is a command used with these parameters to create new resources or instances. init is not directly related to managing VM resources in this context.
+
+A load balancer ensures that each node receives a balanced number of requests, give each node one request called round robin is one balancing strategy.
+
+ instance groups like these are usually configured to spin up more nodes when there's more demand, and to shut some nodes down when the demand falls. This capability is called autoscaling.
+
+Since some nodes will shut down when demand is lower, their local disks will also disappear and should be considered ephemeral or short-lived. If you need data persistence, you'll have to create separate storage resources to hold that data and connect that storage to the nodes. That's why the services that we run in the Cloud are usually connected to a database which is also running in the Cloud.
+
+database will also be served by multiple nodes behind a load balancer, but this is typically managed by the Cloud provider using the platform as a service model.
+
+there will be a couple of layers in between the entry point and the actual web service. The first layer will be a pool of web caching servers with a load balancer to distribute the requests among them.
+
+One of the most popular applications for this caching is called Varnish, but of course it's not the only one. The Nginx web server and software also includes this caching functionality. There's a bunch of providers that do web caching as a service like Cloudflare and Fastly. No matter the software used, the result is basically the same. When a request is made, the caching servers first check if the content is already stored in their memory. If it's there, they respond with the contents, if it's not, they ask their configured backend for the content and then store it so that it's present for future requests. This configured backend is the actual web service that generates the webpages for the site, and it will also normally be a pool of nodes running under a load balancer. To get any necessary data, this service will connect to a database. But because getting data from a database can be slow, there's usually an extra layer of caching, specific for the database contents. The most popular applications for this level of caching are Memcached and Redis. 
+
+
+automation is the process of replacing a manual step with one that happens automatically.
+
+Automation refers to a single task; orchestration arranges tasks to optimize a workflow
+
+ a few ways that let us automate the creation of Cloud instances. We can use templating to create new virtual machines, we can run a command line tool that automatically creates new instances for us, or we can choose to enable auto-scaling and let the infrastructure tools take care of that depending on the demand. But all of this automatic creation of new instances needs to be coordinated so that the instances correctly interact with each other and that's where orchestration comes into play. Orchestration is the automated configuration and coordination of complex IT systems and services.
+ The key here is that the configuration of the overall system needs to be automatically repeatable
+
+ The APIs offered by the Cloud providers let us perform all the tasks that we mentioned earlier like creating, modifying, and deleting instances and also deploying complex configurations for how these instances will talk to each other. All of these actions can also be completed through the web interface or the command line. But doing them from our programs gives us extra flexibility which can be key when automating complex setups
+
+  By using orchestration tools, we can automate the configuration of any monitoring rules that we need to set, which metrics we want to look for, when we want to be alerted, and so on, and automatically apply these to a complete deployment no matter which datacenter the services are running in.
+
+   storing our infrastructure in a code like format, lets us create repeatable infrastructure, and that using Version control for the storage, means that we can keep a history of what we've done and easily rollback mistakes
+
+    An option that's becoming really popular in the Orchestration field, is called Terraform. Similar to Puppet, Terraform uses its own Domain-specific language which lets us specify what we want our Cloud infrastructure to look like. The cool thing about Terraform is that it knows how to interact with a lot of different Cloud providers and automation vendors. So you can write your Terraform rules to deploy something on one Cloud provider, and then use very similar rules to deploy the service to a different Cloud provider.
+
+
+Puppet itself also ships with a bunch of plug-ins that can be used to interact with the different Cloud providers to create and modify the desired Cloud infrastructure. Finally, let's spend a moment talking about the contents of the nodes or instances managed by the Orchestration tools. When dealing with nodes in the Cloud, there are basically two options. Either they're long-lived and their contents need to be periodically updated, or they are short-lived and updates are made by deleting the old instances and deploying new ones. Long-lived instances are typically servers that are not expected to go away.
+
+ short-lived instances come and go very quickly. For these cases, it makes less sense to apply changes while they're running. Instead, we normally apply the configuration that we want the instances to have when they start, and we deploy any future changes by replacing the instances with new ones.
+
+ Continuous Integration means the software is built, uploaded, and tested constantly.
+
+  Cloud providers will often enforce rate limits on resource-hungry service calls to prevent one service from overloading the entire system.
+
+
+1.  You have fixed some bugs you’ve discovered in your cloud services, but you want to push them to a test environment before they're placed into production? How can continuous deployment, or CD, help in this situation? 
+
+To Automatically deploy the results of a build based on a set of rules.
+
+2.  What is the advantage of Round Robin DNS?
+
+It´s easy to setup
+
+3. What is the best method for a batch action like        creating ten VMs at once?
+
+The command line interface
+
+4. What is autoscaling?
+
+A cloud automation technique that spins up shuts down VMs into instance groups when demand changes
+
+5. What are the locations from where you can create a VM to run in the cloud? 
+
+The web interface
+The command line interface
+
+6. Both hybrid clouds and multiclouds use a mix of different cloud services. What is the key difference between a hybrid cloud and a multicloud?
+
+A hybrid cloud is a mixture of both public and private clouds and a multicloud runs on a mix of different vendors.
+
+7. Your company is migrating some of its computing needs to a cloud service, and you hear another IT professional saying they will use a “container”. What is a “container” when referring to computing? 
+
+Applications that are packaged together with their configuration and dependencies
+
+8. Which word best describes the direction you are scaling when increasing the capacity of a specific service by making the nodes bigger?
+
+Vertical
+
+9. If you wanted to choose a service with a lot of control, which category would you most likely be choosing from?
+
+Iaas
+
+Containers, you can virtually pack up everything that made the software work on your computer and give them what they need to use the software as intended. It's essentially allowing them to run the application using a snapshot of your system. You could also run a small database inside of a container and connect to that database with another program. Containers give programmers the ability to test client server applications without using another computer or without running up an expensive cloud bill.
+
+Containers allow you to assemble a package that contains an application as well as its configuration and dependencies. In a virtual environment, that's essentially a snapshot of the computer you use to create it. The version of Python used, the libraries, configurations and everything else. So it can be run anywhere else, including the internet regardless of a particular computer or server's operating specs. That's the kind of power containers give you.
+

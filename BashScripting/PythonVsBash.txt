@@ -1,0 +1,114 @@
+for i in $(cat story.txt); do B=`echo -n "${i:0:1}" | tr "[:lower:]" "[:upper:]"`; echo -n "${B}${i:1} "; done; echo -e "\n"
+
+This code snippet is written in the Bash scripting language and designed to 
+capitalize the first letter of each word in a text file. This script iterates 
+through each line in the story.txt file and capitalizes the first letter of each word.
+ It then prints the modified text to the output.
+
+______________________________
+
+cat capitalize_words.py
+
+CODE OUTPUT:
+
+#!/usr/bin/env python3
+
+import sys
+
+for line in sys.stdin:
+
+    words = line.strip().split()
+
+    print(" ".join([word.capitalize() for word in words]))
+
+About this code
+This script takes input from a text file  or from another command, 
+removes the whitespace, splits it into separate words, capitalizes the first 
+letter of each word in every line, and prints the modified text to the standard 
+output. 
+
+cat story.txt | ./capitalize_words.py 
+
+CODE OUTPUT:
+
+Once Upon A Time There Was An Egg Of A Programming Language Called Python
+
+______________________________________
+
+By using bash scripts, we can very quickly turn a command that operates on 
+    just one file into an automated script that handles 1,000 files
+
+Plenty of them also support regular expressions, allowing us to do some very advanced processing of the data in our files.
+
+When these commands are linked together in a data processing pipeline, they can become a powerful tool for processing text data. They can give us information we're looking for quickly about the need to write a full script.
+
+When a bash command line starts becoming this complex, it's a better idea to write a Python script that handles data in a more readable and testable way. 
+
+ it's a good idea to choose bash when we're operating with files and system commands, as long as what we're doing is simple enough that the script is self-explanatory. As soon as it becomes hard to understand what the script is doing, it's better to write it in a more general scripting language like Python. Bash scripts aren't as flexible or robust as having the entire Python language available, with its many functions to operate on strings, lists, and dictionaries.
+
+Bash commands´ availability depends on the platform that we're using. Running a bash script can get the job done very quickly on a Linux machine, but it won't work on a Windows machine. There, we need to write the same script in PowerShell.
+
+ if the tasks that you're trying to accomplish is limited to the current server or a fleet of servers, all running the same operating system, a simple bash script can get the job done.
+
+  if your code is complex or it needs to work across platforms, you might be better off using the Python standard library or other external modules that provide the same functionality.
+
+______________________________
+
+Bash script: A script that contains multiple commands
+
+Cut: A command that can split and take only bits of each line using spaces
+
+Globs: Characters that create list of files, like the star and question mark 
+
+Pipes: A process of connecting the output of one program to the input of another
+
+Piping: A process of connecting multiple scripts, commands, or other programs together into a data processing pipeline
+
+Redirection: A process of sending a stream to a different destination
+
+Signals: Tokens delivered to running processes to indicate a desired action
+
+
+Find Jane:
+#!/bin/bash
+
+> oldFiles.txt
+
+files=$(grep " jane " ../data/list.txt | cut -d ' ' -f 3);
+
+for file in $files; do
+    if test -e "..${file}"; then echo "..${file}" >> oldFiles.txt; fi
+done
+
+Change Jane:
+
+#!/usr/bin/env python3
+
+import sys
+import subprocess
+
+with open(sys.argv[1]) as file:
+    lines = file.readlines()
+    for line in lines:
+        oldvalue = line.strip()
+        newvalue = oldvalue.replace("jane", "jdoe")
+        subprocess.run(["mv", oldvalue, newvalue])
+file.close()
+
+________
+
+#!/usr/bin/env python3
+
+import sys
+import subprocess
+
+
+filename = sys.argv[1]
+
+with open(filename, 'r') as file:
+    for line in file.readlines():
+        old_name = line.strip()
+        new_name = old_name.replace('jane', 'jdoe')
+
+        subprocess.run(['mv', old_name, new_name])
+file.close()

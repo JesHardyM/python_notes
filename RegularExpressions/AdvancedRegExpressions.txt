@@ -1,0 +1,312 @@
+
+CAPTURING GROUPS - Portions of patterns capture in ""
+
+import re
+result = re.search(r"^(\w*), (\w*)$", "Lovelace, Ada")
+print(result)
+    re.Match object; span=(0, 13), match='Lovelace, Ada'>
+print(result.groups())
+    ('Lovelace', 'Ada')
+print(result[0])
+    Lovelace, Ada
+print(result[1])
+    Lovelace
+print(result[2])
+    Ada
+"{} {}".format(result[2], result[1])
+    Ada Lovelace
+
+____________________________________________________________________________
+
+import re
+def rearrange_name(name):
+    result = re.search(r"^(\w*), (\w*)$", name)
+    if result is None:
+        return name
+    return "{} {}".format(result[2], result[1])
+rearrange_name("Lovelace, Ada")
+
+Ada Lovelace
+
+____________________________________________________________________________
+
+Modify the code to accept the inital and the . by including symbols in the accpted characters.
+This will allow it to match middle names, middle initials, as well as double surnames.
+
+
+import re
+def rearrange_name(name):
+    result = re.search(r"^([\w .-]*), ([\w .-]*)$", name)
+    if result == None:
+        return name
+    return "{} {}".format(result[2], result[1])
+rearrange_name("Hopper, Grace M.")
+
+Grace M. Hopper
+
+NOTE: Un-escaped, the dot in this expression will match any character. 
+In this case it makes the code work, but it is incorrect! Since we wanted 
+to match the dot character specifically, we should have escaped the dot in 
+the regular expression. 
+The correct regular expression should be: "^([\w \.-]*), ([\w \.-]*)$"
+____________________________________________________________________________
+
+REVIEW: More on repitition qualifiers
+
+NUMERIC REPETITION QUALIFIERS. 
+These are written between curly brackets and can be one or two numbers specifying a range.
+
+
+Looking for strings that repeat 5 times, returns ghost because it has 5 letters:
+import re
+print(re.search(r"[a-zA-Z]{5}", "a ghost"))
+        Return: re.Match object; span=(2, 7), match='ghost'>
+
+
+Here we have two word that match the search but only the first is returned:
+import re
+print(re.search(r"[a-zA-Z]{5}", "a scary ghost appeared"))
+        Return: re.Match object; span=(2, 7), match='scary'>
+
+
+Here using re:findall we recieve all examples of words with 5 consecutive letters:
+import re
+print(re.findall(r"[a-zA-Z]{5}", "a scary ghost appeared"))
+        Return: ['scary', 'ghost', 'appea']
+
+
+Using re.findall with \b before and after, it only returns the words that have a total of 5 letters.
+import re
+re.findall(r"\b[a-zA-Z]{5}\b", "A scary ghost appeared")
+        Return: ['scary', 'ghost']
+
+
+Find a range of 5-10 consecutive letters/repetitions:
+import re
+print(re.findall(r"\w{5,10}", "I really like strawberries"))
+Return: 
+['really', 'strawberri']
+
+
+A number followed by a comma means at least that many repetitions 
+with no upper boundary limited only by the maximum repetitions in the source text:
+import re
+print(re.findall(r"\w{5,}", "I really like strawberries"))
+Return: 
+['really', 'strawberries']
+
+
+Here we look for a pattern that was an S followed by up to 20 alphanumeric characters. 
+So we got a match for strawberries which starts with S, and is followed by 11 characters.
+import re
+print(re.search(r"s\w{,20}", "I really like strawberries"))
+Return: 
+re.Match object; span=(14, 26), match='strawberries'>
+
+____________________________________________________________________________
+
+EXTRACTING A PID USING REGEX IN PYTHON
+
+import re
+log = "July 31 07:51:48 mycomputer bad_process[12345]: ERROR Performing package upgrade"
+regex = r"\[(\d+)\]"
+result = re.search(regex, log)
+print(result[1])
+        Returns: 12345
+
+The first character of the pattern is the backslash, which is used as the escape character. 
+This means that the next character, which is a square bracket here, is treated literally for 
+matching purposes. After the square bracket, comes the first parentheses. Since it isn't escaped, 
+we know it'll be used as a capturing group. The capturing group parentheses are wrapping the 
+backslash d+ symbols. From our discussion of special characters and repetition qualifiers, we 
+know that this expression will match one or more numerical characters. After the closing parentheses 
+of the capturing group, we have the closing square bracket symbol, also preceded by the escape 
+character.
+
+After calling the search function, we know that because we're capturing groups in an expression, 
+we can access the matching data by accessing the value at index 1. Let's try our expression on a 
+different string and check that it really works, no matter what the rest of the text is.
+
+____________________________________________________________________________
+
+import re
+log = "July 31 07:51:48 mycomputer bad_process[12345]: ERROR Performing package upgrade"
+regex = r"\[(\d+)\]"
+result = re.search(regex, log)
+result = re.search(regex, "A completely different string that also has numbers [34567]")
+print(result[1])
+        Returns: 34567
+
+
+import re
+log = "July 31 07:51:48 mycomputer bad_process[12345]: ERROR Performing package upgrade"
+regex = r"\[(\d+)\]"
+result = re.search(regex, log)
+result = re.search(regex, "A completely different string that also has numbers [34567]")
+result = re.search(regex, "99 elephants in a [cage]")
+def extract_pid(log_line):
+    regex = r"\[(\d+)\]"
+    result = re.search(regex, log_line)
+    if result is None:
+        return ""
+    return result[1]
+print(extract_pid(log))
+        Returns: 12345
+
+
+import re
+log = "July 31 07:51:48 mycomputer bad_process[12345]: ERROR Performing package upgrade"
+regex = r"\[(\d+)\]"
+result = re.search(regex, log)
+result = re.search(regex, "A completely different string that also has numbers [34567]")
+result = re.search(regex, "99 elephants in a [cage]")
+def extract_pid(log_line):
+    regex = r"\[(\d+)\]"
+    result = re.search(regex, log_line)
+    if result is None:
+        return ""
+    return result[1]
+print(extract_pid(log))
+print(extract_pid("99 elephants in a [cage]"))
+        Returns: 12345
+
+
+
+import re
+
+def extract_pid(log_line):
+    regex = r"\[(\d+)\]:\s([A-Z]+)"
+    result = re.search(regex, log_line)
+    if result is None:
+        return None
+    return "{} ({})".format(result.group(1), result.group(2))
+
+# Test cases
+print(extract_pid("July 31 07:51:48 mycomputer bad_process[12345]: ERROR Performing package upgrade"))  # 12345 (ERROR)
+print(extract_pid("99 elephants in a [cage]"))  # None
+print(extract_pid("A string that also has numbers [34567] but no uppercase message"))  # None
+print(extract_pid("July 31 08:08:08 mycomputer new_process[67890]: RUNNING Performing backup"))  # 67890 (RUNNING)
+
+____________________________________________________________________________
+
+BREAKING DOWN THE CODE FOR PID EXTRACTION
+
+import re
+
+def extract_pid(log_line):
+    # Define a regular expression pattern
+    regex = r"\[(\d+)\]:\s([A-Z]+)"
+
+    # Use re.search to find the first match of the pattern in the log_line
+    result = re.search(regex, log_line)
+
+    # Check if there is no match (result is None)
+    if result is None:
+        return None
+
+    # If there is a match, construct and return a formatted string
+    return "{} ({})".format(result.group(1), result.group(2))
+
+# Test cases
+print(extract_pid("July 31 07:51:48 mycomputer bad_process[12345]: ERROR Performing package upgrade"))  # 12345 (ERROR)
+print(extract_pid("99 elephants in a [cage]"))  # None
+print(extract_pid("A string that also has numbers [34567] but no uppercase message"))  # None
+print(extract_pid("July 31 08:08:08 mycomputer new_process[67890]: RUNNING Performing backup"))  # 67890 (RUNNING)
+Explanation:
+
+1. Regular Expression Pattern (regex):
+
+\[(\d+)\]:\s([A-Z]+)
+\[(\d+)\]: Matches a sequence of digits enclosed in square brackets and captures the digits inside the brackets.
+:\s: Matches a colon followed by a whitespace character.
+([A-Z]+): Captures one or more uppercase letters.
+
+2.Search for a Match:
+result = re.search(regex, log_line): 
+Uses the re.search function to find the first occurrence of the pattern in the log_line. 
+The result is a match object.
+
+3. Check for a Match:
+if result is None:: Checks if there is no match (the result is None). 
+If there is no match, the function returns None.
+
+4. Return Formatted String:
+return "{} ({})".format(result.group(1), result.group(2)): 
+If there is a match, this line constructs a formatted string using the captured groups from the match. The result is the process ID and the uppercase message in parentheses.
+
+5.Test Cases:
+The function is then tested with various log lines to demonstrate its behavior.
+In summary, the function uses a regular expression to extract information from log lines 
+that follow a specific pattern, and it returns a formatted string with the relevant information.
+
+____________________________________________________________________________
+SPLITTING
+
+Here we incidate where to one string into many using: re.split(r"[.?!]"
+
+import re
+re.split(r"[.?!]", "One sentence. Another one? And the last one!")
+        Return:  ['One sentence', ' Another one', ' And the last one', '']
+
+
+Here we split the string and also the symbol by including () around the []
+import re
+re.split(r"([.?!])", "One sentence. Another one? And the last one!")
+        Return: ['One sentence', '.', ' Another one', '?', ' And the last one', '!', '']
+____________________________________________________________________________
+SUBSTITUTION / REPLACING
+
+Here the recieved email address is substittuted by [REDACTED]
+import re
+re.sub(r"[\w.%+-]+@[\w.-]+", "[REDACTED]", "Received an email for go_nuts95@my.example.com")
+        Return:  Received an email for [REDACTED]
+
+    EXPLANATION:  Explanation:
+    r"[\w.%+-]+@[\w.-]+": This is a regular expression pattern that matches an email address. 
+    It looks for one or more word characters (\w), dots (.), percent signs (%), plus signs (+), 
+    or hyphens (-) before and after the @ symbol. This is a simple and general pattern for matching 
+    email addresses.
+
+    "[REDACTED]": This is the replacement string. When a match is found, it will be replaced 
+    with "[REDACTED]".
+
+    "Received an email for go_nuts95@my.example.com": This is the input string.
+
+    result = re.sub(...): The re.sub function is called to perform the substitution. 
+    It returns the modified string.
+
+    print(result): Prints the result, which is the original string with the email address 
+    replaced by "[REDACTED]".
+ 
+_______________________________
+Here the order of the strings is substituted using the addition of r"\2 \1"
+import re
+re.sub(r"^([\w .-]*), ([\w .-]*)$", r"\2 \1", "Lovelace, Ada")
+        Return: Ada Lovelace
+
+    Explanation:
+
+    r"^([\w .-]*), ([\w .-]*)$": This is the regular expression pattern.
+
+    ^: Anchors the match at the beginning of the string.
+    ([\w .-]*): Captures any combination of word characters, spaces, dots, or hyphens 
+    in the first group.
+    , : Matches the comma and space between the two groups.
+    ([\w .-]*): Captures any combination of word characters, spaces, dots, or hyphens in the 
+        second group.
+    $: Anchors the match at the end of the string.
+    r"\2 \1": This is the replacement string.
+
+    \2: Refers to the second capturing group.
+    : Adds a space between the two capturing groups.
+    \1: Refers to the first capturing group.
+    "Lovelace, Ada": This is the input string.
+
+    result = re.sub(...): The re.sub function is called to perform the substitution. 
+    It replaces the pattern matched by the regular expression with the specified replacement string.
+
+
+re.split(r"the|a", "One sentence. Another one? And the last one!")
+        Returns: ['One sentence. Ano', 'r one? And ', ' l', 'st one!']
+
+

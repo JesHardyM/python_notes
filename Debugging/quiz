@@ -1,0 +1,40 @@
+
+
+
+1. How can you use pip3 to address the ImportError issue in your Python script, particularly when a module like matplotlib is missing? 
+    Install the missing module using pip3.
+
+
+2. What type of error occurred when attempting to run the Python script located in the /usr/bin directory, as indicated by the provided output?
+    ImportError
+
+3. What is one of the primary purposes of matplotlib?
+    It is primarily used for visualizing 2D plots of arrays and data.
+
+4. In the lab, when you determine the root cause, what is the first step to fix the error? 
+    Rename the data.bak file.
+
+5. You are working to debug a recurring problem in a Python program. Which of the following approaches do you think would be the most effective way to solve it? 
+    Identify the sequence of events leading to the problem.
+
+6. Having completed the lab and worked through the process, which of the following would you want to check when debugging or troubleshooting later iterations of the same software? 
+    Future Software Upgrades
+    Current Bug Rreports
+
+7. Which sequence of actions effectively addressed the issue, starting from identifying the file extension problem to ultimately resolving the MissingColumnError in the Python script?
+    Renaming data.bak to data.csv > Adding the missing column name > Granting permissions to data.csv
+
+8. The lab presents a scenario where you’re tasked with troubleshooting a Python script named infrastructure that is generating errors. You didn’t create the script and don’t have access to its source code. What steps in the lab enable you to troubleshoot this program?
+    Run the infrastructure script to determine whether it generates any errors
+    Take steps to resolve any issues displayed
+    Research any displayed error messages to identify their cause.
+
+9. In the lab, which step(s) must you take to fix an ImportError? 
+    Install pip
+    Install the missing package
+    Change the permissions
+
+
+10. Why is it essential for developers to isolate specific issues or errors in software when troubleshooting? 
+    Effective isolation enables targeted problem-solving and prevents broader system disruptions.
+

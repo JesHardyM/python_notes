@@ -1,0 +1,314 @@
+
+PYTHON EXAMPLES OF LINEAR AND BINARY SEARCH
+
+def linear_search(list, key):
+    """If key is in the list returns its position in the list,
+       otherwise returns -1."""
+    for i, item in enumerate(list):
+        if item == key:
+            return i
+    return -1
+
+
+
+def binary_search(list, key):
+    """Returns the position of key in the list if found, -1 otherwise.
+
+    List must be sorted.
+    """
+    left = 0
+    right = len(list) - 1
+    while left <= right:
+        middle = (left + right) // 2
+        
+        if list[middle] == key:
+            return middle
+        if list[middle] > key:
+            right = middle - 1
+        if list[middle] < key:
+            left = middle + 1
+    return -1
+
+
+______
+
+When troubleshooting an XML configuration file that’s failed after being updated 
+for an application, what would you bisect in the code?  
+
+The list of variables in the file can be bisected or tested in halves 
+continuously until a single root cause is found.  
+______
+
+When using Git for version control, we can use a Git command called bisect. 
+Bisect receives two points in time in the Git history and repeatedly lets us try the code at the 
+    middle point between them until we find the commit that caused the breakage.
+
+If the latest release of the Linux kernel causes the sound card on your computer to stop working, 
+you can use Git bisect to find the commit that broke it and report this as a bug to be fixed.
+
+
+
+If it's a 100 possibiilities, we definitely want to bisect the problem so 
+        we can find the answer in seven steps. Not a 100.
+        Even if we're reducing the amount of attempts by bisecting the problem, 
+        we don't want to spend a long time on each check.
+
+It's very common for example to use it to figure out which browser extension is causing the 
+browser to crash, disabling half of the extensions then checking if the browser crashes with that 
+subset and so on until we find the faulty extension.
+
+FINDING INVALID DATA
+
+Let's see this in action with an example. We have a program that reads data from a CSV file, 
+processes it, and then imports it into a database. One of the users of the system tells us that 
+the file they're trying to import fails with an obscure import error. They've sent us the file 
+so we can try it ourselves. To call the command, we'll connect the output of cat contacts.csv, 
+the file that the user sent us, to the import.py command. *do not test in production*
+
+ And since this script is going to be trying to import data into a database, 
+ we should run it against the test database instead of the production database. 
+ To do that, we'll use the --server flag that takes the name of the database server, 
+ and then we'll pass the test as the parameter.
+
+$ cd import_data/
+
+/import_data$ cat contacts.csv | ./import.py --server test
+
+    *the file fails with an importing error, and doesn't give us a lot of information about what's failing.*
+
+/import_data$ wc -l contacts.csv 
+
+    *We can use the wc command that counts characters, words, and lines in a file. 
+    *In particular, wc -l will print the amount of lines in a file.
+    *Return: 100 contacts.csv
+
+    We can use the head command to print the first lines in the file, and the tail command to print 
+    the last lines. We can pass the amount of lines we want to include as a parameter. 
+    head -15 will print the first 15 lines, while tail -20 will print the last 20 lines.
+
+/import_data$ head -15 contacts.csv 
+
+    Return: First 15 lines
+
+/import_data$ tail -20 contacts.csv 
+
+    Return: Last 20 lines
+
+/import_data$ head -50 contacts.csv | ./import.py --server test
+
+    The first half failed, let's split it again. To do that, we'll use another pipe to take 
+    only half of the previous number. (This way, in each step, we'll add a call to head or tail 
+    for the corresponding size.)
+
+/import_data$ head -50 contacts.csv | head -25 | ./import.py --server test
+
+    This import was successful, so we know the error is in the second quarter of the file.
+
+/import_data$ head -50 contacts.csv | tail -25 | ./import.py --server test
+
+    This test files fails but this is good. We are on the right track.
+    To test that, we'll take the first half using head, then get the second half of it using tail.
+
+/import_data$ head -50 contacts.csv | tail -25 | head -13 | ./import.py --server test
+
+    Ok, now let´s split it one more time:
+
+/import_data$ head -50 contacts.csv | tail -25 | tail -12 | head -6 | ./import.py --server test
+
+    Okay, we're down to six entries, and we know that one of them is the bad one. 
+    Let's spin it one more time, and then we can look at the three remaining entries. 
+
+/import_data$ head -50 contacts.csv | tail -25 | tail -12 | head -6 | head -3 | ./import.py --server test
+
+    Ok we´re down to three, let´s look and see if we can find the error 
+
+/import_data$ head -50 contacts.csv | tail -25 | tail -12 | head -6 | head -3
+
+    Returns: The three lines.
+    This is a comma separated file. This means that each comma is used as a separator between the 
+    fields in the file. If a field includes commas, it should be written between quotes. 
+    But in the case of the third line we're looking at here, we can see that there's a comma 
+    instead of a period after the middle initial, and this is not written between quotes. 
+    The importing script is then confused because there are too many fields in this line. 
+    Okay, let's edit the file and fix it.  Now, let´s import it again...
+
+/import_data$ cat contacts.csv | ./import.py --server test
+
+    Zero Problems, the import was successful! 
+    By splitting the file until we isolated the area of the error we were able to find the error and
+    edit that portion of the code without having to examine the 100 lines one at a time.
+
+
+
+______
+
+def find_item(list, item):
+ #Returns True if the item is in the list, False if not.
+  list.sort()  #The list much be sorted for binary search to work. Originally it was not and caused errors.
+  if len(list) == 0:
+   return False
+
+
+ #Is the item in the center of the list?
+  middle = len(list)//2
+  if list[middle] == item:
+   return True
+
+
+ #Is the item in the first half of the list?
+  if item < list[middle]:
+   #Call the function with the first half of the list
+   return find_item(list[:middle], item)
+  else:
+   #Call the function with the second half of the list
+   return find_item(list[middle+1:], item)
+
+
+  return False
+
+
+#Do not edit below this line - This code helps check your work!
+list_of_names = ["Parker", "Drew", "Cameron", "Logan", "Alex", "Chris", "Terry", "Jamie", "Jordan", "Taylor"]
+
+
+print(find_item(list_of_names, "Alex")) # True
+print(find_item(list_of_names, "Andrew")) # False
+print(find_item(list_of_names, "Drew")) # True
+print(find_item(list_of_names, "Jared")) # False
+
+______
+
+"""The command binary_search([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 3) performs these steps:
+It determines that the key, 3, is in the left half of the list and prints "Checking the left side". 
+It then determines that 3 is in the right half of the new list and prints "Checking the right side".
+Finally, it returns the value of 2, which is the position of the key in the list."""
+
+def binary_search(list, key):
+    #Returns the position of key in the list if found, -1 otherwise.
+
+    #List must be sorted:
+    list.sort()
+    left = 0
+    right = len(list) - 1
+
+    while left <= right:
+        middle = (left + right) // 2
+
+        if list[middle] == key:
+            return middle
+        if list[middle] > key:  #Modified, cannot use elif loop in this case
+            print("Checking the left side") #Indicate which side is being checked
+            right = middle - 1
+        if list[middle] < key:  #Modified, cannot use else loop in this case
+            print("Checking the right side") #Indicate which side is being checked
+            left = middle + 1
+    return -1 
+
+print(binary_search([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 3))
+
+print(binary_search([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 1))
+
+print(binary_search([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 2))
+
+print(binary_search([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 3))
+
+print(binary_search([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 4))
+
+print(binary_search([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 5))
+
+print(binary_search([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 6))
+
+print(binary_search([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 7))
+
+print(binary_search([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 8))
+
+print(binary_search([16, 4, 5, 6, 7, 9, 2, 1, 3, 10], 9))
+
+print(binary_search([3, 5, 7, 1, 4, 6, 9, 8, 2, 10], 11))
+	#Returns -1 as a Not Found Value
+
+
+______
+
+The best_search function compares linear_search and binary_search functions to locate a key 
+in the list, returns how many steps each method took, and which method is the best for that 
+situation. The list does not need to be sorted, as the binary_search function sorts it before 
+proceeding (and uses one step to do so). Here, linear_search and binary_search functions both 
+return the number of steps that it took to either locate the key or determine that it's not in the 
+list. If the number of steps is the same for both methods (including the extra step for sorting in 
+binary_search), then the result is a tie. 
+
+def linear_search(list, key):
+   #Returns the number of steps to determine if key is in the list
+
+
+   #Initialize the counter of steps
+   steps=0
+   for i, item in enumerate(list):
+       steps += 1
+       if item == key:
+           break
+   return steps         #our return is the number of steps, what we compare to find the best method
+
+
+def binary_search(list, key):
+   #Returns the number of steps to determine if key is in the list
+
+
+   #List must be sorted:
+   list.sort()
+
+
+   #The Sort was 1 step, so initialize the counter of steps to 1
+   steps=1
+
+
+   left = 0
+   right = len(list) - 1
+   while left <= right:
+       steps += 1
+       middle = (left + right) // 2
+      
+       if list[middle] == key:
+           break
+       if list[middle] > key:
+           right = middle - 1
+       if list[middle] < key:
+           left = middle + 1
+   return steps     #our return is the number of steps, what we compare to find the best method
+
+
+def best_search(list, key):
+   steps_linear = linear_search(list, key)
+   steps_binary = binary_search(list, key)
+   results = "Linear: " + str(steps_linear) + " steps, "
+   results += "Binary: " + str(steps_binary) + " steps. "
+   if (steps_binary > steps_linear): #if fewer linear steps then it is the best option
+       results += "Best Search is Linear."
+   elif (steps_binary < steps_linear): #if fewer binary steps then it is the best option
+       results += "Best Search is Binary."
+   else:
+       results += "Result is a Tie." #if they are the same both methods are equally valid
+
+
+   return results
+
+
+print(best_search([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 1))
+#Should be: Linear: 1 steps, Binary: 4 steps. Best Search is Linear.
+
+
+print(best_search([10, 2, 9, 1, 7, 5, 3, 4, 6, 8], 1))
+#Should be: Linear: 4 steps, Binary: 4 steps. Result is a Tie.
+
+
+print(best_search([10, 9, 8, 7, 6, 5, 4, 3, 2, 1], 7))
+#Should be: Linear: 4 steps, Binary: 5 steps. Best Search is Linear.
+
+
+print(best_search([1, 3, 5, 7, 9, 10, 2, 4, 6, 8], 10))
+#Should be: Linear: 6 steps, Binary: 5 steps. Best Search is Binary.
+
+
+print(best_search([5, 1, 8, 2, 4, 10, 7, 6, 3, 9], 11))
+#Should be: Linear: 10 steps, Binary: 5 steps. Best Search is Binary.

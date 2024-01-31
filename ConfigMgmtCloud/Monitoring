@@ -1,0 +1,9 @@
+
+
+When push monitoring is used, the service being monitored actively sends metrics to the monitoring system. 
+
+Pages are alerts that need immediate human attention, and are often in the form of SMS or email.
+
+If we have an SLO of 99.99%, that gives us an error budget of .01%.
+
+

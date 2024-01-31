@@ -1,0 +1,119 @@
+mkdir scripts
+cd scripts
+git init         Initialized empty Git repository in /home/user/scripts/.git
+
+
+git config -l
+                Code output:
+    user.email=me@example.com
+    user.name=My name
+    core.repositoryformatversion=0
+    core.filemode=true
+    core.bare=false
+    core.logallrefupdates=true
+
+File With Code:
+#!/usr/bin/env python3
+
+def main():
+    pass
+
+main()
+
+Shell:  
+chmod +x all_checks.py
+git status
+
+            OUTPUT:
+            On branch master
+            No commits yet
+            Untracked files:
+                (use "git add <file>..." to include in what will be committed)
+	            all_checks.py
+            nothing added to commit but untracked files present (use "git add" to track)
+
+git add all_checks.py 
+git status
+
+git commit -m 'Add a check_reboot function'
+
+COMMIT MESSAGES
+Provide a good commit message example
+The purpose of this commit is to provide an example of a hand-crafted,
+artisanal commit message. The first line is a short, approximately 50-character
+summary, followed by an empty line. The subsequent paragraphs are jam-packed
+with descriptive information about the change, but each line is kept under 72
+characters in length.
+If even more information is needed to explain the change, more paragraphs can
+be added after blank lines, with links to issues, tickets, or bugs. Remember
+that future you will thank current you for your thoughtfulness and foresight!
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+
+# On branch master
+#
+# Changes to be committed:
+# new file:   super_script.py
+# new file:   cool_config.txt
+#
+
+
+Integrating git and GitHub
+Git is a disconnected client/server application. This means that repositories are kept on a server and copied to your local machine. Some Git operations, like git push or git pull, will synchronize your copy with the remote repository.
+
+While some organizations run their own private Git servers, most rely on a hosted solution. By far, the most popular is GitHub, but GitLab and Bitbucket are also in use. The Git command line can work with any of these.
+
+Integrating Git and GitHub
+You can use either HTTPS or SSH with the command-line Git client to interact with GitHub. If you are pushing a commit, or working with a private repository, you will need to authenticate. Authentication methods differ depending on whether you’re using HTTPS or SSH.
+
+We’ll demonstrate several ways of using Git with your GitHub account.
+
+HTTPS authentication
+Command-line with HTTPS
+Install the Git CLI according to your operating system. When you push to a GitHub repository over HTTPS, or clone a private repository, Git will prompt you for your GitHub username and password.
+
+If you don’t want to enter your username and password every time, you can store them in a 
+file called .netrc in your home directory, like this:  
+
+8
+machine GitHub.com
+    login my-username
+    password my-password
+
+
+machine api.GitHub.com
+    login my-username
+    password my-password
+ Make sure the file is not readable by anyone else, or Git may ignore it.
+
+Command-line HTTPS with token
+Instead of storing your password in plaintext in the .netrc file, you can generate 
+a personal access token and use that in place of your password. See 
+Managing your personal access tokens
+.
+
+Git Credential Manager
+Git Credential Manager (GCM) is a tool that securely stores your passwords and supplies them to Git without your intervention. It works on Linux, macOS, and Windows, and it supports multi-factor authentication too. You can read more about it 
+here
+.
+
+SSH authentication
+In the previous module, you learned how to generate an SSH key pair and use it for logging in to remote hosts. You can use the same SSH key to authenticate with GitHub. 
+
+To add your SSH key for use with GitHub:
+
+Find the public key you generated in the previous module. It will have a filename like id_rsa.pub.
+
+Open 
+GitHub.com
+ in your browser.
+
+Click on your profile icon in the top right corner and select Settings.
+
+Go to SSH and GPG keys.
+
+Click New SSH key.
+
+Paste the contents of your public key into the text box and click Add SSH key.

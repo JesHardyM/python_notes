@@ -1,0 +1,123 @@
+
+
+This block of code is saying that the package 'sudo' should be present on every computer where the rule gets applied. If this rule is applied on 100 computers, it would automatically install the package in all of them. This is a small and simple block but can already give us a basic impression of how rules are written in puppet.
+
+class sudo {
+ 
+  package { 'sudo':
+    ensure => present,
+  }
+}
+
+Puppet is the current industry standard for managing the configuration of computers in a fleet of machines. Part of the reason why Puppet is so popular is that it's a cross-platform tool that's been around for a while.´
+
+in Puppet fact is a hash that stores information about the details of a particular system.
+
+We typically deploy puppet using a client-server architecture. The client is known as the Puppet agent, and the service is known as the Puppet master. When using this model, the agent connects to the master and sends a bunch of facts that describe the computer to the master. The master then processes this information, generates the list of rules that need to be applied on the device, and sends this list back to the agent. The agent is then in charge of making any necessary changes on the computer.
+
+Puppet is a cross-platform application available for all Linux distributions, Windows, and Mac OS. This means that you can use the same puppet rules for managing a range of different computers. What are these rules that we keep talking about? Let's check out a very simple example. This block is saying that the package 'sudo' should be present on every computer where the rule gets applied. If this rule is applied on 100 computers, it would automatically install the package in all of them. This is a small and simple block but can already give us a basic impression of how rules are written in puppet. 
+
+There are various installation tools available depending on the type of operating system. Puppet will determine the type of operating system being used and select the right tool to perform the package installation. On Linux distributions, there are several package management systems like APT, Yum, and DNF.
+
+Puppet will also determine which package manager should be used to install the package.
+
+We can also enable, disable, start, or stop the services that run on our computer. We can configure crone jobs, the scheduled tasks, add, remove, or modify Users and Groups or even execute external commands, if that's what we need. 
+
+In the following code a file resource is defined. This is used for managing files and directories. This block of code ensures that  /etc/sysctl.d exists and is a directory:
+
+class sysctl {
+  # Make sure the directory exists, some distros don't have it
+  file { '/etc/sysctl.d':
+    ensure => directory,
+  }
+}
+
+In the next code block, we are configuring the contents of /etc/timezone. This will be a file, and the contents of the file will be set to the UTC timezone. We also set the replace attribute to true, which means that even if the contents of the file already exist, they will  be replaced.
+
+class timezone {
+      file { '/etc/timezone':
+        ensure  => file,
+        content => "UTC\n",
+        replace => true,
+      }
+}
+
+In Puppet, Resources are the basic unit for modeling the configuration we want to manage, each resource specifies one configuration that we're trying to manage, like a service, a package, or a file.
+
+ the three most important resources, packages, files, and services
+
+When we declare a resource in our puppet rules. We're defining the desired state of that resource in the system. The puppet agent then turns the desired state into reality using providers. The provider used will depend on the resource defined and the environment where the agent is running. Puppet will normally detect this automatically without us having to do anything special. When the puppet agent processes a resource, it first decides which provider it needs to use, then passes along the attributes that we configured in the resource to that provider.
+
+PUPPET CLASSES
+
+The following code block includes a class with three resources, a package, a file, and a service. All of them are related to the Network Time Protocol, or NTP, the mechanism our computers use to synchronize the clocks. This code ensures that the NTP package is always upgraded to the latest version. We're setting the contents of the configuration file using the source attribute, which means that the agent will read the required contents from the specified location. And we're saying that we want the NTP service to be enabled and running. By grouping all of the resources related to NTP in the same class, we only need a quick glance to understand how the service is configured and how it's supposed to work. This would make it easier to make changes in the future since we have all the related resources together. It makes sense to use this technique whenever we want to group related resources. 
+
+
+class ntp {
+  package { 'ntp':
+    ensure => latest,
+  }
+  file { '/etc/ntp.conf':
+    source => 'puppet:///modules/ntp/ntp.conf'
+    replace => true,
+  }
+  service { 'ntp':
+    enable  => true,
+    ensure  => running,
+  }
+}
+
+By grouping related resources together, we can more easily understand the configuration and make changes in the future.
+
+
+PUPPET RESOURCES
+
+Here in the following code a file resource is defined. This is used for managing files and directories. This block of code ensures that  /etc/sysctl.d exists and is a directory.
+
+class sudo {
+ 
+  package { 'sudo':
+    ensure => present,
+  }
+}
+
+class sysctl {
+  # Make sure the directory exists, some distros don't have it
+  file { '/etc/sysctl.d':
+    ensure => directory,
+  }
+}
+
+
+In the next code block, we are configuring the contents of /etc/timezone.This will be a file, and the contents of the file will be set to the UTC timezone. We also set the replace attribute to true which means even if the contents of the file already exist, they will  be replaced
+
+class timezone {
+      file { '/etc/timezone':
+        ensure  => file,
+        content => "UTC\n",
+        replace => true,
+      }
+}
+
+
+_______________________________________-
+
+ Puppet uses a declarative language because we declare the state that we want to achieve rather than the steps to get there. Traditional languages like Python or C are called procedural because we write out the procedure that the computer needs to follow to reach our desired goal.
+
+ resource ensures that the /etc/issue file has a set of permissions and a specific line in it. Fulfilling this requirement is an idempotent operation. If the file already exists and has the desired content, then Puppet will understand that no action has to be taken.
+
+ If the file doesn't exist, then puppet will create it.
+
+If the contents or permissions don't match, Puppet will fix them. No matter how many times the agent applies the rule, the end result is that this file will have the requested contents and permissions.
+
+Idempotency is a valuable property of any piece of automation. If a script is idempotent, it means that it can fail halfway through its task and be run again without problematic consequences. Say you're running your configuration management system to set up a new server. Unfortunately, the setup fails because you forgot to add a second disk to the computer and the configuration required two disks.
+
+Most Puppet resources provide idempotent actions, and we can rest assured that two runs of the same set of rules will lead to the same end result. An exception to this is the exec resource, which runs commands for us. The actions taken by the exec resource might not be idempotent since a command might modify the system each time it's executed. 
+
+If your automation is idempotent, you can add the missing disk and then have the system pick up from where it left off.
+
+
+
+the test and repair paradigm. This means that actions are taken only when they are necessary to achieve a goal. Puppet will first test to see if the resource being managed like a file or a package, actually needs to be modified.
+
+

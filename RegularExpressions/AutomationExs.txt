@@ -1,0 +1,527 @@
+Practice Notebook: Reading and Writing Files
+In this exercise, we will test your knowledge of reading and writing files by playing around with some text files.
+
+Let's say we have a text file containing current visitors at a hotel. We'll call it, guests.txt. Run the following code to create the file. The file will automatically populate with each initial guest's first name on its own line.
+
+guests = open("guests.txt", "w")
+initial_guests = ["Bob", "Andrea", "Manuel", "Polly", "Khalid"]
+​
+for i in initial_guests:
+    guests.write(i + "\n")
+    
+guests.close()
+No output is generated for the above code cell. To check the contents of the newly created guests.txt file, run the following code.
+
+with open("guests.txt") as guests:
+    for line in guests:
+        print(line)
+Bob
+Andrea
+Manuel
+Polly
+Khalid
+
+The output shows that our guests.txt file is correctly populated with each initial guest's first name on its own line. Cool!
+
+Now suppose we want to update our file as guests check in and out. Fill in the missing code in the following cell to add guests to the guests.txt file as they check in.
+
+write
+new_guests = ["Sam", "Danielle", "Jacob"]
+​
+with open("guests.txt", "a") as guests:
+    for i in new_guests:
+        guests.write(i + "\n")
+​
+guests.close()
+To check whether your code correctly added the new guests to the guests.txt file, run the following cell.
+
+with open("guests.txt") as guests:
+    for line in guests:
+        print(line)
+Bob
+Andrea
+Manuel
+Polly
+Khalid
+Sam
+Danielle
+Jacob
+
+The current names in the guests.txt file should be: 
+Bob, Andrea, Manuel, Polly, Khalid, Sam, Danielle and Jacob.
+
+Now let's remove the guests that have checked out already. 
+There are several ways to do this, however, the method we will choose for 
+this exercise is outlined as follows:
+
+Open the file in "read" mode.
+Iterate over each line in the file and put each guest's name into a Python list.
+Open the file once again in "write" mode.
+Add each guest's name in the Python list to the file one by one.
+
+Ready? Fill in the missing code in the following cell to remove the guests 
+that have checked out already.
+
+checked_out=["Andrea", "Manuel", "Khalid"]
+temp_list=[]
+​
+with open("guests.txt", "r") as guests:
+    for g in guests:
+        temp_list.append(g.strip())
+​
+with open("guests.txt", "w") as guests:
+    for name in temp_list:
+        if name not in checked_out:
+            guests.write(name + "\n")
+To check whether your code correctly removed the checked out guests from the
+ guests.txt file, run the following cell.
+
+with open("guests.txt") as guests:
+    for line in guests:
+        print(line)
+Bob
+Polly
+Sam
+Danielle
+Jacob
+
+The current names in the guests.txt file should be: Bob, Polly, Sam, Danielle 
+and Jacob.
+
+Were the names of the checked out guests correctly removed from the guests.txt 
+file? If not, go back and edit your code making sure to fill in the gaps 
+appropriately so that the checked out guests are correctly removed from the 
+guests.txt file. Once the checked out guests are successfully removed, you 
+have filled in the missing code correctly. Awesome!
+
+Now let's check whether Bob and Andrea are still checked in. 
+How could we do this? We'll just read through each line in the file to see 
+if their name is in there. Run the following code to check whether Bob and 
+Andrea are still checked in.
+
+guests_to_check = ['Bob', 'Andrea']
+checked_in = []
+​
+with open("guests.txt","r") as guests:
+    for g in guests:
+        checked_in.append(g.strip())
+    for check in guests_to_check:
+        if check in checked_in:
+            print("{} is checked in".format(check))
+        else:
+            print("{} is not checked in".format(check))
+Bob is checked in
+Andrea is not checked in
+We can see that Bob is checked in while Andrea is not. Nice work! 
+You've learned the basics of reading and writing files in Python!
+
+///////////////////////////////////////////////////////////////////////
+
+STUDY GUIDE: Reading and writing files
+Opening a file or file-like object to read or write is one of the fundamental steps of a Python programmer. 
+For example, you may want to read a .csv file and convert it to JSON format. Or you may want to select data from a 
+database and write it to an output file.
+
+Reading and writing files
+To read or write a file, use 
+open(). This function includes two arguments: the file path and the mode.
+EXAMPLE:
+
+with open("sample_data/declaration.txt", "rt") as textfile:
+ for line in textfile:
+   print(line)
+
+
+In this example, the first argument is a string containing the filename (sample_data/declaration.txt). 
+The second argument identifies the mode or the way in which the file will be used (rt). 
+“r” means open for reading, and “t” tells Python to expect a text file.
+
+EXAMPLE
+f = open("sample_data/declaration.txt", “w”)
+In this example, the code tells Python to open this file for writing (“w” mode). 
+
+Mode
+The mode argument is optional, and it specifies the mode in which the file is opened. 
+If omitted, it defaults to ”r” and that means opening for reading in text mode. The common modes include:
+
+“r”  open for reading (default)
+
+“w”  open for writing, truncating the file first
+
+“x”  open for exclusive creation, failing if the file already exists
+
+“a”  open for writing, appending to the end of the file if it exists
+
+“+”  open for both reading and writing
+
+Attempting to write to a file opened for read (“r”) will cause a runtime error.
+
+Encoding
+Python distinguishes between binary mode (“b”) and text mode (“t”). 
+By default, files are opened in the text mode, which means you read and write strings from and to the file, which are encoded 
+in a specific encoding. If encoding is not specified, the default is platform-dependent. This means that locale.getencoding() is 
+called to get the current locale encoding. If you need to open the text in a specific encoding, you must specify it.
+
+EXAMPLE
+f = open('workfile', 'w', encoding="utf-8") 
+In this example, the encoding=“utf-8” specifies that the file should be opened with UTF-8, the modern de facto standard. 
+Binary mode data is read and written as bytes objects. You cannot specify encoding when opening a file in binary mode.
+
+You have to have permission to write to the directory where you’re placing the file. 
+It’s a best practice to always close a file .close() when you’re done working with it.
+
+Key takeaways
+To open a file for reading or writing, use open(filename, mode). Two arguments that are needed include the file name and the mode. 
+Python will encode the file as text (“t”) by default unless a specific encoding is specified.
+
+/////////////////////////////////////////////////
+
+
+WORKING WITH FILES
+
+This code removes the file novel.txt:
+    import os
+    os.remove("novel.txt")
+
+This code can be used to rename a file:
+    os.rename("first_draft.txt", "finished_masterpiece.txt")
+
+This code checks whether or not a file exists. If the file exists it will return True. 
+If the file does not exist it will return False:
+    os.path.exists("finished_masterpiece.txt")
+    os.path.exists("userlist.txt")
+
+#This code will provide the file size
+os.path.getsize("spider.txt")
+
+#This code will provide a timestamp for the file
+os.path.getmtime("spider.txt")
+
+#This code will provide the date and time for the file 
+in an easy too understand format 
+    import datetime
+    timestamp = os.path.getmtime("spider.txt")
+    datetime.datetime.fromtimestamp(timestamp)
+
+#This code takes the file name and turns it into an absolute path
+    os.path.abspath("spider.txt")
+
+////////////////////////DIRECTORIES////////////////////
+
+This code returns the current working directory:
+print(os.getcwd())
+
+This code creates a new directory called new_dir:
+os.mkdir("new_dir")
+
+This code snippet changes the current working directory to new_dir. 
+The second line prints the current working directory:
+    os.chdir("new_dir")
+    os.getcwd()
+
+This code creates a new directory called newer_dir. 
+The second line deletes the newer_dir directory:
+    os.mkdir("newer_dir")
+    os.rmdir("newer_dir")
+
+This code returns a list of all the files and sub-directories in the website directory:
+ import os
+ os.listdir("website")
+
+This code defines a dir variable with the name of the directory that we want to check. 
+This makes our code more readable and more usable. 
+Then, it iterates through the file names returned by the os.listdir. 
+So using os.path.join, we join the directory to each of those file names and 
+create a String with a valid full name. 
+Finally, we use that full name to call os.path.isdir to check if it's a directory or a file.
+
+ dir = "website"   
+ for name in os.listdir(dir):
+     fullname = os.path.join(dir, name)
+     if os.path.isdir(fullname):
+          print("{} is a directory".format(fullname))
+     else:
+          print("{} is a file".format(fullname))
+
+
+
+
+
+
+EXAMPLE of using the OS function to create a directory and move a file:
+# Create a directory and move a file from one directory to another
+# using low-level OS functions.
+
+import os
+
+# Check to see if a directory named "test1" exists under the current
+# directory. If not, create it:
+
+dest_dir = os.path.join(os.getcwd(), "test1")
+if not os.path.exists(dest_dir):
+ os.mkdir(dest_dir)
+
+
+# Construct source and destination paths:
+
+src_file = os.path.join(os.getcwd(), "sample_data", "README.md")
+dest_file = os.path.join(os.getcwd(), "test1", "README.md")
+
+
+# Move the file from its original location to the destination:
+os.rename(src_file, dest_file)
+
+
+EXAMPLE using Pathlib to create a directory and move a file:
+
+from pathlib import Path
+
+# Check to see if the "test1" subdirectory exists. If not, create it:
+dest_dir = Path("./test1/")
+if not dest_dir.exists():
+  dest_dir.mkdir()
+
+# Construct source and destination paths:
+src_file = Path("./sample_data/README.md")
+dest_file = dest_dir / "README.md"
+
+# Move the file from its original location to the destination:
+src_file.rename(dest_file)
+
+OS provides functions to create, read, update, and delete files. Some of the basic functions include:
+
+Opening and closing files
+
+Reading from and writing to files
+
+Appending to files
+
+Directories
+OS also provides functions to create, read, update, and delete directories, as well as 
+change directories and list files. Knowing how to use these functions is key to working with files. 
+For example, os.listdir( path ) returns a list of all files and subdirectories in a directory.
+
+Permissions
+Having the ability to update file permissions is an important aspect of making installations from 
+a terminal window. The os.chmod() provides the ability to create, read, and update permissions for 
+individuals or groups.
+
+Things to keep in mind  
+One thing to be aware of is that Python treats text and binary files differently. 
+Because Python is cross-platform, it tries to automatically handle different ASCII line endings. 
+If you’re processing a binary file, make sure to open it in binary mode so Python doesn’t try to 
+“fix” newlines in a binary file.
+
+A best practice is to always close() a file when you’re done reading or writing to it. 
+Even though Python usually closes them for you, it’s a good signal to other people reading your 
+code that you’re done with that file. Make sure to catch any potential errors from filesystem calls, 
+such as permission denied, file not found, and so on. Generally, you wrap them in try/except to handle 
+those errors.
+
+Key takeaways
+There are several ways to manage files and directories in Python. 
+One way is to use low-level functions in the OS and SYS modules that closely mimic standard Linux 
+commands. Another way is to utilize the Pathlib module, which provides an object-oriented interface 
+to working with the file systems. 
+
+//////////////////////////////////////////////////////////
+
+READING CSV FILES
+        CSV = COMMA SEPERATED values
+
+
+import csv
+ f = open("csv_file.txt")
+ csv_f = csv.reader(f)
+ for row in csv_f:
+     name, phone, role = row
+     print("Name: {}, Phone: {}, Role: {}".format(name, phone, role))
+f.close()
+
+The code above will read the data from the CSV file csv_file.txt and print the following information 
+for each row:
+
+Name
+Phone number
+Role
+
+Example output:
+Name: Sabrina Green, Phone: 802-867-5309, Role: System Administrator
+Name: Eli Jones, Phone: 684-3481127, Role: IT specialist
+Name: Melody Daniels, Phone: 846-687-7436, Role: Programmer
+Name: Charlie Rivera, Phone: 698-746-3357, Role: Web Developer
+
+
+Generating CSV /////
+
+hosts = [["workstation.local", "192.168.25.46"],["webserver.cloud", "10.2.5.6"]]
+with open('hosts.csv', 'w') as hosts_csv:
+writer = csv.writer(hosts_csv)
+writer.writerows(hosts)
+
+READ AND WRITE CSV FILES WITH DICTIONARIES //////////////
+
+
+Here the  code is opening the file and creating a DictReader to process our CSV data, 
+then it’s going through the rows to access information in each row using the keys just like 
+we would when accessing data in the dictionary. 
+
+
+#the follow command should be used in the terminal
+cat software.csv 
+#Output name,version,status,users
+#MailTree,5.34,production,324
+#CalDoor,1.25.1,beta,22
+#Chatty Chicken,0.34,alpha,4
+with open('software.csv') as software:
+reader = csv.DictReader(software)
+     for row in reader:
+print(("{} has {} users").format(row["name"], row["users"]))
+
+
+
+Here the code creates a list of dictionaries with the data that we want to store. 
+For this example, we want to store data about the users in our company and the departments that 
+they work in. So here we have our list of dictionaries and each contain the keys, name, username 
+and department. We now want to write this HTML file. So we first define the list of keys that we 
+want to write to the file, then we open the file for writing. Next we created the DictWriter passing 
+the keys that we had identified before, and then we call two different methods on the writer. 
+The right header method will create the first line of the CSV based on keys that we passed, and 
+the right rows method will turn the list of dictionaries into lines in that file. 
+
+users = [ {"name": "Sol Mansi", "username": "solm", "department": "IT infrastructure"},
+ {"name": "Lio Nelson", "username": "lion", "department": "User Experience Research"},
+ {"name": "Charlie Grey", "username": "greyc", "department": "Development"}]
+keys = ["name", "username", "department"]
+ with open('by_department.csv', 'w') as by_department:
+     writer = csv.DictWriter(by_department, fieldnames=keys)
+     writer.writeheader()
+     writer.writerows(users)
+
+
+
+#the follow command should be used in the terminal
+
+cat by_department.csv  
+
+/////  STUDY GUIDE CSV FILES ////
+
+The most common format for importing and exporting data for spreadsheets is a .csv format. A Comma Separated Values (.csv) file is a plain text file that uses—you guessed it—commas to separate each piece of data. You may already be familiar with .csv files if you have saved a spreadsheet in the .csv format. Here is a simple example of a .csv file displaying employee information:
+
+Name, Department, Salary
+
+Aisha Khan, Engineering, 80000
+Jules Lee, Marketing, 67000
+Queenie Corbit, Human Resources, 90000
+
+Notice that each row represents an employee’s information, and the values are separated by commas. 
+
+In this reading, you will examine different commands to use when working with .csv files 
+in Python and be provided with additional links for more information.
+
+Module contents
+The .csv module is a built-in Python functionality used to read and work with .csv files. 
+Let’s look at how the .csv module defines some of these functions:
+
+csv.reader This function returns a reader object that iterates over lines in the .csv file.
+
+csv.writer This function returns a writer object that’s responsible for converting the user’s data 
+    into delimited strings on the given file-like object.
+
+class csv.DictReader This function creates an object that functions as a regular reader but maps 
+    the information in each row to a dictionary whose keys are given by the optional fieldname parameters.
+
+DIALECTS AND FORMATTING PARAMETERS
+Dialects are rules that define how a .csv file is structured, and parameters are formed to control 
+    the behavior of the .csv reader and writer and live within dialects. 
+    The following  features are supported by dialects:
+
+Dialect.delimiter This attribute is a one-character string used to separate fields and defaults 
+    to a comma.
+
+Dialect.quotechar  This attribute is a one-character string used to quote fields containing 
+    special characters and defaults to ‘ ‘’ ‘.
+
+Dialect.strict  This attribute’s default is False, but when True, exception csv.Error will be 
+    raised if an error is detected.
+
+READER OBJECTS
+A reader object contains the following public methods and attributes:
+
+csvreader._next_() This method returns the next row of the reader’s iterable object as a list 
+    or a dictionary, parsed properly to the current dialect. Typically, you would call this next(reader).
+
+csvreader.dialect This attribute is a read-only description of the dialect in use by the parser.
+
+WRITER OBJECTS
+Writer objects provide you the capability to write data to a .csv file. 
+    Let’s look at a couple of public methods and attributes for writer objects:
+
+csvwriter.writerows(rows) This method writes all elements in rows to the writer’s file object 
+    and formats following the current dialect.
+
+csvwriter.dialect This attribute is a read-only description of the dialect being used by the writer.
+
+KEY TAKE-AWAYS
+If you haven’t worked with .csv files yet, it’s only a matter of time. 
+Become familiar with the .csv module’s reader and writer objects to work more efficiently with .csv files. 
+The modules, features, and attributes in this reading are only some of the commands that can be used 
+while working with .csv files. 
+
+PRACTICE QUIZ
+
+import os
+import csv
+
+# Create a file with data in it
+def create_file(filename):
+    with open(filename, "w") as file:
+        file.write("name,color,type\n")
+        file.write("carnation,pink,annual\n")
+        file.write("daffodil,yellow,perennial\n")
+        file.write("iris,blue,perennial\n")
+        file.write("poinsettia,red,perennial\n")
+        file.write("sunflower,yellow,annual\n")
+
+# Read the file contents and format the information about each row
+def contents_of_file(filename):
+    return_string = ""
+
+    # Call the function to create the file 
+    create_file(filename)
+
+    # Open the file
+    with open(filename, "r") as file:
+        # Read the rows of the file into a dictionary
+        reader = csv.DictReader(file)
+
+        # Process each item of the dictionary
+        for row in reader:
+            return_string += "a {} {} is {}\n".format(row["color"], row["name"], row["type"])
+    
+    return return_string  # Ensure this line is indented correctly
+
+# Call the function
+print(contents_of_file("flowers.csv"))
+
+
+TERMS AND DEFINITIONS Course 2, Module 2
+Absolute path: A full path to the resource in the file system
+
+Comma separated values (CSV): A very common data format used to store data as segment of text separated by commas
+
+Dialects: Rules that define how a CSV file is structured
+
+File systems: Methods and structures used to organize and control how data is stored and accessed
+
+Mode: The format controlling what you can do with a recently opened file
+
+Qwiklabs: An online learning environment or virtual machine to simulate real-world scenarios
+
+Reader objects:  Object that represents an element or entity within a scene that needs to be rendered to the screen
+
+Relative path: A portion of a path to show where the resource is located in relation to the current working directory
+
+Virtual machine (VM): A computer simulated through software
+
+Writer objects: The capability to write data to a CSV file

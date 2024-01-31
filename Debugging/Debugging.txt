@@ -1,0 +1,243 @@
+
+
+generally, we say troubleshooting when we're fixing problems in the system running the application, 
+and debugging when we're fixing the bugs in the actual code of the application. 
+
+Tools like tcpdump and Wireshark can show us ongoing network connections, 
+    and help us analyze the traffic going over our cables. 
+Tools like ps, top, or free can show us the number and types of resources used in the system. 
+We can use a tool like strace to look at the system calls made by a program, or 
+ltrace to look at the library calls made by the software.
+
+
+ This means gathering as much information as we need about the current state of things, 
+ what the issue is, when it happens, and what the consequences are, for example. 
+ To get this information, we can use any existing documentation that might help.
+    The first step is to read the logs available to you. Which logs to read, will depend on the 
+    operating system and the application that you're trying to debug. On Linux, you'd read system 
+    logs like /var/log/syslog and user-specific logs like the.xsession-errors file located in the 
+    user's home directory. On MacOs, on top of the system logs, you'd go through the logs stored in 
+    the library logs directory. On Windows, you'd use the Event Viewer tool to go through the event 
+    logs. 
+
+the reproduction case, which is a clear description of how and when the problem appears.
+     A reproduction case is a way to verify if the problem is present or not. We want to make 
+     the reproduction case as simple as possible. That way, we can clearly understand when it 
+     happens, and it makes it really easy to check if the problem is fixed or not, when we try to 
+     solve it.The next step is to try to isolate the conditions that trigger the issue.
+
+The second step is finding the root cause of the problem. This is usually the most difficult step.
+
+The final step is performing the necessary remediation. Depending on the problem, 
+this might include an immediate remediation to get the system back to health, 
+and then a medium or long-term remediation to avoid the problem in the future.
+
+Ex. A program fails with an error, “No such file or directory.” 
+You create a directory at the expected file path and the program successfully runs. 
+Describe the reproduction case you’ll submit to the program developer to verify and fix this error.  
+
+-> A report explaining to open the program without the specific directory on the computer
+    This a specific way to reproduce the error and verify it exists. 
+    The developer can work on fixing it right away.
+
+
+ If you can't modify the code of the program to get more information, check if there's a logging 
+    configuration that you can change. Many applications and services already include a debugging 
+    mode that generates a lot more output then the default mode. By enabling the debug information 
+    in advance, you can get a better picture of what's going on the next time the problem happens. 
+    If that's not possible, you'll need to resort to monitoring the environment when the issue 
+    triggers.
+
+Sometimes, the bug goes away when we add extra logging information, or when we follow the code 
+    step by step using a debugger. This is an especially annoying type of intermittent issue, 
+    nicknamed Heisenbug, in honor of Werner Heisenberg. He's the scientist that first described the 
+    observer effect, where just observing a phenomenon alters the phenomenon.
+
+ in general, when dates are involved in a failure, the problem is due to how the dates are formatted. 
+    In some countries, the dates are written with the month first and the day second. 
+    While in other countries, it's the other way around.
+
+
+
+PYTHON LOGGING MODULE
+To begin using the logging module, you'll first need to import it:
+import logging
+
+By default, the logging module logs messages with a severity level of WARNING and above.
+
+logging.warning('This is a warning message')
+logging.error('This is an error message')
+
+For debugging purposes, you might want to capture more detailed log messages. You can set the logging level to DEBUG to capture all messages using this code:
+
+logging.basicConfig(level=logging.DEBUG)
+logging.debug('This is a debug message')
+
+To keep a record of log messages, you can configure logging to save messages to a file:
+
+logging.basicConfig(filename='app.log', level=logging.DEBUG)
+logging.info('This message will be written to app.log')
+
+Finally, you can customize the format of log messages to include information like the timestamp, log level, and the message itself:
+
+logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s', level=logging.DEBUG)
+logging.error('This is an error with a custom format')
+
+ Instead of using additional  print() statements, you decide to implement logging to capture detailed information about the login flow.
+
+ def user_login(username, password):
+    logging.info(f"Attempting to log in user: {username}")
+    # ... (some code for authentication)
+    if authentication_failed:
+        logging.error(f"Login failed for user: {username}")
+    else:
+        logging.info(f"Successfully logged in user: {username}")
+
+By using the logging module, you can now easily filter and review the log messages to identify patterns and diagnose the login issues.
+
+
+
+PYTHON AND PDB
+
+What is pdb?
+Imagine you're developing a Python application designed to analyze vast amounts of textual data to extract sentiment scores. As the application processes data, it occasionally encounters unexpected data formats, causing it to crash. Given the volume of data and the complexity of the application, identifying the root cause of these crashes using simple print() statements is becoming increasingly challenging. This is where Python's built-in interactive debugger, pdb, comes into play.
+
+The acronym pdb stands for "Python DeBugger." It's an interactive debugger for Python programs, allowing you to:
+
+Set breakpoints
+
+Step through code
+
+Inspect variables
+
+Evaluate arbitrary Python expressions interactively
+
+With pdb, you can pause your program at any point, inspect the values of variables, and even change those values if needed.
+
+Using pdb
+Stepping through code is a fundamental debugging technique that empowers developers to follow the execution flow in detail. By observing code execution step-by-step, you can pinpoint the exact location where a bug or unexpected behavior occurs. Plus, you can get a deeper understanding of how different parts of the codebase interact. This is particularly useful for bugs that don't produce immediate or obvious errors.
+
+To start debugging with pdb, you'll first need to set a breakpoint. 
+
+Step 1: Set a breakpoint
+Set a breakpoint where you suspect the issue might be. A breakpoint is simply a spot in the code that tells pdb to pause your code at that specific line. You set breakpoints with pdb.set_trace(). When you run the code below, the debugger will pause at the line where pdb.set_trace() is called. You will see a prompt like this:
+
+Image of a pbd prompt to enter pbd commands. It says pbd() with an editable textbox after it.
+Copy and paste the code below into a Colab and Jupyter Notebook to see how it works and test some of the pbd commands. 
+
+2345678910
+import pdb
+
+
+def add_numbers(a, b):
+    pdb.set_trace()  # This will set a breakpoint in the code
+    result = a + b
+    return result
+
+
+print(add_numbers(3, 4))
+When you run this code, the execution will pause at the pdb.set_trace() line, and you'll be dropped into an interactive debugger session. 
+
+Step 2: Enter the interactive debugger
+When the breakpoint is hit, you'll enter the interactive debugger. The debugger will display something like this:
+
+><filename.py.(6)add_numbers()
+
+->result=a+b
+
+(Pdb) 
+
+At this point, you can query the variables and see their values. If you try to print the value for the result (p), nothing will be found. Stepping forward using n and running p a second time will show the update to the program.
+
+n (next) is just one of the commands you can use to navigate the debugger. Other commands include:
+
+a (args): Show the arguments of the current function.
+
+b: Manually set a persistent breakpoint while in debugger.
+
+n (next): Execute the next line within the current function.
+
+s (step): Execute the current line and stop at the first possible occasion (e.g., in a function that is called).
+
+c (continue): Resume normal execution until the next breakpoint.
+
+p (print): Evaluate and print the expression, e.g., p variable_name will print the value of variable_name.
+
+Pp (pretty-print): Pretty-print the value of the expression.
+
+q (quit): Exit the debugger and terminate the program.
+
+r (return): Continue execution until the current function returns.
+
+tbreak: Manually set a temporary breakpoint that goes away once hit the first time.
+
+!: Prefix to execute an arbitrary Python command in the current environment, e.g., !variable_name = "new_value" will set variable_name to "new_value".
+
+For a full list of commands, please refer to 
+pdb — The Python Debugger
+
+
+Step 3: Inspect variables
+To inspect the variables, simply type the single character, p, then the variable name to see its current value. For instance, if you have a variable in your code named sentiment_score, just type p sentiment_score at the pdb prompt to inspect its value.
+
+Step 4: Modify variables
+A big advantage of pdb is that you can change the value of a variable directly in the debugger. For example, to change sentiment_score to 0.9, you'd type !sentiment_score = 0.9.
+
+To confirm these changes, use a or directly probe the value with p <value name>.
+
+Step 5: Exit the debugger
+When you’re done, simply enter q (quit) to exit the debugger and terminate the program.
+
+Post-mortem debugging
+If your program crashes, you can use pdb to inspect its state at the time of the crash. Run your script with:  
+
+python -m pdb your_script.py
+
+ If an exception occurs, pdb will automatically start and allow you to inspect the problem. 
+
+In ordinary circumstances, when running this on a script that works, it just starts at the beginning of the program rather than any breakpoints that you may have originally set. Otherwise, it runs with the same commands (n, a, p <variable>, etc.).
+
+Key takeaways
+pdb is Python's built-in interactive debugger for diagnosing and resolving issues in Python applications.
+
+With pdb, you can set breakpoints, step through your code, inspect and modify variables, and evaluate Python expressions interactively.
+
+pdb allows for a more in-depth understanding of code execution flow and aids in identifying the root causes of issues more efficiently than traditional print-based debugging.
+
+
+
+Debugging/ breakpoints in VS Code
+A breakpoint is a technique of debugging. It’s accomplished by setting a stopping point on a specific line of code or condition so the code will pause execution at that point when you run your code in a debugger. This allows you to inspect variables, step through your code one line at a time, and use other debugging techniques. Then, you can resume execution of the code or restart from the beginning.
+
+Breakpoints with VS Code
+Visual Studio Code (“VS Code” or “VSCode”) is a tool that utilizes breakpoints. It is a free, open-source, integrated developer environment (IDE) from Microsoft that allows you to write, run, debug, and test your code in a single window. The VS Code works with almost any programming language, through an extensive system of plugins and extensions. 
+
+When you run your code in the VS Code debugger, you can set breakpoints on any line of code. You can also set a breakpoint expression, and the debugger will only stop on that line when the expression is true. This can be used to set a breakpoint inside a loop. Rather than stop every time the loop executes, you can add a breakpoint expression to stop at one certain point where you think the problem might be.
+
+When to use breakpoints with VS Code
+You can use breakpoints with VS Code in several situations. For example: 
+
+When your code is causing runtime errors or exceptions
+
+When you have errors in loops or other complicated logic
+
+When you need to inspect code and variables at specific points during execution
+
+When you perform general debugging and testing of your program
+
+The advantages of breakpoints include:
+
+You can step through your code one line at a time.
+
+You can watch the value of variables and see how they change as the code runs (without having to insert several print() statements in your code).
+
+You can catch subtle errors more easily.
+
+Disadvantages of breakpoints are:
+
+Running code in a debugger is slower than running the code from the command line.
+
+Setup is required with VS Code and the necessary Python extensions for a new project. It usually takes a few minutes to set up.
+
+Key takeaways
+Breakpoints are a debugging technique that pause the code execution at a predetermined line or point. VS Code, a popular open-source IDE, uses this technique. It allows you to write, run, debug, and test your code in a single window. One of the advantages of breakpoints is that you can step through your code one line at a time and watch the value of variables change as the code runs without having to insert several print () statements in your code.  

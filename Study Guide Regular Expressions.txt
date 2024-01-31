@@ -1,0 +1,149 @@
+STUDY GUIDE REGULAR EXPRESSIONS
+____________________________________________________________________________
+
+
+A regular expression—sometimes called regex—is a string of characters that specifies a pattern to match 
+against some text. In addition to matching patterns, they can search to extract specific parts of text, 
+validate input data, and are supported by code editors and integrated development environments (IDEs). 
+In this reading, you will look at some examples of common regexes used in coding. 
+
+Regex examples
+r”\d{3}-\d{3}-\d{4}”  This line of code matches U.S. phone numbers in the format 111-222-3333.
+
+
+r”^-?\d*(\.\d+)?$”  This line of code matches any positive or negative number, with or without decimal places.
+
+
+r”/^(.+)/([^/]+)$/” This line of code matches any path and filename.
+
+____________________________________________________________________________
+
+In regular expressions, the plus character (+) is a quantifier that specifies that the preceding character or group in the pattern must appear one or more times. It means "one or more occurrences."
+
+For example:
+    a+ will match one or more consecutive occurrences of the letter 'a'.
+    \d+ will match one or more consecutive digits.
+    [a-z]+ will match one or more consecutive lowercase letters.
+
+Here's a brief breakdown of how the plus character works:
+    x+: Matches one or more consecutive occurrences of the character 'x'.
+    (abc)+: Matches one or more consecutive occurrences of the group 'abc'.
+    \d+: Matches one or more consecutive digits.
+    [a-zA-Z]+: Matches one or more consecutive uppercase or lowercase letters.
+
+Here's an example of using the plus character in a regular expression:
+
+import re
+
+pattern = r"\d+"  # Matches one or more consecutive digits
+text = "12345"
+
+result = re.search(pattern, text)
+
+if result:
+    print("Match found:", result.group())
+else:
+    print("No match found.")
+
+
+In this example, the pattern \d+ matches one or more consecutive digits in the string "12345", 
+and it would output "Match found: 12345".
+____________________________________________________________________________
+
+The check_web_address function checks if the text passed qualifies as a top-level web address, 
+meaning that it contains alphanumeric characters (which includes letters, numbers, and underscores), 
+as well as periods, dashes, and a plus sign, followed by a period and a character-only top-level 
+domain such as ".com", ".info", ".edu", etc. Fill in the regular expression to do that, using escape 
+characters, wildcards, repetition qualifiers, beginning and end-of-line characters, and character 
+classes.
+
+import re
+def check_web_address(text):
+  pattern = "^[a-zA-Z0-9._%+-]+(?:\.[a-zA-Z]{2,})+$"
+  result = re.search(pattern, text)
+  return result != None
+
+print(check_web_address("gmail.com")) # True
+print(check_web_address("www@google")) # False
+print(check_web_address("www.Coursera.org")) # True
+print(check_web_address("web-address.com/homepage")) # False
+print(check_web_address("My_Favorite-Blog.US")) # True
+
+
+____________________________________________________________________________
+
+The check_time function checks for the time format of a 12-hour clock, as follows: 
+the hour is between 1 and 12, with no leading zero, followed by a colon, 
+then minutes between 00 and 59, then an optional space, and then AM or PM, in upper or lower case. 
+
+import re
+def check_time(text):
+  pattern = r"^(1[0-2]|0?[1-9]):[0-5][0-9]\s?[apAP][mM]$"
+  result = re.search(pattern, text)
+  return result != None
+
+print(check_time("12:45pm")) # True
+print(check_time("9:59 AM")) # True
+print(check_time("6:60am")) # False
+print(check_time("five o'clock")) # False
+
+____________________________________________________________________________
+
+The contains_acronym function checks the text for the presence of 2 or more characters or digits 
+surrounded by parentheses, with at least the first character in uppercase (if it's a letter), 
+returning True if the condition is met, or False otherwise. For example, "Instant messaging (IM) 
+is a set of communication technologies used for text-based communication" should return True since 
+(IM) satisfies the match conditions."
+
+import re
+def contains_acronym(text):
+  pattern = r"\([A-Z0-9][A-Za-z0-9]*\)" 
+  result = re.search(pattern, text)
+  return result != None
+
+print(contains_acronym("Instant messaging (IM) is a set of communication technologies used for text-based communication")) # True
+print(contains_acronym("American Standard Code for Information Interchange (ASCII) is a character encoding standard for electronic communication")) # True
+print(contains_acronym("Please do NOT enter without permission!")) # False
+print(contains_acronym("PostScript is a fourth-generation programming language (4GL)")) # True
+print(contains_acronym("Have fun using a self-contained underwater breathing apparatus (Scuba)!")) # True
+
+____________________________________________________________________________
+
+Check if the text passed includes a possible U.S. zip code, formatted as follows: 
+exactly 5 digits, and sometimes, but not always, followed by a dash with 4 more digits. 
+The zip code needs to be preceded by at least one space, and cannot be at the start of the text.
+
+
+import re
+def check_zip_code(text):
+    result = re.search(r"(?<!\d)\s\d{5}(?:-\d{4})?(?!\d)", text)
+    return result != None
+
+print(check_zip_code("The zip codes for New York are 10001 thru 11104.")) # True
+print(check_zip_code("90210 is a TV show")) # False
+print(check_zip_code("Their address is: 123 Main Street, Anytown, AZ 85258-0001.")) # True
+print(check_zip_code("The Parliament of Canada is at 111 Wellington St, Ottawa, ON K1A0A9.")) # False
+
+EXPLAINING the regular expression:
+
+(?<!\d): This is a negative lookbehind assertion. 
+    It asserts that what precedes the current position in the string is not a digit (\d). 
+    This is to ensure that the zip code is not immediately preceded by a digit.
+\s: This matches a whitespace character (space).
+\d{5}: This matches exactly 5 digits.
+(?:-\d{4})?: This is a non-capturing group (?: ... ) that matches an optional part of the pattern. 
+    It looks for a hyphen followed by exactly 4 digits (representing the optional extended part of 
+    the zip code).
+(?!\d): This is a negative lookahead assertion. 
+    It asserts that what follows the current position in the string is not a digit. 
+    This is to ensure that the zip code is not immediately followed by a digit.
+Putting it all together, this regular expression checks for a pattern in the text where there's a whitespace character, followed by 5 digits, and optionally followed by a hyphen and 4 more digits. The negative lookbehind and negative lookahead ensure that the zip code is not part of a larger sequence of digits.
+
+____________________________________________________________________________
+
+HELPFUL TOOL
+Sometimes regexes can be complex and difficult to read and understand—even for experienced programmers! 
+There are tools available to help break down the regex and explain what each part of the expression does. 
+A common tool that you can use to help with understanding each stage of a regular expression is:
+
+https://regex101.com/

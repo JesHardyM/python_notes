@@ -1,0 +1,180 @@
+Study guide: Advanced regular expressions
+Advanced regular expressions—commonly referred to as advanced regexes—
+are used by developers to execute complicated pattern matching against 
+strings. In this reading, you will learn about some of the common examples 
+of advanced regular expressions.
+
+ALTERATIONS
+An alteration matches any one of the alternatives separated by the pipe | symbol. 
+Let’s look at an example:
+
+ r"location.*(London|Berlin|Madrid)" 
+
+This line of code will match The course location is London.
+
+MATCHING ONLY AT THE BEGINNING OR END
+If you use the circumflex symbol (also known as a caret symbol) ^ as the first character 
+of your regex, it will match only if the pattern occurs at the start of the string. 
+Alternatively, if you use the dollar sign symbol $ at the end of a regex, it will match 
+only if the pattern occurs at the end. Let’s look at an example:
+
+r”^My name is (\w+)” 
+
+This line of code will match My name is Asha but not Hello. My name is Asha.
+
+CHARACTER RANGES
+Character ranges can be used to match a single character against a set of possibilities. 
+Let’s look at a couple of examples:
+
+r”[A-Z] This will match a single uppercase letter.
+
+r”[0-9$-,.] This will match any of the digits zero through nine, 
+    or the dollar sign, hyphen, comma, or period.
+
+The two examples above are often combined with the repetition qualifiers. 
+    Let’s look at one more example:
+
+r”([0-9]{3}-[0-9]{3}-[0-9]{4})”
+
+This line of code will match a U.S. phone number such as 888-123-7612.
+
+BACKREFERENCE
+A backreference is used when using re.sub() to substitute the value of a capture group 
+into the output. Let’s look at an example:
+
+>>> re.sub(r”([A-Z])\.\s+(\w+)”, r”Ms. \2”, “A. Weber and B. Bellmas have joined the team.”)
+
+This line of code will produce Ms. Weber and Ms. Bellmas have joined the team.
+
+LOOKAHEAD
+A lookahead matches a pattern only if it’s followed by another pattern. Let’s look at an example:
+
+If the regex was:
+    r”(Test\d)-(?=Passed)” 
+ and the string was:
+     “Test1-Passed, Test2-Passed, Test3-Failed, Test4-Passed, Test5-Failed” 
+ the output would be:
+    Test1, Test2, Test4
+
+
+QUIZ
+_______________________________
+1.  We're working with a CSV file, which contains employee information. 
+Each record has a name field, followed by a phone number field, and a role field. 
+The phone number field contains U.S. phone numbers, and needs to be modified to the 
+international format, with "+1-" in front of the phone number. Using groups, to use 
+the transform_record function to do that.
+
+import re
+def transform_record(record):
+  new_record = re.sub(r"(\d{3}-\d{3}-\d{4})", r"+1-\1", record)
+  return new_record
+
+print(transform_record("Sabrina Green,802-867-5309,System Administrator")) 
+Return:  Sabrina Green,+1-802-867-5309,System Administrator
+
+print(transform_record("Eli Jones,684-3481127,IT specialist")) 
+Return:  Eli Jones,+1-684-3481127,IT specialist
+
+print(transform_record("Melody Daniels,846-687-7436,Programmer")) 
+Return:  Melody Daniels,+1-846-687-7436,Programmer
+
+print(transform_record("Charlie Rivera,698-746-3357,Web Developer")) 
+Return:  Charlie Rivera,+1-698-746-3357,Web Developer
+
+
+
+2. The multi_vowel_words function returns all words with 3 or more consecutive vowels (a, e, i, o, u).  
+
+import re
+def multi_vowel_words(text):
+  pattern = r'\b\w*[aeiouAEIOU]{3,}\w*\b'
+  result = re.findall(pattern, text)
+  return result
+
+print(multi_vowel_words("Life is beautiful")) 
+Return:  ['beautiful']
+
+print(multi_vowel_words("Obviously, the queen is courageous and gracious.")) 
+Return:  ['Obviously', 'queen', 'courageous', 'gracious']
+
+print(multi_vowel_words("The rambunctious children had to sit quietly and await their delicious dinner.")) 
+Return:  ['rambunctious', 'quietly', 'delicious']
+
+print(multi_vowel_words("The order of a data queue is First In First Out (FIFO)")) 
+Return:  ['queue']
+
+print(multi_vowel_words("Hello world!")) 
+Return:  []
+
+EXPLANATION
+This regular expression uses \b to match word boundaries, 
+[aeiouAEIOU] to match any vowel, 
+{3,} to specify that there should be 3 or more consecutive vowels, and 
+\w* on both sides of [aeiouAEIOU]{3,} to match any word characters before and after 
+the consecutive vowels.
+_______________________________
+
+ 
+3. The transform_comments function converts comments in a Python script into those usable by 
+a C compiler. This means looking for text that begins with a hash mark (#) and replacing it 
+with double slashes (//), which is the C single-line comment indicator. For the purpose of 
+this exercise, we'll ignore the possibility of a hash mark embedded inside of a Python command, 
+and assume that it's only used to indicate a comment. We also want to treat repetitive hash marks(##),
+(###), etc., as a single comment indicator, to be replaced with just (//) and not (#//) or (//#).
+
+import re
+
+def transform_comments(line_of_code):
+    result = re.sub(r'#+', r'//', line_of_code)
+    return result
+
+TEST CASES
+print(transform_comments("### Start of program")) 
+    Return:  // Start of program
+
+print(transform_comments("  number = 0   ## Initialize the variable")) 
+    Return: number = 0   // Initialize the variable
+
+print(transform_comments("  number += 1   # Increment the variable")) 
+    Return: number += 1   // Increment the variable
+
+print(transform_comments("  return(number)")) 
+    Return: return(number)
+
+EXPLANATION
+In the regular expression r'#+', # matches the hash mark, and + matches one or more occurrences 
+of the hash mark. The replacement pattern r'//' replaces the matched hash marks with double slashes. 
+This way, consecutive hash marks are treated as a single comment indicator.
+_______________________________
+
+
+4.  The convert_phone_number function checks for a U.S. phone number format: XXX-XXX-XXXX 
+(3 digits followed by a dash, 3 more digits followed by a dash, and 4 digits), 
+and converts it to a more formal format that looks like this: (XXX) XXX-XXXX.
+
+import re
+
+def convert_phone_number(phone):
+    result = re.sub(r'(\d{3})-(\d{3})-(\d{4})', r'(\1) \2-\3', phone)
+    return result
+
+Test cases
+print(convert_phone_number("My number is 212-345-9999.")) 
+    Return: My number is (212) 345-9999.
+
+print(convert_phone_number("Please call 888-555-1234")) 
+    Return: Please call (888) 555-1234
+
+print(convert_phone_number("123-123-12345")) 
+    Return: (123) 123-12345
+
+print(convert_phone_number("Phone number of Buckingham Palace is +44 303 123 7300")) 
+    Return: Phone number of Buckingham Palace is +44 303 123 7300 (no change)
+
+
+EXPLANATION
+In the regular expression r'(\d{3})-(\d{3})-(\d{4})', (\d{3}) captures the first three digits, 
+(\d{3}) captures the next three digits, and (\d{4}) captures the last four digits. 
+In the replacement pattern r'(\1) \2-\3', \1, \2, and \3 refer to the captured groups, 
+allowing you to rearrange the digits into the desired format.

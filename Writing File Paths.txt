@@ -1,0 +1,44 @@
+WRITING FILE PATHS
+
+
+#Windows file directory
+C:\my-directory\target-file.txt
+
+
+#Windows file directory written in Python
+C:/my-directory/target-file.txt.
+
+
+#Windows file directory
+C:\\my-directory\\target-file.txt
+
+
+#CWD command: 
+os.getcwd()
+
+
+#CWD command for external files:
+outputs['current_directory_before'] = os.getcwd()
+
+
+File paths are used to either save information in a target location or to load information, 
+applications, or environment variables from a specific location.
+
+
+Windows file paths typically start with a drive name like C or D. 
+In Mac and Linux, it starts with a slash, which is the root. 
+This slash is sometimes called a forward slash.
+
+To use the current directory, use the CWD command in your code. 
+OS.getcwd, followed by the file name you want to access.
+
+
+To use the file paths to reference external files, you'll also need to identify the output holder. 
+In this case, the getting and setting the current directory command would look like this: 
+outputs['current_directory_before'] equals os.getcwd()
+
+You can also list files and directories to find the file path you need using this code
+outputs ('files_and_directories') equals os.listdir()
+
+You can also access the file paths for environment variables by entering 
+outputs ('path _ value') equals os.environ.get ('path')

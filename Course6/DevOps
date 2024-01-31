@@ -1,0 +1,150 @@
+
+
+DevOps
+The traditional method of developing and deploying code included two teams: the development team and the IT operations team. The development team would write the code and then hand it off to the operations team. Then, the operations team would be responsible for deploying the code, conducting maintenance on it, and monitoring the code. With this method, two major problems continued to occur. First, the IT operations team did not have a complete understanding about what they were deploying or how the software should behave. On the other side, the development team lacked real-world knowledge in how their applications performed in production. This siloed way of working lacked efficiency and cohesiveness. Something had to change. DevOps was the solution.
+
+In this reading, you will learn more about DevOps, its five principles, and how it’s implemented.
+
+DevOps
+DevOps is the union between two important teams: the development team and the operations team. It’s a philosophy that attempts to eliminate the historical communication gap between developers and the IT operations department and to automate the processes between the two teams. The goal of DevOps is to produce better software more quickly and reliably. It focuses on cross-team collaboration and communication. DevOps emphasizes automation throughout the entire development process to increase reliability from writing the code, testing it, deploying it, and monitoring it.
+
+Let’s explore a well-known streaming service company as an example. After becoming wildly successful early on, the company realized they would need to move their services into the cloud to be able to serve their millions of new users. At the same time, they recognized that their monolithic Java application would not support the vast amount of users. The company decided to redesign their application as a collection of independent microservices so there would be no single point of failure. They wrote the applications to leverage cloud-native databases and other services offered by the cloud provider. In addition, the company allowed for each team to update and release their team’s services on their own schedule. The company built their own tools to create a continuous integration and delivery pipeline. The company did not know it yet, but the changes they were implementing were the basics of DevOps principles.
+
+DevOps principles
+DevOps has the following key principles:
+
+Collaboration: The main purpose of DevOps is to promote and facilitate collaboration among teams.
+
+Automation: Each part of the development process is automated. This helps make the building, testing, deploying, and monitoring of the code more stable and predictable.
+
+Continuous improvement: Teams should always be looking for opportunities to improve the process, tools, and communication between teams.
+
+Customer mindset: Teams should remember that the software they are developing will be used by customers. Listen to customers and take their feedback into consideration to continually create an improved software program. You want to develop software that is fun to use.
+
+Create with the end in mind: Teams should understand customer needs and pain points, and they should develop solutions that solve real problems.
+
+Key takeaways
+The DevOps philosophy is an opportunity for the development and operations teams to work together in an agile environment and optimize the development and deployment process. For DevOps to be successful, team members need to be open to working in a collaborative way with new processes. The automation tools can take time to learn how to implement, but this is only a small part of the larger battle.
+
+
+__________________________________
+
+
+SLAs
+The words I promise are powerful and meaningful. If you tell someone you promise to do something, that person is expecting you to follow through with your promise. In the operations and tech world, these promises are called service-level agreements (SLAs).
+
+In this reading, you will learn more about SLAs, how they relate to service-level objectives (SLOs), and common SLAs in the industry.
+
+Service-level agreements
+A service-level agreement is an agreement between a vendor and its clients or users that can be legally binding. Typically the SLA is included in the sale contract, guaranteeing a minimum level of performance for the client’s or user’s application. You can think of these as promises you are giving your users. And as with any promise there are consequences for breaking that promise. The SLA writes out the consequences that result if the promises are not met. Metrics in the SLA can include uptime, responsiveness, and responsibilities. 
+
+How SLAs relate to SLOs
+An SLA outlines the specific SLOs and the penalties for violating them. Oftentimes, these consequences are a financial penalty or a cancellation of the contract. Because of this, it is important to understand what SLAs have been agreed upon to make informed decisions about how much to invest in reliability.
+
+SLA examples
+To view examples and templates of SLAs used in the industry, view the following:
+
+Service-level agreement (SLA) examples and template
+
+Key takeaways 
+An SLA is a service agreement typically between an IT service provider and a client. It outlines the details of the service, including what the service should accomplish and the consequences if there is a breach in the contract.
+
+____________________________
+
+SLOs
+All services have a level of quality and performance they are trying to obtain or reach. In the world of tech and operations, these are called service-level objectives (SLOs).
+
+In this reading, you will learn more about SLOs, including how to write appropriate SLOs and how SLOs relate to service-level agreements (SLAs) and service-level indicators (SLIs).
+
+Service-level objectives (SLOs), defined
+SLOs are found within an SLA and focus on specific and measurable metrics like uptime and response time. SLOs set the customers’ expectations and communicate to the IT and DevOps teams the goals they need to achieve. It’s important to understand and educate yourself on the SLOs that have been promised in the SLA so you can make informed decisions about how to invest in reliability and keep your promise to achieve the objectives.
+
+When creating SLOs, write them as simply and clearly as possible. If the SLOs are vague or immeasurable, they will not serve their purpose — and you will be setting yourself up for failure.
+
+SLO example
+Imagine that you work for an IT company that has entered into a contract with a customer, and that contract contains the following SLA:
+
+You will maintain 99% uptime of your application, defined as “the home page loads correctly 99% of the time within 10 seconds or less.”
+
+The SLA tells you which SLIs need to be monitored, including the page load time and whether the page loads correctly or returns an HTTP error message.
+
+Your SLOs include:
+
+The page will load in 10 seconds or less 99% of the time.
+
+The page will return an HTTP 200 (success) code 99% of the time.
+
+Now that your SLA and SLOs are defined, you can use a combination of monitoring tools to test the site periodically and record the results for tracking your real-world performance against the SLOs.
+
+Key takeaways
+SLOs are important as they help achieve promises defined in the SLA. These help set customer expectations and should be clearly written, measurable, and attainable.
+
+________________________________
+
+SLIs
+A common term used by DevOps engineers and software developers is service-level indicator (SLI). SLIs measure the performance of an application at any given time.
+
+In this reading, you will learn more about SLIs, including what they are, how to measure and monitor them, and how they relate to service-level agreements (SLAs) and service-level objectives (SLOs).
+
+Service-level indicators
+An SLI measures the performance of your application against the objective, or SLO. It’s important to monitor SLIs to determine if your application is meeting the objective — or violating the SLA. Simply, SLIs help answer the question, “How did we do?” in terms of having a promise and reaching that promise. Remember to keep your SLIs simple and choose the right metrics to track. 
+
+SLI example
+Imagine that you work for an IT company and enter into a contract with customers. The contract contains the following SLA:
+
+You will maintain 99% uptime of your application, defined as “the home page loads correctly 99% of the time within 10 seconds or less.”
+
+The SLA tells you which SLIs you should monitor, including the page load time and whether the page loads correctly or returns an HTTP error message.
+
+Monitoring tools like DataDog or AppDynamics can measure and record these metrics for you. These tools offer the ability to perform synthetic checks, by simulating a user accessing your application, and recording the results. The results from the synthetics checks can be used as your SLIs. These monitoring tools help you determine if you are staying within your SLOs.
+
+Key takeaways 
+Service-level indicators help make service-learning objectives measurable. They provide actual data on performance. SLAs, SLOs, and SLIs all play a role in the overall service reliability
+
+_____________________________________
+
+Error budgets
+Can you remember a time when you were growing up and someone gave you twenty dollars to spend at the grocery store? They might have said to bring home a gallon of milk and a dozen eggs, and whatever money is left you can spend however you want. That extra money — or the change — is akin to an error budget in service operations.
+
+In this reading, you will learn more about error budgets, how they pertain to IT roles, and how an error budget can be used in the real world.
+
+Definition of an error budget
+An error budget is the maximum amount of time a software program can fail and still be in compliance with the service-level objective (SLO). An error budget is typically represented by a percentage. A simple example is this: If an SLO states that a website should function properly 99.9% of the time, then the error budget is only 0.1%.
+
+Now let’s calculate the error budget using time as a measurement in the question below. Here is an example in which an error budget is computed for a month’s time frame using the following formula:
+
+Error budget = Total time * (1-SLO)
+
+What is the error budget, in minutes, with an SLO of 99.9% uptime over a month?
+
+The total time is the total time in minutes for a given time period. (Assume a 30-day month for this example.) The SLO is the service-level objective represented as a decimal.
+
+Total time = 30*24*60 = 43,200. This formula multiplies 30 days by 24 hours in each day by 60 minutes in each hour to get a total of 43,200 minutes.
+
+SLO = 99.9/100 = 0.999. This value represents the SLO as a decimal.  Substitute these values into the formula to get:
+
+Error budget = 43,200 * (1–0.999)
+
+Error budget = 43.1 minutes. This means the maximum amount of time the service can be down  is up to 43 minutes per month without violating the agreed-upon reliability standards (the SLO).
+
+The role of error budgets
+Error budgets are part of cloud operations, site reliability engineering, and DevOps teams. They are used as a metric to make sure everything is running smoothly. If everything is running smoothly and there is a significant amount of time to use from the error budget, then DevOps members can use this time to invest in innovation on a product or software program. Error budgets also help establish limits for the development and programming teams. If there is not a lot of error budget to use, then developers know that they can’t try new things and that their focus needs to remain on the reliability of the product or program. Developers should save the release of new features for when the error budget is large.
+
+Key takeaways
+Error budgets are typically represented as the maximum amount of time that a program is able to fail without violating an agreement. The error budget is based on the agreed-upon SLO between the clients and vendor. Developers are in favor of higher error budgets because this allows them to innovate and try new things within the product or service.
+
+_________________________________
+
+DevOps review
+Congratulations! You’ve made it to the end of the module! Before you tackle the practice quiz and learn more about how DevOps is used in the real world, let’s review everything you’ve learned about DevOps.
+
+DevOps is a methodology that replaced the traditional way of developing and deploying code. DevOps is a collaborative effort between the development and operations teams. They work in an agile environment to eliminate the communication gap between the two teams. This allows the software to be developed more quickly and reliably. Automation is a key element through the entire DevOps process. DevOps has five key principles that include: collaboration, automation, continuous improvement, customer mindset, and end-goal-focused creation. For DevOps to be successful, team members need to adjust their mindsets and be open to working in a collaborative way with new processes.
+
+A service-level agreement (SLA) acts as a promise and can be a legally binding agreement between a vendor and its clients or users. It includes the sale contract outlining the minimum level of performance for the client’s or user’s application, and it includes the consequences if there’s a breach in the contract. Metrics in the SLA include uptime, responsiveness, and responsibilities. 
+
+Service-level objectives (SLOs) are found within an SLA and focus on specific metrics like uptime and response time. They should be measurable and clearly written. SLOs set the customers’ expectations and communicate to the IT and DevOps teams the goals they need to achieve. 
+
+Service-level indicators (SLIs) measure the performance of an application against the SLOs at any given time. Monitoring SLIs provides you with valuable insights on whether your application is meeting the objective or violating the SLA. SLIs help development and operation teams analyze and determine if the promise — or promises — they made to their customers or users are upheld.
+
+An error budget is the maximum amount of time a software program can fail and still be in compliance with the SLO. This value is typically represented in percentage form and is the difference between 100% and the SLO percentage value. For example, if an SLO states that a website should function properly 99.8% of the time, then the error budget is only 0.2%. DevOps teams use their error budget time either to focus on the reliability of the program or to take risks in the program (if it is running smoothly).
+

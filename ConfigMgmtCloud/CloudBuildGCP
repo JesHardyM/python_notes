@@ -1,0 +1,200 @@
+Cloud Build is a fully managed continuous integration and continuous delivery (CI/CD) service provided by GCP. It allows developers to automate the process of building, testing, and deploying applications or code changes to various environments.
+
+In this reading, you will learn more about the components that make up Cloud Build, the benefits of using Cloud Build, and integration capabilities of Cloud Build with GCP and Github repositories.
+
+Components
+The core components of Cloud Build include:
+
+Build triggers
+
+Build configurations
+
+Build steps
+
+Build triggers are the events that initiate the Cloud Build process. They define when and under what conditions a build should be triggered. Cloud Build supports various types of build triggers, including:
+
+Push trigger: This initiates a build when code changes are pushed to a specific branch of a version control repository like Github.
+
+Tag trigger: This triggers a build when a new tag is applied to the repository.
+
+Pull request trigger: This automatically starts a build when a pull request is opened, allowing you to run tests and checks before merging code changes.
+
+Scheduled trigger: This defines a specific time or schedule when the build should be triggered, enabling regular builds.
+
+Build configurations are YAML files that define the build steps, environment variables, and other settings for a build. The build configuration file is typically named cloudbuild.yaml and is placed in the root of the repository. It includes information on steps, substitutions, timeouts, and artifacts.
+
+Build steps are individual actions that Cloud Build executes in sequence according to the build configuration. Each step can run commands or scripts and the steps are executed in the order they are listed. Let’s look at an example. A typical build configuration might include the following build steps:
+
+Fetching dependencies: The first step pulls in the required libraries and dependencies for the application.
+
+Building the application: This step compiles the code and creates the application binaries.
+
+Running tests: This step executes unit tests or other types of tests to ensure code quality.
+
+Deploying: The last step deploys the application to a specified environment like staging or production.
+
+Benefits
+Using Cloud Build for CI/CD workflows offers a number of benefits, including: speed, scalability, and seamless integrations with other GCP services. 
+
+Cloud Build is a fully managed service, meaning you do not need to worry about infrastructure setup and maintenance. It automatically scales resources based on your build requirements, allowing you to run multiple builds in parallel, reducing build times and increasing overall development velocity, speed, and efficiency.
+
+Cloud Build's ability to scale automatically means it can handle builds of any size, from small projects to large-scale applications. As your development needs grow, Cloud Build can accommodate the increased workload without manual intervention, ensuring that your CI/CD process remains smooth and efficient.
+
+As part of the GCP ecosystem, Cloud Build seamlessly integrates with other GCP services, making it easy to incorporate different stages of the CI/CD workflow into your projects. Integrations include:
+
+Source repository
+
+Artifact registry
+
+Cloud deployment manager
+
+Kubernetes Engine (GKE)
+
+Integration capabilities
+Cloud Build offers integration capabilities with both GitHub and Google Cloud Source Repositories, making it easy to set up CI/CD workflows for projects hosted in either of these version control systems. While the overall integration approach is similar, there are some differences based on the version control system being used.
+
+Cloud Build integrates seamlessly with GitHub repositories, allowing you to trigger builds automatically whenever code changes are pushed to specific branches or when pull requests are created. The integration steps for Github include:
+
+Install the GitHub app.
+
+Open the Repositories page in the Google Cloud console. You will see the Repositories page.
+
+In the project selector in the top bar, select your Google Cloud project.
+
+Select Create host connection to connect a new host to Cloud Build.
+
+On the left panel, select GitHub as your source provider.
+
+In the Configure Connection section, enter the following information:
+
+Region: Select a region for your connection. A region must be specified. Your connection cannot exist globally.
+
+Name: Enter a name for your connection.
+
+Select Connect. After you select the Connect button, you will be asked to authorize the Cloud Build GitHub App to access your GitHub account. You may revoke access to the app by uninstalling or deleting the App from your host at any time.
+
+Provide repository authentication.
+
+Determine Cloud Build configuration.
+
+Observe automatic triggering.
+
+Since Google Cloud Build is a part of GCP, it naturally integrates with Google Cloud Source Repositories (GCSR). GCSR is a fully featured, private Git repository hosting service provided by Google Cloud. The integration process is more streamlined compared to GitHub. There is no need for additional authentication or setup. Cloud Build automatically has access to your GCSR repositories since both are part of GCP. The integration between Cloud Build and Google Cloud Source Repositories allows you to set up build triggers and use cloudbuild.yamlconfiguration files in your GCSR-hosted repositories, just like you would with GitHub. Since both services are part of GCP, you get enhanced visibility and monitoring capabilities when using Cloud Build with Google Cloud Source Repositories. You can view build logs, track build history, and access other GCP-specific features easily.
+
+Key takeaways
+Cloud Build’s core components streamline the software development process, enabling teams to achieve faster, automated, and more reliable application deployments. Cloud Build provides a robust and efficient CI/CD solution with automatic scaling, seamless GCP integrations, and cost-effectiveness. The integration capabilities of Cloud Build with GitHub and Google Cloud Source Repositories share the same core functionalities, allowing you to define build triggers, configure build steps, and leverage the power of Cloud Build's CI/CD service.
+
+
+When building your project on GitHub, the CI system uses the GitHub API token to add a URL to the GitHub project. What is this URL called?
+Webhook
+
+Question 2
+You log on to a virtual call to meet with another software developer to discuss build steps in Cloud Build. What are the build steps that are typically included in the build configurati
+
+Fetching dependencies
+Building the app
+Running tests
+
+You are excited to implement a new practice in your coding development. What software development practice describes code changes that occur automatically, frequently, and safely when integrating them into a shared repository?
+Continuous integration
+
+GitHub supports CI/CD by allowing you to run tasks whenever certain events occur in your code repository and allowing you to trigger any part of a CI/CD pipeline off any webhook on GitHub. Which GitHub feature supports these activities?
+GitHub Actions
+
+Question 6
+A software developer pushes out some poorly written code to production. This resulted in a system failure and multiple outages. Which process allows teams to understand and learn from system failures and incidents?
+Post-mortem
+
+Question 7
+Complete this sentence. DevOps describes the steps of the software development lifecycle that ________________________________. Select the best answer. 
+
+take place after the code is written
+
+
+Question 8
+As part of a development or operations team, what are the benefits of using DevOps tools in the software development lifecycle?
+
+
+They’re designed to address many of the pain points     common to software development organizations.
+
+They save you—and your organization—time and money.
+
+They help you tackle processes like continuous integration, continuous delivery, automation, and collaboration.
+
+All of the above. 
+
+How does automation reduce errors? Select all that apply. 
+
+Eliminates Human intervention
+Focuses on each task individually
+bypasses repetitive functions
+
+
+Which metric would you employ to measure the length of time it takes for a code change to be committed to a branch and be in a deployable state?
+Lead time for change
+
+You’re looking to reduce the amount of waste happening within your CI/CD pipeline. What are some things that you can look for?
+Partially completed work
+Handoffs
+
+
+
+You are about to use GitHub as part of your continuous integration (CI) pipeline. You prepare your code and other artifacts from source control. Then, you log in to GitHub. Aside from your username, which of the following items is required to initiate the integration?
+
+Token
+
+
+A developer needs your expertise on the components of Cloud Build. They are trying to identify where events initiate the Cloud Build process. Which component are they trying to find?
+Build Triggers
+
+
+You inform a colleague that continuous integration (CI) is a way to develop software to make it easier, faster, and more reliable. What are the three core practices CI is composed of? 
+Automated building
+Automated testing
+Version Control system integration
+
+
+Your team has just launched a mobile application that translates English into American Sign Language. Upon the release, your team discovers that the app doesn't integrate well with the Android system. Your team fixes the problem urgently and after a few quick rounds of testing, your team pushes out another release. What type of release is this?
+Hotfix release
+
+
+You overheard two software programmers discussing the need to conduct a post-mortem in the break room. What’s another term for post-mortem?
+Incident analysis
+
+
+What is DevOps? Select the best answer
+DevOps is the steps of the software development lifecycle that happen after the code is written. 
+
+You’re a developer who wants to employ the use of DevOps tools during the CI/CD process. What are some popular tools you can use to automate different stages of the software development lifecycle? Select all that apply. 
+
+Spinnaker and ARgoCD
+Jenkins and GitLab
+
+Which of the following are steps in the “from coding to the cloud” process? Select all that apply.
+
+The DevOps team receives the Docker files
+
+
+You want to check that everything in your application or software is working as it should. Which kinds of tests should you run to check for system performance?
+End to end tests
+System tests
+
+
+Which technique can be used to analyze, design, and manage the flow of materials and information required to bring a product to a customer? 
+Value stream mapping (VSM)
+
+
+Which of the following statements are true about the “from coding to the cloud” process? Select all that apply.
+
+
+From coding to the cloud is a strategic IT approach to software development.
+
+Preparing code for the cloud is a mix of DevOps and programmer responsibilities.
+
+
+
+
+
+
+
+

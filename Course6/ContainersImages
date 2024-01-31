@@ -1,0 +1,385 @@
+
+
+Programming with Python
+
+Using Git
+
+Interacting with the OS from the command line
+
+Working with VMs running in the Cloud
+
+
+
+Distributed systems, also referred to as distributed computing or distributed databases, utilize different nodes to interact and synchronize over a shared network. These nodes can also represent independent software processes or other recursive encapsulated systems. They often represent independent physical hardware items as well, such as servers. Distributed systems work to eliminate system bottlenecks and single points of failure.
+
+A common example of a distributed system would be a website that contains:
+
+Presentation logic – responsible for displaying the user interface and handling user interactions
+
+Business logic – manages the application's rules and processes, ensuring proper data handling and functionality
+
+Database engine – stores and retrieves data used by the website
+
+Web server – serves as the intermediary between the user's browser and the various components
+
+All of these items could be run on a single server, but it is common to run each component on separate servers for redundancy and fault tolerance.
+
+Key characteristics of a distributed system:
+Distributed computing systems have the following characteristics:
+
+Resource sharing – A distributed system may share hardware, software, or data
+
+Error detection – Errors and inefficiencies can be more easily detected
+
+Transparency – A node in the system can interact and communicate with other nodes
+
+Simultaneous processing – The same function can be processed by multiple machines at once
+
+Scalability – If more machines are added, the computation and processing power can increase as needed
+
+Heterogeneity - The majority of distributed systems have asynchronous nodes and components that use various operating systems, middleware, software, and hardware which make it possible to expand or add new components
+
+Distributed systems are used in various applications and scenarios, including cloud computing, web services, peer-to-peer networks, content delivery networks (CDNs), grid computing, and more. They enable organizations to harness the power of multiple machines and locations to achieve high performance, fault tolerance, and scalability in their computing environments. However, designing and managing distributed systems can be complex, requiring careful consideration of communication protocols, data consistency, and fault-tolerant strategies. Let’s take a look at the advantages and disadvantages of using a distributed system.
+
+Advantages of a distributed system
+Distributed computing systems have the following advantages:
+
+Flexibility - You can tune the characteristics of each server to the component that it will be hosting. For example, an application server might need more memory or CPU; a database server needs more disk and I/O throughput.
+
+Large volume - You can run multiple copies of components for fault tolerance or to handle higher amounts of traffic. 
+
+Redundancy of nodes - A distributed system's nodes provide redundancy so that if one fails, there are other nodes available to step in and take its place. 
+
+Fault tolerance - By lowering the risks associated with having a single point of failure, distributed systems improve dependability and fault tolerance.
+
+Disadvantages of a distributed system
+Distributed computing systems have the following disadvantages:
+
+Increased complexity - Compared to conventional computer environments, distributed systems are more difficult to design, administer, and comprehend.
+
+Extra work - Components have to do some extra work to find each other. 
+
+Potential introduction of new problems - Network problems could introduce a new point of failure into your application.
+
+Potential introduction of delays - The network could also introduce some delays.
+
+Increased costs - In contrast to centralized systems, distributed systems' scalability enables managers to quickly add more capacity as needed, which can potentially raise expenses.
+
+On one hand, if you are designing an application that needs to scale, you should build in some awareness of distributed systems architecture from the beginning. You should not assume that everything is on the same server as you. Try to find some way for each component to discover the others (anything from a configuration file, to a service catalog, to a full service mesh). On the other hand, don’t overcomplicate things before you need to. Overcomplicated designs can be fragile and hard to maintain in the long term.
+
+Key takeaways
+Distributed systems are crucial in various applications, but require careful design and management to address their complexities and potential challenges.  
+
+Definition of distributed systems - A distributed system is a collection of software components that collaborate across separate servers or nodes, often using a shared network. These systems aim to eliminate bottlenecks and single points of failure by distributing tasks and functions across multiple components.
+
+Characteristics of distributed systems - Distributed computing systems exhibit several key characteristics, including resource sharing, error detection, transparency, simultaneous processing, scalability, and heterogeneity.
+
+Advantages and disadvantages - Distributed systems offer advantages such as flexibility, handling large volumes of traffic, redundancy of nodes, and fault tolerance. However, they also come with disadvantages like increased complexity, the need for extra work to locate components, potential introduction of new problems and delays due to network issues, and increased costs associated with scalability.
+
+NALSD
+NALSD, also known as non-abstract large system design, is a discipline and a process invented by Google that aims to give SREs (site reliability engineers) the ability to assess, design, and evaluate large systems. NALSD is the process of designing complex and substantial systems, such as software applications, hardware systems, or even organizational structures, with a focus on practical, concrete details rather than on abstract or theoretical concepts. NALSD emphasizes the tangible and real-world aspects of system design and implementation. 
+
+NALSD combines elements of capacity planning, component isolation, and graceful system degradation that are crucial to highly available production systems. 
+
+Key characteristics of NALSD
+NALSD requires DevOps teams to think about scale and resilience during the design process. It separates the design process into two phases. The two phases have the following key characteristics: 
+
+Phase 1: Technical design
+Phase 1 is an iterative process that involves multiple rounds of design and refinement. It's common to create prototypes, conduct feasibility studies, and gather feedback from stakeholders to continuously refine the technical design. In this phase, the team tries to answer two questions about the proposed design:
+
+Is it possible? Will the design even work?
+
+Can we do better? Can we make it faster, simpler, or cheaper?
+
+Phase 2: Scaling up
+In Phase 2, the team assesses whether the system design is feasible at scale. They consider how the system will perform when subjected to significant increases in load. Scalability is essential to ensure that the system can accommodate growth without a dramatic loss of performance. What if you suddenly add a million users to the system? How will the system be able to accommodate a random increase in users?
+
+Is it feasible? Will it work at scale? Is it cost-effective?
+
+Is it resilient? What happens if the database goes down? 
+
+Can we do better? Are there changes or additions that we need to make?
+
+Three key goals of NALSD
+Three of the key goals of NALSD are the following: 
+
+The first is proper capacity planning. Capacity planning is understanding how to properly size each component and how to properly plan for growth. This goal involves careful monitoring, performance analysis, and prediction of growth trends to prevent resource exhaustion or over-provisioning. Capacity planning is crucial in NALSD design because it involves estimating the required resources (CPU, memory, storage, network bandwidth, etc.) to meet current and future demands.
+
+The second is component isolation. In NALSD design, a fundamental principle is component isolation, highlighting the importance of designing each element of the system to maximize simplicity, modularity, and independence from one another. The "do one thing and do it well" philosophy encourages developers to create components that have a clear and specific purpose.
+
+The final goal is graceful degradation. This is the idea that parts of the system should continue to work when another part fails, rather than everything failing at once. For example, in a web application, if a database server becomes unavailable, the system might switch to a read-only mode, allowing users to access existing data while blocking new updates until the database is restored.
+
+Google’s NALSD Workbook 
+The NALSD Workbook was created by Google's SRE team. It is designed to help engineers and developers with the design and architecture of large-scale, reliable systems.
+
+The NALSD Workbook contains valuable insights, best practices, and guidelines for designing and building complex and scalable systems that can handle high loads and remain reliable. Engineers often refer to such resources to improve their system design skills and create more robust and efficient software and infrastructure. If you're interested in learning more about large-scale system design, this workbook is a fantastic resource and can be found 
+here
+. 
+
+Key takeaways
+Here are three key takeaways from this reading on NALSD:
+
+Definition of NALSD: NALSD, or Non-Abstract Large System Design, is a discipline and process introduced by Google, primarily aimed at empowering site reliability engineers (SREs) to assess, design, and evaluate large-scale systems. 
+
+Two phases of NALSD: Phase 1 involves continuous refinement through feedback, prototyping, and feasibility studies. It seeks to answer: "Is it possible?" and "Can we do better?" Phase 2 evaluates the system's feasibility and resilience at scale, considering how it will perform under significant load increases. 
+
+Three key goals of NALSD: Proper capacity planning, component isolation, and graceful degradation are the three goals of NALSD. These goals are in place so that the system can continue functioning even when individual parts fail.
+
+
+________
+
+Built-In Libraries vs. External Libraries
+As we covered in an earlier course, the Python Standard Library comes as part of the Python installation and includes modules for the most common tasks you can do with Python. But there's tons of other things you might want to do in your scripts, and not all of them are in the standard library. This is where external modules come into play. When developers write a Python module that they think others might find useful, they publish it in PyPI -- also known as the Python Package Index (
+https://pypi.org
+). We can browse this repository of Python modules to find the module we need. It includes thousands of projects, which are classified by different categories, like topic, development status, and intended audience.
+
+In this module, we’re going to be transforming and converting images. To do that, we'll be using a popular library for image manipulation: the Python Imaging Library (PIL). The original PIL library hasn't been updated since 2009 and does not support Python 3. Fortunately, there's a current fork of PIL called 
+Pillow
+, that properly supports Python 3 and is kept up-to-date. The Pillow library is packaged with the name pillow, but the module name in Python is still PIL.
+
+If you try to import the PIL module on a computer that doesn't have pillow (or PIL) installed, you might get an error like this:
+
+import PIL
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+ModuleNotFoundError: No module named 'PIL'
+
+Okay, looks like I don't have that module yet! As we covered in an earlier course, there are several ways to add external modules to your Python environment. PIL is a pretty common library, and on Linux it’s usually available as a native package. For example:
+
+user@ubuntu:~$ sudo apt install python3-pil
+
+For other environments, you should use Python's package installer, pip3. Like this:
+
+$ pip3 install pillow
+
+__________________________
+
+What is an API?
+Application Programming Interfaces (APIs) help different pieces of software talk to each other. When you write a program, you typically use a bunch of existing libraries for the programming language of your choice. These libraries provide APIs in the form of external or public functions, classes, and methods that other code can use to get their job done without having to create a lot of repeated code.
+
+And not only that, APIs can also be used by other pieces of software, even if they were written in a completely different programming language. For example, Cloud services use APIs that your programs can communicate with by making web calls. What’s special about an API? What makes it different to any other function that you would write in your own code?
+
+If you look at the library's code, you’ll find it has many functions that we're not meant to use directly from our code. These internal or private functions, classes, and methods do important work, but they’re there to support the functions that are published by the library. You probably don't have time to dig in to understand every little bit of how the code works, but you need to know how to interact with the library to do useful work. An API is sort of like a promise. Even if the library's internal code changes, you expect the function to keep accepting the same parameters and returning the same results. That provides a stable interface to write your code with. That's an API!
+
+Library authors are free to make improvements and changes to the code behind the interface, but they shouldn't make changes to the way the functions are called or the results they provide. Because this would break the code that depends on that library. When a library author needs to make a breaking change to an API, then they need to have a plan in place for communicating that change to their users. That's why 
+breaking changes 
+should
+ be saved for major version increments of a library
+.
+
+When you choose a certain library to use with your code, the first step is to get familiar with its API. You'll need to look at how the functions are called, what inputs they expect, and what outputs they'll return.
+
+
+_______________________________
+
+How to Make Sense of an API?
+How do you learn to use a library or an API that you’ve never worked with before? It might take you a bit of time to familiarize yourself with how the library operates, but that's okay. It's worth spending some time understanding the way the functions are organized, the inputs and outputs, and the general expectations of the library.
+
+In general, a good API should be descriptive. You should be able to look at a function's name and have a pretty good idea of what it will do. A well-designed API will follow patterns and naming conventions. That means that the functions, classes and methods should have names that help you understand what to expect from them. And when the name isn’t enough, you should have access to the documentation for each of the functions that will help you figure out what they do.
+
+For example, when we visit the 
+reference page for the Image object
+ in Pillow, we see this piece of example code:
+
+from PIL import Image
+im = Image.open("bride.jpg")
+im.rotate(45).show()
+
+This piece of code is pretty straightforward. Even without having seen this library before, you can probably guess that it opens an image called bride.jpg, rotates it 45 degrees, and then shows it on the screen.
+
+But how can we know for sure? We can look up each of the functions in the documentation and check what they’re supposed to do. When dealing with open-source libraries, we can even check out how the function is implemented to see if it matches our expectations. For a web service API or a closed-source library, you might not have access to the underlying code, but you should have access to the documentation that’s generated by the code.
+
+For a Python library like PIL, the code is documented using docstrings. If you remember from waaaay back in our first course, docstrings are documentation that lives alongside the code. You've been using them ever since! When you use “help()” to describe a function, or read a description of what a Python function does in your IDE, what you’re reading comes from docstrings in the code.
+
+For example, let's take a look at the documentation for PIL:
+
+help(PIL)
+
+Help on package PIL:
+
+NAME
+    PIL - Pillow (Fork of the Python Imaging Library)
+
+DESCRIPTION
+    Pillow is the friendly PIL fork by Alex Clark and Contributors.
+        https://github.com/python-pillow/Pillow/
+
+    Pillow is forked from PIL 1.1.7.
+
+    PIL is the Python Imaging Library by Fredrik Lundh and Contributors.
+    Copyright (c) 1999 by Secret Labs AB.
+
+    Use PIL.__version__ for this Pillow version.
+    PIL.VERSION is the old PIL version and will be removed in the future.
+
+    ;-)
+
+PACKAGE CONTENTS
+    BdfFontFile
+    BlpImagePlugin
+    BmpImagePlugin
+    BufrStubImagePlugin
+    ContainerIO
+    CurImagePlugin
+    DcxImagePlugin
+    DdsImagePlugin
+    EpsImagePlugin
+...
+
+______________________________________-
+
+Generate and manage containers
+Generating image containers
+Up until now, you have been working with prepackaged container images. Now, it’s time to build your own.
+
+To 
+build a container image
+, you create a Dockerfile, which contains step-by-step instructions for Docker to package your application along with all its dependencies.
+
+Choose a base image
+One important step is 
+deciding which base image to use
+. The base image provides all the operating system files inside the container; it’s a bit like trying to choose between different Linux distributions. The best base images provide just what your application needs to run, without a lot of extra bloat, such as extra command line tools, libraries, drivers, etc.
+
+Here are some of the most popular base images:
+
+Debian
+ and 
+Ubuntu
+: containers that boot into a full-featured, general Linux environment 
+
+Alpine Linux
+: a stripped-down image designed to result in small, fast containers
+
+Python
+: great for running Python apps
+
+The base images make good use of tags to provide lots of choices. For example, you can choose among several versions of Debian or Ubuntu by providing the right tag. The Python base image not only includes every Python version since 3.7, but also includes variants based on the Debian or Alpine images.
+
+Create a Dockerfile
+Now, you can create a Dockerfile in your project directory. Again, the Dockerfile lists the steps needed to generate your container image. 
+
+Here’s a sample Dockerfile for a Python web app that uses Flask and SQLAlchemy:
+
+1234567
+FROM python:3.9
+WORKDIR /app
+COPY requirements.txt ./
+RUN pip install -r requirements.txt
+COPY . .
+EXPOSE 4000
+CMD [ "flask", "run", "--host=0.0.0.0", "--port=4000"]
+Here’s a line-by-line explanation of what this does:
+
+FROM sets the base image to use. In this case, we are using the Python 3.9 base image.
+
+WORKDIR sets the working directory inside the image.
+
+COPY requirements.txt ./ copies the requirements.txt file to the working directory.
+
+RUN pip install -r requirements.txt installs the requirements.
+
+COPY . . copies all the files in the current directory to the working directory.
+
+EXPOSE 4000 exposes the port 4000.
+
+CMD [ "flask", "run", "--host=0.0.0.0", "--port=4000"] tells Docker to run Flask when the container starts.
+
+Your project probably already has a requirements.txt file. Here’s a minimal one that just installs Flask, SQLAlchemy, and the PyMysql driver:
+
+flask
+pymysql
+Flask-SQLAlchemy
+
+
+Build a Docker image
+Now that you have these files in your project directory, you can 
+build a Docker image
+ with the docker build command. It’s important to 
+choose the best Docker image
+ for your specific project.
+
+As we discussed previously in the section on containers and tags, you probably want to tag your container image. Most containers at least use tags for the version number. You do that by adding the -t option to the command. For example, you might use the following command:
+
+docker build -t myname/myapp:1.0 .
+
+In this command, “myname” is your registry username, and “myapp” is the name of your application.
+
+This command usually produces a lot of output, as Docker downloads the base image, runs each of the commands in your Dockerfile, and tags the image.
+
+If you plan to upload your image to a registry, you can do that by adding the –push option. Generally, though, you would build the container, test it, then push it to the registry in a separate step — ideally all as part of a CI/CD pipeline.
+
+Pro tip
+Docker images are built from layers. You’ll notice that Docker adds a layer to the image for each command in your Dockerfile. Some of those layers can be quite large, if many files were changed from the previous layer. A common trick is to clean up at the end of a command that creates a bunch of temporary files.
+
+Manage images
+When you’ve built your image, you can use it to start a container:
+
+docker run -p 4000:4000 myname/myapp:1.0
+
+In the above command, myname/myapp:1.0 is the image you built earlier. The -p argument forwards port 4000 on the host to the webserver on port 4000 inside the container. (Note that it matches the --port=4000 argument we included in the Dockerfile earlier.)
+
+After you’ve been building containers for a while, you’re going to build up a lot of old, stale, or half-built images. To see what images are sitting around taking up hard drive space, you can use the ls command:
+
+docker image ls -a
+
+You can remove the unused images (images that are not associated with any container) with the prune command.
+
+docker image prune
+
+As mentioned in the section on generating images, you can also push your image to a repository like DockerHub:
+
+docker image push myname/myapp:1.0
+
+
+Key takeaways
+Developers choose to containerize their applications for several reasons, as containerization offers various benefits that make the development, deployment, and management of applications more efficient and scalable.
+
+
+__________________________
+
+Generate and manage containers: VS Studio & Docker
+Virtual Studio (VS) Code provides an 
+optional extension
+ that integrates with Docker, making it possible to 
+build and manage container images 
+right inside the integrated development environment (IDE).
+
+Build a container using VS Code and Docker
+Prerequisites: You have already installed VS Code in Course 1 and Docker Desktop in Course 4.
+
+Steps to install:
+
+In the VS Code menu, select View > Extensions.
+
+Search for “docker.”
+
+Install the verified Docker extension from Microsoft.
+
+When you’ve installed Docker, the extension adds a number of helpful features to VS Code. These include:
+
+Autocompletion and syntax highlighting when you’re editing a Dockerfile
+
+Scanning your Dockerfile for potential problems
+
+Commands to quickly generate Dockerfile and Compose file templates
+
+A new “Docker view” that shows containers and images on your machine and allows you to start and stop containers, launch a shell inside a container, and inspect the files in a running container
+
+Connections to DockerHub and other registries, allowing you to publish images by dragging and dropping them
+
+Debugging code inside a running container
+
+Access to pretty much every Docker command from the Command Palette
+
+DevContainer option
+Microsoft supports  a new open-source standard called DevContainer that extends the use of Docker in the development cycle. Rather than build your container every time you want to test it, with DevContainer, you can actually develop and debug your code inside a container.
+
+DevContainer is also compatible with GitHub Codespaces, which means you can run your IDE in the cloud. Instead of spending time setting up your local development environment just right, you can add a devcontainer.json file to your Git repository and develop in the cloud with a development environment that is fully version controlled.
+
+You can read more about DevContainer 
+here
+
+Key takeaways
+VS Code's integration with Docker simplifies the process of container creation, orchestration, and management, enabling developers to build, test, and deploy applications more efficiently. Containers offer a consistent and isolated environment for development, eliminating the “it works on my machine” problem and ensuring seamless collaboration across teams.
+

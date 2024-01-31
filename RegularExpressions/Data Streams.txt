@@ -1,0 +1,321 @@
+#!/usr/bin/env python3 -> This is important, because it sets the Python version to Python 3
+______________
+
+cat hello.py
+#!/usr/bin/env python3
+
+name = input("Please enter your name: ")
+print("Hello, " + name)
+
+./hello.py 
+Please enter your name: Roger
+#Output will be Hello, Roger
+
+def to_seconds(hours, minutes, seconds):
+    return hours*3600+minutes*60+seconds
+
+_______________________________________________
+
+
+print("Welcome to this time converter")
+
+cont = "y"
+while(cont.lower() == "y"):
+    hours = int(input("Enter the number of hours: "))
+    minutes = int(input("Enter the number of minutes: "))
+    seconds = int(input("Enter the number of seconds: "))
+
+    print("That's {} seconds".format(to_seconds(hours, minutes, seconds)))
+    print()
+    cont = input("Do you want to do another conversion? [y to continue] ")
+    
+print("Goodbye!")
+
+
+RUN THE CODE AND IT OPERATES A COVERTER TO GIVE THE NUMBERO OF SECONDS
+
+    
+Welcome to this time converter
+Enter the number of hours: 
+5
+Enter the number of minutes: 
+7
+Enter the number of seconds: 
+16
+That's 18436 seconds
+
+Do you want to do another conversion? [y to continue] 
+
+_______________________________________________
+EXPLANATION
+
+Function to_seconds:
+This function takes three parameters: hours, minutes, and seconds.
+It calculates the total number of seconds by converting hours to seconds 
+(1 hour = 3600 seconds), minutes to seconds (1 minute = 60 seconds), and adding them together.
+The result is returned.
+
+def to_seconds(hours, minutes, seconds):
+    return hours * 3600 + minutes * 60 + seconds
+
+Welcome Message:
+The code starts by printing a welcome message.
+
+print("Welcome to this time converter")
+
+Conversion Loop:
+The code enters a while loop that continues as long as the user inputs 
+'y' or 'Y' when prompted to continue.
+cont = "y"
+while cont.lower() == "y":
+
+User Input for Time Conversion:
+Inside the loop, the user is prompted to input the number of hours, minutes, and seconds.
+
+    hours = int(input("Enter the number of hours: "))
+    minutes = int(input("Enter the number of minutes: "))
+    seconds = int(input("Enter the number of seconds: "))
+
+Time Conversion and Output:
+The to_seconds function is called with the user input, and the result is printed.
+
+    print("That's {} seconds".format(to_seconds(hours, minutes, seconds)))
+    print()
+
+Continue or Exit:
+The user is then asked whether they want to perform another conversion. 
+If the input is 'y' or 'Y', the loop continues; otherwise, it exits.
+
+    cont = input("Do you want to do another conversion? [y to continue] ")
+
+Goodbye Message:
+Once the user decides to stop the conversions, a "Goodbye!" message is printed.
+
+print("Goodbye!")
+
+
+____________________________________________________________________________
+When we use the input function to accept user input in a Python script 
+we're using the STDIN stream. The standard output stream or STDOUT is a pathway 
+between a program and a target of output, like a display.
+
+I
+
+STDIN - STANDARD IN
+STDOUT - STANDARD OUT
+STDERR - STANDARD ERROR
+
+cat streams.py
+#!/usr/bin/env python3
+
+data = input("This will come from STDIN: ")
+print("Now we write it to STDOUT: " + data)
+print("Now we generate an error to STDERR: " + data + 1)
+
+./streams.py  
+This will come from STDIN: Python Rocks!
+Now we write it to STDOUT: Python Rocks!
+
+cat greeting.txt 
+Well hello there, STDOUT
+
+cat greeting.txt 
+Well hello there, STDOUT
+
+ls -z
+_______________________________________________
+ A shell is a command-line interface used to interact with your operating system. 
+ The most commonly used shell on Linux is called bash. Other popular shells are Zsh and Fish.
+
+Our Python programs get executed inside a shell command-line environment. 
+The variables set in that environment are called, environment variables, 
+are another source of information that we can use in our scripts.
+
+PATH - For example, the path variable is a very important one. 
+ECHO - echo is the command that we use to print texts in the Linux shell. 
+GET - allows us to specify a default value when the key that we're looking for isn't 
+in the dictionary. What we're asking Python to do is try to retrieve the value associated 
+with the key, but if the key is not defined, return an empty string instead.
+
+The sys module is indeed the storage location for argv. 
+While argv is often referred to as sys.argv to indicate that it's part of the sys module, 
+it's essentially a list that holds the command-line arguments.  argv is the argument, 
+and it is stored in sys
+
+/usr/sbin/temp is a directory not listed by default in PATH
+
+cat variables.py
+#!/usr/bin/env python3
+
+import os
+print("HOME: " + os.environ.get("HOME", ""))
+print("SHELL: " + os.environ.get("SHELL", ""))
+print("FRUIT: " + os.environ.get("FRUIT", ""))
+./variables.py 
+export FRUIT=Pineapple
+./variables.py 
+
+_______________________________________________
+
+COMMAND-LINE ARGUMENTS AND EXIT status
+
+
+cat parameters.py 
+#!/usr/bin/env python3
+______________
+
+import sys
+print(sys.argv)
+
+This script prints the command-line arguments passed to it. sys.argv is a list in Python 
+that contains the command-line arguments passed to the script. The first element (sys.argv[0]) 
+is the script name, and the subsequent elements are the arguments.
+______________
+
+./parameters.py
+OUTPUT:  ['./parameters.py'] 
+
+
+______________
+
+./parameters.py one two three
+OUTPUT:  ['./parameters.py', 'one', 'two', 'three']
+
+
+# Calculate the number of lines, words, and characters in the file 'variables.py' 
+                and print the result to the console
+wc variables.py
+
+7 19 174 variables.py 	
+echo $?  ## Print the exit status of the last executed command  
+0        ## 0 = success, non-zero exit= error or failure.
+
+
+wc notpresent.sh
+wc: notpresent.sh: No such file or directory
+echo $?
+1
+#In the second case, 'wc' command failed to find 'notpresent.sh', and hence, the exit status is 1.
+______________
+#!/usr/bin/env python3
+
+import os
+import sys
+
+filename = sys.argv[1]  #The sys module is the storage location for argv. 
+                        #argv is often referred to as sys.argv bc it's part of the sys module, 
+                        #it's essentially a list that holds the command-line arguments.  
+                        #argv is the argument, and it is stored in sys
+
+if not os.path.exists(filename):
+    with open(filename, "w") as f:
+        f.write("New file created\n")
+else:
+    print("Error, the file {} already exists!".format(filename))
+    sys.exit(1)
+
+EXPLANATION OF WHAT IS HAPPENING IN THIS CODE:
+
+import os
+import sys
+
+# Get the filename from the command-line arguments
+filename = sys.argv[1]
+
+# Check if the file exists
+if not os.path.exists(filename):
+    # If it doesn't exist, create the file and write a message to it
+    with open(filename, "w") as f:
+        f.write("New file created\n")
+else:
+    # If it exists, print an error message and exit with status 1
+    print("Error, the file {} already exists!".format(filename))
+    sys.exit(1)
+
+    #This script creates a new file with the given name if it doesn't exist. 
+    #If the file already exists, it prints an error message and exits with a status of 1.
+______________
+
+./create_file.py example
+echo $?
+    OUTPUT: 0 
+
+cat example 
+New file created
+./create_file.py example
+    OUTPUT: Error, the file example already exists!
+echo $?
+    OUTPUT: 1
+
+______________
+
+In Python 3
+Taking an input from a user, input should be used. See the below sample:
+
+>>> my_number = input('Please Enter a Number: \n')
+Please Enter a Number: 
+123 + 1
+>>> print(my_number)
+123 + 1
+>>> type(my_number)
+<class 'str'>
+
+Notice that the expression is treated just like a string. It is not evaluated. 
+If we want to, we can call eval() and that will actually execute the string as an expression:
+
+>>> my_number = input('Please Enter a Number: \n')
+Please Enter a Number: 
+123 + 1
+>>> print(my_number)
+123 + 1
+>>> eval(my_number)
+124
+
+Finally, it’s worth noting, raw_input doesn’t natively exist in Python 3, 
+but there are some tricky ways to force the interpreter to evaluate raw_input in backwards 
+compatible ways. This can be useful for modernizing legacy Python code without rewriting 
+large portions of it. Research on this topic is better left to the reader, as there are lots 
+of fun (and sometimes scary) ways of doing this.
+
+Python 2 and Python 3 handle input and raw_input differently.
+
+In Python 2
+
+input(x) is roughly the same as eval(raw_input(x))
+
+raw_input() is preferred, unless the author wants to support evaluating string expressions.
+
+eval() is used to evaluate string expressions.
+
+Standard Library Docs:
+https://docs.python.org/2/library/functions.html#input
+https://docs.python.org/2/library/functions.html#raw_input
+https://docs.python.org/2/library/functions.html#eval
+
+In Python 3
+
+Input handles string as a generic string. It does not evaluate the string as a string expression.
+raw_input doesn’t exist, but with some tricky techniques, it can be supported.
+
+eval() can be used the same as Python 2.
+
+Standard Library Docs: 
+https://docs.python.org/3/library/functions.html#input
+https://docs.python.org/3/library/functions.html#eval
+
+
+export VARIABLE_NAME=value
+    This command sets the value of the environment variable VARIABLE_NAME to value.
+
+input is not a command used for creating environment variables.
+export is the correct choice for creating a new environment variable.
+env is a command used to display the current environment variables, not to create new ones.
+wc is a command used to count lines, words, and characters in a file, 
+    not for creating environment variables.
+
+echo $PATH prints the value of the PATH environment variable, not the exit status.
+import sys is not a command, but a Python statement for importing the sys module.
+wc variables.py calculates the number of lines, words, and characters in the file 'variables.py', 
+    but it does not print the exit status.
+echo $? is the correct choice to print the exit status.
+

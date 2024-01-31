@@ -1,0 +1,304 @@
+
+
+An internal server error is displayed when a web server cannot 
+fulfill or complete a request. An internal server error informs 
+you that an error exists but does not tell you exactly what the 
+error is or where it is located. Troubleshoot by running tests to 
+determine what and where the bugs are in your code and correct 
+them to eliminate internal server errors.
+
+
+Crashes are mostly caused by operating system errors. 
+The spectrum of hardware failures, including disk errors, 
+can cause irreparable harm, even with minor component degradation. 
+Simultaneously, OS software errors include memory access blunders, 
+perpetual loops, and buffer overflows. Operating systems can also 
+plagued by problems like unstable drivers, memory leaks, and driver
+conflicts.
+
+Blue screen of death (BSoD)
+A common disruption in computing systems is the kernel panic in 
+Mac OS, also known as the notorious "Blue Screen of Death" (BSoD) 
+in Windows, both of which require restarting the computer. 
+Although rare, analyzing these occurrences is essential for 
+uncovering OS issues. BSoDs are usually caused by hardware glitches, 
+problematic drivers, or abrupt process terminations. 
+These failure screens display error codes, memory locations, and 
+technical insights related to the crash.
+
+Reading system logs
+System logs are crucial for understanding and resolving issues across multiple operating systems. Whether you're using a Mac, Linux, or another system, delving into these logs can yield valuable insights. Analyzing logs is critical for identifying system errors and crashes on Windows computers. The Windows logs such as System and Application carefully record data retrieval events, providing insight into software, hardware, and user interaction.
+
+Mac system logs provide insights into system operations. By using the Console app, you can capture error messages, warnings, and interactions between hardware and software. These logs are especially useful when investigating system behavior.
+
+Linux system logs offer insights into troubleshooting. They give detailed information about the Linux environment, such as errors and hardware-software interactions. Using command-line utilities, you can access these logs to identify unusual behavior patterns. These logs provide a holistic overview of system performance.
+
+Process Monitor
+Monitoring tools like Process Monitor in Windows provide real-time visibility into file system actions, registry changes, and process behavior. With features from legacy tools such as Regmon and Filemon, Process Monitor captures input/output parameters, uses non-destructive filtering, identifies root causes, and compiles comprehensive process data. This includes details such as image paths, commands, user information, and session IDs. The tool offers customizable columns, flexible filters, and scalable logging to enhance event management. Tooltips provide quick access to log files and reveal process relationships. It also records boot-time operations for comprehensive tracking, troubleshooting, malware detection, and system activity analysis.
+
+Linux strace command
+You can use a Linux strace command to trace system calls and signals. It aids in debugging and diagnostics by analyzing application and process behavior. It captures system calls, pinpoints issues, optimizes code, and enhances system performance. You use strace by entering the program's name and any arguments at the command line. This tool logs detailed system call information, enabling you to analyze bottlenecks, unintended behaviors, and misconfigurations. The strace command contributes to a better understanding of OS and application interactions, ultimately leading to efficient software development and effective issue resolution.
+
+Tracing system calls
+Tracing system calls on Linux is useful for identifying security risks and tracing system calls, which reveal the intricate interactions between processes and operating systems. You can trace a Linux system call using the ptrace API and the strace command, and you can trace a Mac OS X system call using the dtrace system. Windows uses the GUI tool Process Monitor, and additional projects enhance system call tracing. Tools like Logger, LogView, and NtTrace leverage Microsoft's Event Tracing for Windows (ETW) capabilities. Across operating systems, tracing system calls remains pivotal for development and monitoring, anchoring system analysis and optimization.
+
+Valgrind lets us know if the code is accessing variables before initializing them. If the code is failing to free some of the memory requested, if the pointers are pointing to an invalid memory address, and a ton more things. Valgrind is available on Linux and Mac OS, and Dr. Memory is a similar tool that can be used on both Windows and Linux.
+Dr. Memory can assist in finding out if invalid operations are occurring in a program running on Windows or Linux.  
+Microsoft compilers can also generate debugging symbols in a separate PDB file.
+
+After getting acquainted with the program’s code, where might you start to fix a problem?
+Start working on the function that produced the error, and the function(s) that called it. 
+
+Debugging a segmentation fault
+
+./example
+segmentation fault
+
+
+ulimit -c unlimited
+./example 
+
+segmentation fault (core dumped)
+
+ls -l core
+Return: user and core - the core file created in the crash
+
+
+gdb -c core example
+Return: this debugger shows a bunch of messages including its version, license, and how to get help. It then tells us that the program finished with a segmentation fault. It shows that the crash happened inside the strlen function in a file that's part of the system libraries.
+
+
+______
+The backtrace command can be used to show a summary of the function calls that were used to the point where the failure occurs.   
+
+Debugging a Python crash
+
+cat new_products.csv 
+
+./update_products.py new_products.csv
+#This throws an error
+
+pdb3 update_products.py new_products.csv
+
+./update_products.py new_products.csv
+
+Running the continue command after starting the pdb3 debugger will execute the program until it finishes or crashes.
+
+Debugging with print
+The print statement helps you figure out what is going on with your code. You can use the print command to send messages to the screen as your program executes to help you find out how far it’s getting before it crashes. Or you can print out the value of certain variables as the program runs, which might help explain what is going wrong. If your code has a loop that doesn’t seem to be executing correctly, try adding a print statement at the top of the loop. Print out the loop invariant and any other local variables that might help you figure out what’s going on.
+
+
+How to debug with the print statement 
+Let’s take a look at how print () can help you debug your code. Here’s a simple function that divides two numbers:
+
+def divide(numerator, denominator):
+
+  return numerator / denominator
+
+What happens if you call this function but provide a value of zero for the denominator? Dividing by zero causes an error, specifically, a ZeroDivisionError. You could watch out for this condition by using a print statement:
+
+def divide(numerator, denominator):
+
+  print(“dividing {} by {}”.format(numerator, denominator))
+
+  return numerator / denominator
+
+Now, if the program crashes with a ZeroDivisionError, you’ll see your printed output right before the error:
+
+>>> divide(3,0)
+
+dividing 3 by 0
+
+Traceback (most recent call last):
+
+  File "<stdin>", line 1, in <module>
+
+  File "<stdin>", line 3, in divide
+
+ZeroDivisionError: division by zero
+
+Let’s take a look at another example. Imagine you write a function to retrieve a web page and print its contents. It might look something like this:
+
+import urllib3
+
+def get_web_page(url):
+	http = urllib3.PoolManager()
+	response = http.request("GET", url)
+	print(response.data.decode("utf-8"))
+
+What happens if the url parameter is incorrect or missing? What if the request causes an error? The error messages from the urllib3 library are not always clear. If the URL is missing, for example, you may see this message: LocationValueError. Therefore, you might want to use a print statement to see what the URL is before making the call:
+
+import urllib3
+
+def get_web_page(url):
+	http = urllib3.PoolManager()
+
+
+	print("Retrieving URL:", url)
+	response = http.request("GET", url)
+
+
+	print("HTTP response code:", response.status, response.reason)
+	print(response.data.decode("utf-8"))
+
+Now you can try it again:
+
+get_web_page("http://google.com")Retrieving URL: http://google.com
+HTTP response code: 200 OK
+
+
+
+Debugging with assert
+A developer’s worst nightmare is to spend hours and hours developing and writing code for a program, and right before they deploy it, the developer discovers multiple bugs and errors. Instead of waiting until the last minute to check the correctness of your code, you should test it and check it throughout the development and writing process.
+
+In this reading, you will learn more about debugging your code with assert.
+
+What are assertions?
+Assertions are logical tests that developers use as a sanity check when writing code. In Python, you use an assert statement to write these sanity checks. When you write an assert statement, it is important to write it with one thing in mind: The condition you include with the assert statement should always be true. If the condition is false, you can use this information as a main indicator that the program has a bug. If the assert statement is false, it will automatically terminate the execution of the program and will display an error message. At this point, you can correct or fix the bug before continuing to write code to ensure you don’t introduce any additional bugs. Let’s look at an example where the condition is true and therefore no error message is displayed: 
+
+a = 3 + 4
+
+assert a == 7 
+
+Here, the assert statement says the sum of three and four should equal seven—and it does! Because the condition is true, no error message is raised to the developer.
+
+Now let’s look at an example where some code uses an assert statement, and the condition is false. The code below takes a filename as an argument and then reads the file. If your function is called with an empty string instead of a filename, it will return a FileNotFoundError message.
+
+def read_file_and_do_something(filename):
+
+  assert filename != “”
+
+  with open(filename, “r”) as fp:
+
+    …
+
+Notice that in the second line of code, the assert statement produces nothing and is blank.
+
+What are the benefits of assertions?
+Assertions are not only beneficial to programmers to help catch bugs in their code, but they also prevent code from continuing to execute when additional input would cause further errors. In addition, you can use assert statements to create error messages that are easy to understand and user-friendly. Let’s look at an example:
+
+def read_file_and_do_something(filename):
+
+  assert filename != “”
+
+  with open(filename, “r”) as fp:
+
+    …
+
+Remember this code? If someone calls this function without a filename, the assert statement produces nothing, which can be confusing. This is because you don’t know exactly what the issue is. But what if we replace the message so that we can see exactly what is wrong with the code? We could use something like this:
+
+def read_file_and_do_something(filename):
+
+  assert filename != “”, “You must specify a filename!”
+
+  with open(filename, “r”) as fp:
+
+    …
+
+
+Look at the assert statement now. It produces “You must specify a filename!”, an error message that is clear and easy to understand.
+
+Key takeaways
+Using assert statements in your code enables you to check that your code works properly, detects bugs, and keeps your sanity as a developer. Use assert statements throughout your code to create robust and reliable code, saving you from extra debugging and code rewrites.
+
+
+Try and catch debugging
+“Try and catch" is a common programming paradigm found in many programming languages, not just Python. It's a way to handle runtime errors (or “exceptions”) gracefully without crashing the program. 
+
+In Python, the “try and catch” mechanism is implemented using try and except blocks. When you anticipate that a certain segment of your code might produce an error, you enclose it within a try block. Following this block, one or more except blocks can be defined to catch specific exceptions. 
+
+try:
+    # code that might raise an exception
+except SomeExceptionType:
+    # handle the exception
+
+For example, in the code below, attempting to divide by zero raises a ZeroDivisionError. 
+
+try:
+    # Code that might raise an exception
+    result = 10 / 0
+except ZeroDivisionError:
+    print("Oops! You tried to divide by zero.")
+
+Python evaluates the code inside the try block, and if an exception occurs, it immediately exits the block and enters the corresponding except block. In this example, instead of crashing the program, the error is caught by the except block, and a custom error message is printed. 
+
+Each except block specifies the type of exception it handles, allowing for differentiated responses to various error types. This can range from logging the error message, retrying the operation, or even prompting the user for alternative input.
+
+Why use try and catch debugging
+Wrapping potentially problematic code using try and except blocks can help you debug in a number of ways: 
+
+Identify problems: By wrapping potentially problematic code in a try block, you can catch and print exceptions, helping to pinpoint which sections of your code are problematic.
+
+Gain insight: When an exception is caught, you can access its message and type, providing insights into the nature of the error.
+
+Fail gracefully: Like in the example code above, instead of crashing the entire application, you can provide users with a friendly error message or take alternative actions when an exception is raised.
+
+Log errors: Combined with Python's logging module, exceptions can be logged for further analysis.
+
+Let’s look at another example, this time debugging a function using try and except. Consider a function that takes a list of numbers and calculates the average:  
+
+12
+def calculate_average(numbers):
+    return sum(numbers) / len(numbers)
+If an empty list is passed to this function, it will raise a ZeroDivisionError. Using try and except, you can handle this gracefully:
+
+123456
+def calculate_average(numbers):
+    try:
+        return sum(numbers) / len(numbers)
+    except ZeroDivisionError:
+        print("The list is empty. Cannot calculate the average.")
+        return None
+Now, instead of the program crashing when passed an empty list, it informs the user of the issue and returns None. But what if we need to generate more descriptive messages to help us better understand the error?
+
+Getting more detailed information
+Exceptions in Python are objects. When an exception occurs, it can be beneficial to print or log the exception object itself, as it can provide detailed information about the issue. Fortunately, we can use the raise keyword within except blocks to raise custom or built-in exceptions with more descriptive messages.
+
+Additionally, we can define our own custom exceptions to provide more specific feedback about errors. For instance, instead of returning None or a generic error message, we can raise an exception that provides detailed information about the nature of the error.
+
+Here's an example:
+
+class InvalidInputError(Exception):
+    pass
+
+
+class EmptyInputError(Exception):
+    pass
+
+
+def calculate_average(numbers):
+    try:
+        return sum(numbers) / len(numbers)
+    except TypeError:
+        raise InvalidInputError(f"Expected a list or tuple, but got {type(numbers)}")
+    except ZeroDivisionError:
+        raise EmptyInputError("The list is empty. Cannot calculate the average.")
+    finally:
+        print("Execution of calculate_average function completed.")
+
+
+In this example, we've defined two custom exceptions: InvalidInputError and EmptyInputError. When an error occurs, we raise the appropriate exception with a descriptive message. And by using the finally clause, we can specify actions that must be executed regardless of whether an exception was raised or not. 
+
+When to use try and catch debugging
+While try and except blocks don't "debug" in the traditional sense of stepping through code or setting breakpoints, they provide a framework to handle, understand, and ultimately resolve errors in a controlled and informed manner.
+
+That said, while "try and catch" is a widely accepted best practice for handling exceptions, it's essential to use it judiciously. Overusing it can lead to "swallowing" exceptions, where errors are caught but not adequately handled or logged, leading to silent failures. 
+
+Proper exception handling involves not just catching exceptions but also taking appropriate action, whether that's logging the error, informing the user, or attempting a recovery action. 
+
+Key takeaways
+Try and catch debugging allows developers to identify, log, and handle errors.
+
+Using try and except blocks in Python is a powerful way to handle exceptions and improve the debugging process.
+
+Use the raise keyword within except blocks to raise custom or built-in exceptions with more descriptive messages. 
+
+Use try and catch debugging judiciously and ensure that exceptions are properly handled with appropriate action. 
+
+
+
+
+
+
+
+

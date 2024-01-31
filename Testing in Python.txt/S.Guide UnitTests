@@ -1,0 +1,448 @@
+Study guide: Unit tests
+You’ve learned that unit tests are designed to test small pieces of code, like a single function or method, to ensure that each part of the code is working as it should. Unit testing helps to isolate errors so bugs can be identified and fixed earlier on during the software development process before they can become larger, more expensive issues to fix. 
+
+You’ve also learned about the object-oriented concepts of unittest, a unit testing framework in Python that developers can use to help test their code. In this reading, you’ll learn more about test cases, running unit tests using the command-line interface, unit test design patterns, and some common, basic assertions that you can use when developing your own unit tests. 
+
+Test cases
+The building blocks of unit tests within the unittest module are test cases, which enable developers to run multiple tests at once. To write test cases, developers need to write subclasses of TestCase or use FunctionTestCase. 
+
+To perform a specific test, the TestCase subclass needs to implement a test method that starts with the name test. This identifier is what informs the test runner about which methods represent tests.
+
+Examine the following example for test cases:
+
+import unittest
+
+
+class TestStringMethods(unittest.TestCase):
+
+
+    def test_upper(self):
+        self.assertEqual('foo'.upper(), 'FOO')
+
+
+    def test_isupper(self):
+        self.assertTrue('FOO'.isupper())
+        self.assertFalse('Foo'.isupper())
+
+
+    def test_split(self):
+        s = 'hello world'
+        self.assertEqual(s.split(), ['hello', 'world'])
+        # check that s.split fails when the separator is not a string
+        with self.assertRaises(TypeError): 
+            s.split(2)
+
+
+if __name__ == '__main__':
+    unittest.main()
+
+
+    [source: https://docs.python.org/3/library/unittest.html]  
+
+Notice how the following example contains three individual tests: 
+test_upper(), test_isupper(), and test_split(), which are responsible for testing 
+different string methods. This example code also includes four assertions 
+(covered below) and a call to the command-line interface, which you’ll learn more 
+about later in this reading.
+
+Assertions
+The TestCase class also employs its own assert methods that work similarly 
+to the assert statement: if a test fails, an exception is raised with an explanatory 
+message, and unittest identifies the test case as a failure. In the above example, 
+there are several assertions used:
+
+An assertEqual() to check for an expected result
+
+An assertTrue() and an assertFalse() to verify a condition
+
+An assertRaises() to verify that a specific exception gets raised
+
+Each of these assert methods is used in place of the standard assert statement so 
+the test runner can gather all the test results and generate a report.
+
+
+Below is a list of commonly used assert methods in the TestCase class. 
+For more information on each method, select the embedded link in the list provided.    
+
+The 
+assertEqual(a, b)
+ method checks that a == b
+
+The 
+assertNotEqual(a, b)
+ method checks that a != b
+
+The 
+assertTrue(x)
+ method checks that bool(x) is True
+
+The 
+assertFalse(x)
+ method checks that bool(x) is False
+
+The 
+assertIs(a, b)
+ method checks that a is b
+
+The 
+assertIsNot(a, b)
+ method checks that a is not b
+
+The 
+assertIsNone(x)
+ method checks that x is None
+
+The 
+assertIsNotNone(x)
+ method checks that x is not None
+
+The 
+assertIn(a, b)
+ method checks that a in b
+
+The 
+assertNotIn(a, b)
+ method checks that a not in b
+
+The 
+assertIsInstance(a, b)
+ method checks that isinstance(a, b)
+
+The 
+assertNotIsInstance(a, b)
+ method checks that not isinstance(a, b) 
+
+You can also use assert methods to generate exceptions, warnings, and log messages. 
+For example, another important assert method in unit testing is assertRaises. 
+It allows you to test whether exceptions are raised when they should be, ensuring 
+that your program can handle errors. assertRaises also allows developers to check 
+which specific exception type is raised, ensuring that the correct error handling 
+is in place.
+
+Command-line interface
+The command-line interface allows you to interact with an application or program 
+through your operating system command line, terminal, or console by beginning your 
+code with a text command. When you want to run tests in Python, you can use the 
+unittest module from the command line to run tests from modules, classes, or even 
+individual test methods. This also allows you to run multiple files at one time. 
+
+    To call an entire module:
+python -m unittest test_module1 test_module2 
+
+    To call a test class:
+python -m unittest test_module.TestClass
+
+    To call a test method:
+python -m unittest test_module.TestClass.test_method
+
+    Test modules can also be called using a file path, as written below:
+python -m unittest tests/test_something.py
+
+[source: https://docs.python.org/3/library/unittest.html]
+
+
+In each instance, the structure of the command remained the same, 
+with the test class and test method being added to the original module 
+that was called. 
+
+You can also use the command line for test discovery, for running all of the 
+tests in a single project, or even for just a subset of tests. 
+
+Unit test design patterns
+One pattern that you can use for unit tests is made up of three phases: 
+    arrange, act, and assert. Arrange represents the preparation of the 
+    environment for testing; act represents the action, or the objective of 
+    the test, performed; and assert represents whether the results checked 
+    are expected or not. 
+
+Imagine building a system for a library. The objective is to test whether a 
+new book can be added to the library's collection and then to check if the 
+book is in the collection. Using the above structure of arrange, act, and assert, 
+consider the following example code:
+
+What’s given (arrange): A library with a collection of books
+
+When to test (act): A new book is added to the collection
+
+Then check (assert): The new book should be present in the library's collection
+
+class Library:
+	def __init__(self):
+		self.collection = []
+
+	def add_book(self, book_title):
+		self.collection.append(book_title)
+
+	def has_book(self, book_title):
+		return book_title in self.collection
+
+# Unit test for the Library system
+class TestLibrary(unittest.TestCase):
+
+	def test_adding_book_to_library(self):
+    	# Arrange
+		library = Library()
+		new_book = "Python Design Patterns"
+
+    	# Act
+    	library.add_book(new_book)
+
+    	# Assert
+    	self.assertTrue(library.has_book(new_book))
+
+# Running the test
+library_test_output = unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromTestCase(TestLibrary))
+print(library_test_output)
+
+_______________________________________________
+
+Tests can be grouped together according to the features they test. In unittest, 
+this functionality is known as a test suite, and it allows developers to organize 
+how and in which order their tests are run. 
+
+
+In each respective phase, an instance of the library class was created. 
+The title of the book was defined as “Python Design Patterns,” a new book was added 
+to the library using the add_book method, and a check was run to see if the new book 
+was successfully added to the library’s collection using the has_book method.  
+
+Test suites
+Testing can be time-intensive, but there are ways that you can optimize the testing 
+process. The following methods and modules allow you to define instructions that 
+execute before and after each test method:
+
+setUp() can be called automatically with every test that’s run to set up code. 
+
+tearDown() helps clean up after the test has been run. 
+
+If setUp()raises an exception during the test, the unittest framework considers 
+this to be an error and the test method is not executed. If setUp() is successful, 
+tearDown() runs even if the test method fails. You can add these methods to your unit 
+tests, which you can then include in a test suite. Test suites are collections of 
+tests that should be executed together—so all of the topics covered in this reading 
+can be included within a test suite. 
+
+_______________________________________________
+
+Consider the following code example to see how each of these unit testing components 
+is used together and run within a test suite:
+
+
+import unittest
+import os
+import shutil
+
+# Function to test
+def simple_addition(a, b):
+	return a + b
+
+# Paths for file operations
+ORIGINAL_FILE_PATH = "/tmp/original_test_file.txt"
+COPIED_FILE_PATH = "/mnt/data/copied_test_file.txt"
+
+# Global counter
+COUNTER = 0
+
+# This method will be run once before any tests or test classes
+def setUpModule():
+	global COUNTER
+	COUNTER = 0
+    
+	# Create a file in /tmp
+	with open(ORIGINAL_FILE_PATH, 'w') as file:
+    	file.write("Test Results:\n")
+
+# This method will be run once after all tests and test classes
+def tearDownModule():
+	# Copy the file to another directory
+	shutil.copy2(ORIGINAL_FILE_PATH, COPIED_FILE_PATH)
+    
+	# Remove the original file
+	os.remove(ORIGINAL_FILE_PATH)
+
+class TestSimpleAddition(unittest.TestCase):
+
+	# This method will be run before each individual test
+	def setUp(self):
+    	global COUNTER
+    	COUNTER += 1
+
+	# This method will be run after each individual test
+	def tearDown(self):
+    	# Append the test result to the file
+    	with open(ORIGINAL_FILE_PATH, 'a') as file:
+        	result = "PASSED" if self._outcome.success else "FAILED"
+        	file.write(f"Test {COUNTER}: {result}\n")
+
+	def test_add_positive_numbers(self):
+    	self.assertEqual(simple_addition(3, 4), 7)
+
+	def test_add_negative_numbers(self):
+    	self.assertEqual(simple_addition(-3, -4), -7)
+
+# Running the tests
+suite = unittest.TestLoader().loadTestsFromTestCase(TestSimpleAddition)
+runner = unittest.TextTestRunner()
+runner.run(suite)
+
+# Read the copied file to show the results
+with open(COPIED_FILE_PATH, 'r') as result_file:
+	test_results = result_file.read()
+
+print(test_results)
+
+
+
+
+______________
+
+ In the example, a global counter is initialized in setUpModule. The counter is 
+ incremented in the setUp method before each test starts. After each test is completed,
+  the tearDown method checks the test result and appends it to the temporary file. 
+  During module teardown in tearDownModule, the temporary file is copied to another 
+  directory and the original file is deleted.  
+
+Key takeaways
+The real strength of unit testing is when you combine it with exceptions. 
+Because exceptions are objects, the object-oriented nature of the unittest framework 
+makes them synergize well together. Assertions help to document expected behavior, 
+create more specific test codes, and help to safeguard against future changes. Unit 
+testing is also a way to optimize a process within the software development 
+lifecycle—through automated testing.
+
+
+_______________________________________________
+
+Practice Notebook - Unit Tests and Edge Cases
+Below we have some code that makes a list of specific letters found in any string. 
+If you run it, you can see what it does.
+
+import re 
+  
+my_txt = "An investment in knowledge pays the best interest."
+​
+def LetterCompiler(txt):
+    result = re.findall(r'([a-c]).', txt)
+    return result
+​
+print(LetterCompiler(my_txt))
+
+From the output, you can see that the LetterCompiler( ) function finds all matches 
+for the letters a through c in an input string if followed by another character and 
+returns them as a list of strings, with each string representing one match. Nice.
+
+But can we be sure that this function will always do what we expect it to do? 
+We need to write code to help us catch mistakes, errors and bugs. This code should 
+automate the process of checking if the returned value of our code matches the 
+expectations by dynamically feeding into it test cases. Since we're dynamically 
+feeding in different strings, it would be prudent to create unit tests for our code. 
+We can use the module unittest for this.
+
+
+import re
+import unittest
+
+my_txt = "An investment in knowledge pays the best interest."
+
+def LetterCompiler(txt):
+    result = re.findall(r'([a-c]).', txt)
+    return result
+
+class TestCompiler(unittest.TestCase):
+
+    def test_basic(self):
+        testcase = "The best preparation for tomorrow is doing your best today."
+        expected = ['b', 'a', 'a', 'b', 'a']
+        self.assertEqual(LetterCompiler(testcase), expected)
+
+if __name__ == '__main__':
+    unittest.main()
+
+
+CREATE TESTS FOR EDGE CASES
+
+import re
+import unittest
+
+# Define the LetterCompiler function
+def LetterCompiler(txt):
+    result = re.findall(r'([a-c]).', txt)
+    return result
+
+class TestCompiler(unittest.TestCase):
+
+    def test_basic(self):
+        testcase = "The best preparation for tomorrow is doing your best today."
+        expected = ['b', 'a', 'a', 'b', 'a']
+        self.assertEqual(LetterCompiler(testcase), expected)
+
+if __name__ == '__main__':
+    unittest.main(argv=['first-arg-is-ignored'], exit=False)
+
+class TestCompiler2(unittest.TestCase):
+
+    def test_two(self):
+        # Normal case with lowercase letters
+        testcase1 = "A b c d e f g h i j k l m n o q r s t u v w x y z"
+        expected1 = ['b', 'c']
+        self.assertEqual(LetterCompiler(testcase1), expected1)
+
+        # Edge case with an empty string
+        testcase2 = ""
+        expected2 = []
+        self.assertEqual(LetterCompiler(testcase2), expected2)
+
+        # Edge case with all letters from a to c repeated twice
+        testcase3 = "aa bb cc"
+        expected3 = ['a', 'b', 'c', 'a', 'b', 'c']
+        self.assertEqual(LetterCompiler(testcase3), expected3)
+
+        # Edge case with no letters from a to c
+        testcase4 = "defghijklmnopqrstuvwxyz"
+        expected4 = []
+        self.assertEqual(LetterCompiler(testcase4), expected4)
+
+    unittest.main(argv=['first-arg-is-ignored'], exit=False)
+
+
+
+In what type of test is the code not transparent?
+    Black-box test
+
+Verifying an automation script works well with the overall system and external entities describes what type of test?
+    Integration test
+
+_____ ensures that any success or failure of a unit test is caused by the behavior of the unit in question, and doesn't result from some external factor.
+    Isolation
+
+A test that is written after a bug has been identified in order to ensure the bug doesn't show up again later is called _____
+    Regression test
+
+What type of software testing is used to verify the software’s ability to behave well under significantly stressed testing conditions?
+    Load test
+
+TERMS AND DEFINITIONS
+Automatic testing: A process where software checks itself for errors and confirms that it works correctly
+
+Black-box tests: A test where there is an awareness of what the program is supposed to do but not how it does it
+
+Edge cases: Inputs to code that produce unexpected results, found at the extreme ends of the ranges of input
+
+Pytest: A powerful Python testing tool that assists programmers in writing more effective and stable programs
+
+Software testing: A process of evaluating computer code to determine whether or not it does what is expected
+
+Test case: This is the individual unit of testing that looks for a specific response to a set of inputs
+
+Test fixture: This prepared to perform one or more tests
+
+Test suite: This is used to compile tests that should be executed together
+
+Test runner: This runs the test and provides developers with the outcome’s data
+
+unittest: A set of Python tools to construct and run unit tests
+
+Unit tests: A test to verify that small isolated parts of a program work correctly
+
+White-box test: A test where test creator knows how the code works and can write test cases that use the understanding to make sure it performs as expected
+

@@ -1,0 +1,327 @@
+WHILE LOOPS IN BAS scripts
+
+
+In this script, we're using the variable N to print messages, counting from one to five. 
+    The condition for the while loop uses the same format as a condition for an if 
+    block. In this example, we check if the variable N is less than or equal to five 
+    using the _le operator. The loop itself starts with the do keyword and finishes 
+    with a done keyword. To increment the value of the variable N, we're using a bash 
+    construct of double parentheses that lets us do arithmetic operations with our 
+    variables. 
+
+
+#!/bin/bash
+
+n=1
+while [ $n -le 5 ]; do
+  echo "Iteration number $n"
+  ((n+=1))
+done
+
+./while.sh     #EXECUTES THE COMMAND/LOOP
+
+    OUTPUT:
+Iteration number 1
+Iteration number 2
+Iteration number 3
+Iteration number 4
+Iteration number 5
+
+________
+cat while.sh
+
+This script uses random rand int to generate a value between zero and three, then it 
+    prints the selected value and exits with it.
+
+#!/usr/bin/env python
+
+import sys
+import random
+
+value=random.randint(0, 3)
+
+print("Returning: " + str(value))
+
+sys.exit(value)
+
+./random-exit.py
+    OUTPUT:  Returning: 3
+./random-exit.py
+    OUTPUT: Returning: 2
+./random-exit.py
+    OUTPUT: Returning: 0
+
+    OUTPUT:     #We see that we get a value in the zero to three range. 
+                #Which value we get will depend on each call, that's okay.
+
+__________
+
+This script is a bit more complex than the earlier one but not by much. 
+    One interesting difference is that we're getting the value of a command line 
+    argument using the $1, this is what we use in Bash to access the first command 
+    line argument. In Python, we get the same information using sys.argv[1]. So we 
+    store the parameter and the variable called command, and then we execute the while 
+    loop until either the command succeeds or the end variable reaches a value of five. 
+    In other words, if the received command fails, we'll retry up to five times. In the 
+    body of the while loop, we first sleep a few seconds, then increment the variable 
+    and print the number of free try attempts. So why do we call the sleep command? 
+    This is no time for rest, the idea here is that if the command we're calling is 
+    failing due to CPU usage, network or resource exhaustion, it might make sense to 
+    wait a bit before trying again.
+
+#!/bin/bash
+
+n=0
+command=$1
+while ! $command && [ $n -le 5 ]; do
+        sleep $n
+        ((n+=1))
+        echo "Retry #$n"
+done;
+
+./retry.sh ./random
+
+OUTPUT:
+    Returning: 3
+    Retry #1
+    Returning: 3
+    Retry #2
+    Returning: 1
+    Retry #3
+    Returning: 3
+    Retry #4
+    Returning: 0
+
+
+______________________________
+
+FOR LOOPS IN BASH SCRIPTS
+
+cat fruits.sh  #About this code
+                Here we're iterating over three different elements that have 
+                the names of the fruits.
+
+
+#!/bin/bash
+
+for fruit in peach orange pear; do
+
+        echo "I like $fruit!"
+
+./fruits.sh
+
+OUTPUT:
+    I like peach!
+    I like orange!
+    I like pear!
+
+______________
+
+cd old_website/
+/old_website$ ls -l
+
+OUTPUT:
+    total 0
+    -rw-r--r-- 1 user user 0 May 24 10:19 about.HTM
+    -rw-r--r-- 1 user user 0 May 24 10:20 contact.HTM
+    -rw-r--r-- 1 user user 0 May 24 10:20 footer.HTM
+    -rw-r--r-- 1 user user 0 May 24 10:20 header.HTM
+    -rw-r--r-- 1 user user 0 May 24 10:19 index.HTM 
+
+______________________________
+/old_website$ basename index.HTM .HTM
+
+This command takes a filename and an extension, and then 
+    returns the name without the extension.
+
+#!/bin/bash
+
+for file in *.HTM; do
+        name=$(basename "$file" .HTM)
+        mv "$file" "$name.html" 
+done 
+__________
+
+We'll start as usual by including the Bash Shebang line.
+Our script we'll iterate with a for loop through all the files that end with.HTM. 
+    So now for each file we want to call basename to keep the part of the file that 
+    we care about.
+We'll store that in a variable called name.
+Easy enough, and now we'll use dollar sign parentheses to call the command and keep 
+    the output. We're surrounding our file variable with double-quotes to allow the 
+    command to work even if the file has spaces in its name.
+This is a good practice in Bash scripts when dealing with file names or any variables 
+    that could include spaces.
+Now, we'll call the MV command with the old and new names.
+In this case, we use double quotes for both parameters. Again, we want to make sure 
+    that it works correctly for file names with spaces, and that's all that our loop 
+    needs to do.
+We'll finish our loop of the dunki word, and we're done, almost. We still need to run 
+    our script to see if it does what it should. Now, let me share a trick with you 
+    that might save you a few headaches.
+Whenever you're going to run a script like this that modifies the files in your file 
+    system, it's a really good idea to first run it without actually modifying the 
+    file system. This will catch any possible bugs that the script might have. So 
+    instead of just running it as it is right now, we'll add an echo in front of the MV
+    command. This means that instead of actually renaming our script we'll print the 
+    renaming that it plans to do.
+Now, let's save the script, make it executable, and run it.
+Excellent. Our script printed the actions that you would take and it looks like it's 
+    going to do the right thing.
+So let's remove the echo and make it actually rename the files.
+This time it didn't print anything, that's expected because these commands don't 
+    print anything when they succeed. Let's check that our rename works by listing 
+    the contents of our directory.
+Yes, we managed to rename all of our files successfully, and they all lived happily 
+    ever after. Hopefully by now, you're starting to see how you can benefit from 
+    using Bash scripts when dealing with files and system commands, especially to 
+    compliment your Python scripts. Up next, we'll use all this Bash scripting
+    knowledge to solve an interesting system administration challenge. Stay tuned.
+
+CODE BELOW__________
+
+#!/bin/bash
+
+for file in *.HTM; do
+        name=$(basename "$file" .HTM)
+        echo mv "$file" "$name.html" 
+done
+
+ABOUT THIS CODE
+The script iterates through all files with the ".HTM" extension in the current directory. 
+    For each file, it extracts the filename without the extension and generates the 
+    new filename with the ".html" extension. Finally, it prints the mv command that 
+    would rename the original file to the new filename.
+
+This script only prints the mv commands. 
+    To actually rename the files, you need to execute the script by running 
+    chmod +x script.sh && ./script.sh where script.sh is the name of the script file.
+
+/old_website$ chmod +x rename.sh
+/old_website$ ./rename.sh 
+
+About this code:    Here the script gets saved as rename.sh
+
+CODE OUTPUT:
+mv about.HTM about.html
+mv contact.HTM contact.html
+mv footer.HTM footer.html
+mv header.HTM header.html
+mv index.HTM index.html
+
+______________
+
+/old_website$ ./rename.sh 
+/old_website$
+/old_website$ ls -l
+
+##THERE WILL BE NOTHING PRINTED WHEN THESE ARE SUCESSFUL
+
+ls -l is a command in Linux and Unix systems used to list the contents of a directory 
+    in a long format. This format provides detailed information about each file
+
+OUTPUT:
+total 4
+-rw-r--r-- 1 user user  0 May 24 10:19 about.html
+-rw-r--r-- 1 user user  0 May 24 10:20 contact.html
+-rw-r--r-- 1 user user  0 May 24 10:20 footer.html
+-rw-r--r-- 1 user user  0 May 24 10:20 header.html
+-rw-r--r-- 1 user user  0 May 24 10:19 index.html
+-rwxr-xr-x 1 user user 90 May 24 10:40 rename.sh
+
+______________
+
+ADVANCED COMMAND INTERACTION
+
+tail /var/log/syslog
+
+OUTPUT:
+May 24 10:17:01 ubuntu.local CRON[257236]: (root) CMD (   cd / && run-parts --report /etc/cron.hourly)
+May 24 10:18:41 ubuntu.local rsyslogd: -- MARK --
+May 24 10:25:19 ubuntu.local systemd[1]: Reloading.
+
+________
+OK With that, we remove the date and the name of the computer keeping only the process 
+and the event message, snip snip:
+
+tail /var/log/syslog | cut -d' ' -f5-
+
+OUTPUT:
+CRON[257236]: (root) CMD (   cd / && run-parts --report /etc/cron.hourly)
+rsyslogd: -- MARK --
+systemd[1]: Reloading.
+
+________
+Now that we have the information that we care about, we can pipe this to the same 
+    pipeline of commands that we saw in an earlier video to find out the lines that 
+    are repeated the most; like this.
+
+cut -d' ' -f5- /var/log/syslog | sort | uniq -c | sort -nr | head
+
+OUTPUT:
+     41 systemd[1]: Starting Network Manager Script Dispatcher Service...
+
+     41 systemd[1]: Started Network Manager Script Dispatcher Service.
+
+     41 systemd[1]: NetworkManager-dispatcher.service: Succeeded.
+
+     41 nm-dispatcher: req:1 'dhcp4-change' [ens3]: start running ordered scripts...
+
+     41 nm-dispatcher: req:1 'dhcp4-change' [ens3]: new request (1 scripts)
+
+     41 dhclient[757]: DHCPREQUEST for 192.168.122.103 on ens3 to 192.168.122.1 port 67 (xid=0x3a5ff7ed)
+
+     41 dhclient[757]: DHCPACK of 192.168.122.103 from 192.168.122.1 (xid=0xedf75f3a)
+
+     41 dbus-daemon[592]: [system] Successfully activated service 'org.freedesktop.nm_dispatcher'
+
+     41 dbus-daemon[592]: [system] Activating via systemd: service name='org.freedesktop.nm_dispatcher' unit='dbus-org.freedesktop.nm-dispatcher.service' requested by ':1.15' (uid=0 pid=599 comm="/usr/sbin/NetworkManager --no-daemon " label="unconfined")
+
+      9 systemd[1]: Started Run anacron jobs.
+
+________
+$ cat toploglines.sh  #A Faster way to modify all files in bash
+
+#!/bin/bash
+
+for logfile in /var/log/*log; do
+    echo "Processing: $logfile"
+    cut -d' ' -f5- $logfile | sort | uniq -c | sort -nr | head -5
+done
+
+ABOUT THIS CODE: This script is written in the Bash scripting language and designed 
+    to analyze log files. It analyzes each log file in the /var/log directory and 
+    displays the top 5 most frequently occurring messages along with their counts.
+
+./toploglines.sh
+
+OUTPUT:
+(...)
+
+Processing: /var/log/user.log
+
+     23 system-updater[199481]: DEBUG Command exited with status: 0
+
+     19 system-updater[46682]: DEBUG Command exited with status: 0
+
+     16 system-updater[175060]: DEBUG Command exited with status: 0
+
+     11 /usr/bin/lock: called by /bin/bash for . uid 0, euid 0.
+
+     11 network-manager-dhclient-hooks: Dispatching run of '/etc/dhcp/dhclient-exit-hooks.d/hostname' ...
+
+Processing: /var/log/Xorg.0.log
+
+     87 Printing DDC gathered Modelines:
+
+     87 Modeline "1920x1080"x0.0  141.00  1920 1936 1952 2104  1080 1083 1097 1116 -hsync -vsync (67.0 kHz eP)
+
+     87 EDID vendor "AUO", prod id 5949
+
+     78 vendor "AUO", prod id 5949
+
+     78 DDC gathered Modelines:
+
+
+______________________________
+
